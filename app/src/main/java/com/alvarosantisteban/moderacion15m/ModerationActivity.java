@@ -1,6 +1,6 @@
 package com.alvarosantisteban.moderacion15m;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +13,7 @@ import com.alvarosantisteban.moderacion15m.util.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModerationActivity extends ActionBarActivity {
+public class ModerationActivity extends Activity {
 
     Participant mCurrentParticipant;
     List<Participant> mParticipants = new ArrayList<Participant>();
