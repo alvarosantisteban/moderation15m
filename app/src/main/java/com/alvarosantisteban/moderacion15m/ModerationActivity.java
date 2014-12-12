@@ -2,7 +2,6 @@ package com.alvarosantisteban.moderacion15m;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TableLayout;
@@ -37,33 +36,34 @@ public class ModerationActivity extends Activity {
     }
 
     private void buildTable(int rows, int cols) {
-        Log.d(TAG, "buildTable");
-        // outer for loop
+        // Create rows
         for (int i = 1; i <= rows; i++) {
-
             TableRow row = new TableRow(this);
             row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
-            Log.d(TAG, "buildTable1");
-
-            // inner for loop
+            // Create columns
             for (int j = 1; j <= cols; j++) {
+                if (i == 1 || j == 1 || j == cols) {
+                    TextView tv = new TextView(this);
+                    tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                            TableRow.LayoutParams.WRAP_CONTENT));
+                    // tv.setBackgroundResource(R.drawable.cell_shape);
+                    tv.setPadding(5, 5, 5, 5);
+                    tv.setText("R " + i + ", C" + j);
 
-                TextView tv = new TextView(this);
-                Log.d(TAG, "buildTable2");
-                tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                        TableRow.LayoutParams.WRAP_CONTENT));
-                Log.d(TAG, "buildTable3");
-               // tv.setBackgroundResource(R.drawable.cell_shape);
-                tv.setPadding(5, 5, 5, 5);
-                tv.setText("R " + i + ", C" + j);
+                    row.addView(tv);
+                } else{
 
-                row.addView(tv);
-
+                    TextView tv = new TextView(this);
+                    tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                            TableRow.LayoutParams.WRAP_CONTENT));
+                    // tv.setBackgroundResource(R.drawable.cell_shape);
+                    tv.setPadding(5, 5, 5, 5);
+                    tv.setText("=");
+                    row.addView(tv);
+                }
             }
-
             table_layout.addView(row);
-
         }
     }
 
