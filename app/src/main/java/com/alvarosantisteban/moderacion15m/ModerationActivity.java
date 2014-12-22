@@ -1,6 +1,7 @@
 package com.alvarosantisteban.moderacion15m;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,8 +23,12 @@ public class ModerationActivity extends Activity {
     private static final String TAG = "ModerationActivity";
 
     TableLayout table_layout;
-    Participant mCurrentParticipant;
+
     List<Participant> mParticipants = new ArrayList<Participant>();
+    Participant mCurrentParticipant;
+
+    int nNumColumns;
+    int nNumParticipants;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +40,26 @@ public class ModerationActivity extends Activity {
         // Create participants
         //createParticipantsList();
 
-        buildTable(5, 5);
+        // Get the intent to obtain its extras
+        Intent intentFromMain = getIntent();
+        nNumColumns = intentFromMain.getIntExtra(Constants.EXTRA_NUM_COLUMNS, 0);
+        nNumParticipants = intentFromMain.getIntExtra(Constants.EXTRA_NUM_PARTICIPANTS, 0);
+
+        int numRows = calculateNumOfRows(nNumColumns, nNumParticipants);
+
+        buildTable(numRows, nNumColumns);
+    }
+
+    /**
+     * Calculates the number of rows needed in order to have the number of participants passed by parameter and the asked
+     * number of columns.
+     *
+     * @param numColumns the desired number of columns
+     * @param numParticipants the desired number of participants
+     * @return the number of needed rows (right now hardcoded to 15)
+     */
+    private int calculateNumOfRows(int numColumns, int numParticipants) {
+        return 15;
     }
 
     private void buildTable(int rows, int cols) {
