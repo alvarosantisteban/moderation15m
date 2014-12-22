@@ -14,6 +14,9 @@ import com.alvarosantisteban.moderacion15m.util.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Alvaro Santisteban 13.11.14 - alvarosantisteban@gmail.com
+ */
 public class ModerationActivity extends Activity {
 
     private static final String TAG = "ModerationActivity";

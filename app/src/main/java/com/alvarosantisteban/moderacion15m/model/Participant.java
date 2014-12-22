@@ -3,7 +3,7 @@ package com.alvarosantisteban.moderacion15m.model;
 import android.text.format.Time;
 
 /**
- * Created by alvaro santisteban on 13.11.14.
+ * @author Alvaro Santisteban 13.11.14 - alvarosantisteban@gmail.com
  */
 public class Participant {
 

@@ -1,7 +1,7 @@
 package com.alvarosantisteban.moderacion15m.util;
 
 /**
- * Created by alvaro on 13.11.14.
+ * @author Alvaro Santisteban 13.11.14 - alvarosantisteban@gmail.com
  */
 public final class Constants {
 
