@@ -1,0 +1,46 @@
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:paddingLeft="@dimen/activity_horizontal_margin"
+  android:paddingRight="@dimen/activity_horizontal_margin"
+  android:paddingTop="@dimen/activity_vertical_margin"
+  android:paddingBottom="@dimen/activity_vertical_margin"
+  tools:context="com.alvarosantisteban.moderacion15m.MainActivity">
+
+  <TextView
+    android:text="@string/main_explanation"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/textView" />
+
+  <EditText
+    android:id="@+id/main_textedit_num_columns"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:inputType="number"
+    android:ems="10"
+    android:layout_below="@+id/textView"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true" />
+
+  <EditText
+    android:id="@+id/main_textedit_total_num_participants"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:inputType="number"
+    android:ems="10"
+    android:layout_below="@+id/main_textedit_num_columns"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true" />
+
+  <Button
+    android:id="@+id/main_button_create_circle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/main_textedit_total_num_participants"
+    android:text="@string/main_button_create"
+    android:onClick="createCircle"/>
+
+</RelativeLayout>
