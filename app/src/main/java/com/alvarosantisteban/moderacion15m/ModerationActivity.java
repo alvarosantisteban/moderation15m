@@ -27,8 +27,8 @@ public class ModerationActivity extends Activity {
     List<Participant> mParticipants = new ArrayList<Participant>();
     Participant mCurrentParticipant;
 
-    int nNumColumns;
-    int nNumParticipants;
+    int mNumColumns;
+    int mNumParticipants;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +42,12 @@ public class ModerationActivity extends Activity {
 
         // Get the intent to obtain its extras
         Intent intentFromMain = getIntent();
-        nNumColumns = intentFromMain.getIntExtra(Constants.EXTRA_NUM_COLUMNS, 0);
-        nNumParticipants = intentFromMain.getIntExtra(Constants.EXTRA_NUM_PARTICIPANTS, 0);
+        mNumColumns = intentFromMain.getIntExtra(Constants.EXTRA_NUM_COLUMNS, 0);
+        mNumParticipants = intentFromMain.getIntExtra(Constants.EXTRA_NUM_PARTICIPANTS, 0);
 
-        int numRows = calculateNumOfRows(nNumColumns, nNumParticipants);
+        int numRows = calculateNumOfRows(mNumColumns, mNumParticipants);
 
-        buildTable(numRows, nNumColumns);
+        buildTable(numRows, mNumColumns);
     }
 
     /**
