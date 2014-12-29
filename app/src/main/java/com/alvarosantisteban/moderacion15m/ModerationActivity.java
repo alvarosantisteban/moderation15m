@@ -22,7 +22,7 @@ public class ModerationActivity extends Activity {
 
     private static final String TAG = "ModerationActivity";
 
-    TableLayout table_layout;
+    TableLayout tableLayoutOfParticipants;
 
     List<Participant> mParticipants = new ArrayList<Participant>();
     Participant mCurrentParticipant;
@@ -35,7 +35,7 @@ public class ModerationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moderation);
 
-        table_layout = (TableLayout) findViewById(R.id.participants_table);
+        tableLayoutOfParticipants = (TableLayout) findViewById(R.id.participants_table);
 
         // Create participants
         //createParticipantsList();
@@ -64,6 +64,12 @@ public class ModerationActivity extends Activity {
         return (numParticipants/2)-firstRowMiddleParticipants;
     }
 
+    /**
+     * Creates the table layout with the participants
+     *
+     * @param rows the number of rows of the table
+     * @param cols the number of columns of the table
+     */
     private void buildTable(int rows, int cols) {
         int numAddedParticipants = 0;
         // Create rows
@@ -96,7 +102,7 @@ public class ModerationActivity extends Activity {
                     row.addView(tv);
                 }
             }
-            table_layout.addView(row);
+            tableLayoutOfParticipants.addView(row);
         }
     }
 
