@@ -56,13 +56,16 @@ public class ModerationActivity extends Activity {
      *
      * @param numColumns the desired number of columns
      * @param numParticipants the desired number of participants
-     * @return the number of needed rows (right now hardcoded to 15)
+     * @return the number of needed rows
      */
     private int calculateNumOfRows(int numColumns, int numParticipants) {
-        return 15;
+        // By making it an integer, we ensure that it will be the right number
+        int firstRowMiddleParticipants = (numColumns-2)/2;
+        return (numParticipants/2)-firstRowMiddleParticipants;
     }
 
     private void buildTable(int rows, int cols) {
+        int numAddedParticipants = 0;
         // Create rows
         for (int i = 1; i <= rows; i++) {
             TableRow row = new TableRow(this);
@@ -70,7 +73,8 @@ public class ModerationActivity extends Activity {
                     TableRow.LayoutParams.WRAP_CONTENT));
             // Create columns
             for (int j = 1; j <= cols; j++) {
-                if (i == 1 || j == 1 || j == cols) {
+                // Add participant if first or last column or first row
+                if ((numAddedParticipants < mNumParticipants) && (i == 1 || j == 1 || j == cols)) {
                     TextView tv = new TextView(this);
                     tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                             TableRow.LayoutParams.WRAP_CONTENT));
@@ -79,6 +83,8 @@ public class ModerationActivity extends Activity {
                     tv.setText("R " + i + ", C" + j);
 
                     row.addView(tv);
+
+                    numAddedParticipants++;
                 } else{
 
                     TextView tv = new TextView(this);
