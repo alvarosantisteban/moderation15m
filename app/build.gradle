@@ -24,7 +24,7 @@ def buildTime() {
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.0.1"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "com.alvarosantisteban.moderacion15m"
