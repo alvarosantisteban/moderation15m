@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.alvarosantisteban.moderacion15m.model.Participant;
 import com.alvarosantisteban.moderacion15m.util.Constants;
+import com.alvarosantisteban.moderacion15m.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,38 +73,63 @@ public class ModerationActivity extends Activity {
      */
     private void buildTable(int rows, int cols) {
         int numAddedParticipants = 0;
+        int pixelSizeForRow = calculatePaddingBetweenRows(rows);
+
         // Create rows
         for (int i = 1; i <= rows; i++) {
             TableRow row = new TableRow(this);
             row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
+            //row.setBackgroundColor(Color.BLUE);
             // Create columns
             for (int j = 1; j <= cols; j++) {
                 // Add participant if first or last column or first row
+                TextView tv = new TextView(this);
+                tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                        TableRow.LayoutParams.WRAP_CONTENT));
+
+                tv.measure(0, 0);       //must call measure!
+                int textViewHeightSize = tv.getMeasuredHeight();  //get height
+                if(i>1) {
+                    tv.setPadding(Constants.PADDING_TABLE_SIDES, pixelSizeForRow - textViewHeightSize,
+                            Constants.PADDING_TABLE_SIDES, Constants.PADDING_TABLE_BOTTOM);
+                }else{
+                    tv.setPadding(Constants.PADDING_TABLE_SIDES, Constants.PADDING_TABLE_TOP,
+                            Constants.PADDING_TABLE_SIDES, Constants.PADDING_TABLE_BOTTOM);
+                }
+
+
                 if ((numAddedParticipants < mNumParticipants) && (i == 1 || j == 1 || j == cols)) {
-                    TextView tv = new TextView(this);
-                    tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                            TableRow.LayoutParams.WRAP_CONTENT));
-                    // tv.setBackgroundResource(R.drawable.cell_shape);
-                    tv.setPadding(5, 5, 5, 5);
+
                     tv.setText("R " + i + ", C" + j);
 
                     row.addView(tv);
 
                     numAddedParticipants++;
                 } else{
+                    tv.setText("");
 
-                    TextView tv = new TextView(this);
-                    tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                            TableRow.LayoutParams.WRAP_CONTENT));
-                    // tv.setBackgroundResource(R.drawable.cell_shape);
-                    tv.setPadding(5, 5, 5, 5);
-                    tv.setText("=");
                     row.addView(tv);
                 }
             }
             tableLayoutOfParticipants.addView(row);
         }
+    }
+
+    /**
+     * Calculates the padding between the rows of the table so all the space in the screen is taken (that means,
+     * the first row is at the top and the last row at the bottom).
+     *
+     * @param numRows the number of rows of the table
+     * @return the padding between the rows so all the space in the screen is taken
+     */
+    private int calculatePaddingBetweenRows(int numRows) {
+        int windowHeight = Utils.getWindowHeight(this);
+        windowHeight = windowHeight
+                -Utils.getActionBarHeight(this)
+                -Utils.getNavigationBarHeight(this)
+                -Utils.getStatusBarHeight(this);
+        return windowHeight/numRows;
     }
 
     private void createParticipantsList() {
