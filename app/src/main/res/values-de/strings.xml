@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Moderacion15M</string>
+  <string name="hello_world">Teilnehmer</string>
+  <string name="action_settings">Einstellungen</string>
+  <string name="title_activity_main">Einstellungen</string>
+  <string name="main_explanation">Wählen Sie der Anzahl der Spalten und die Gesamtzahl der Teilnehmer</string>
+  <string name="main_button_create">Kreis Erstellung</string>
+</resources>
