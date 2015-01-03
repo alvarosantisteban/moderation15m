@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">Moderacion15M</string>
-    <string name="hello_world">Participante</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_main">Configuration</string>
-  <string name="main_explanation">Select the number of columns and the total number of persons</string>
+  <string name="app_name">Moderacion15M</string>
+  <string name="hello_world">Participant</string>
+  <string name="action_settings">Settings</string>
+  <string name="title_activity_main">Configuration</string>
+  <string name="main_explanation">Choose the number of columns and the total number of participants</string>
   <string name="main_button_create">Create circle</string>
 
 </resources>
