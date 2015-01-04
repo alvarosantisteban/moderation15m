@@ -12,8 +12,8 @@ public final class Constants {
     public static final String EXTRA_NUM_PARTICIPANTS = "ExtraNumParticipants";
 
     // PADDING
-    public static final int PADDING_TABLE_TOP = 20;
-    public static final int PADDING_TABLE_BOTTOM = 0;
-    public static final int PADDING_TABLE_SIDES = 5;
+    public static final int MARGIN_TABLE_TOP = 20;
+    public static final int MARGIN_TABLE_BOTTOM = 5;
+    public static final int MARGIN_TABLE_SIDES = 0;
 
 }

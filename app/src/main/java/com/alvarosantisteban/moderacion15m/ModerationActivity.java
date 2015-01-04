@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import com.alvarosantisteban.moderacion15m.model.Participant;
 import com.alvarosantisteban.moderacion15m.util.Constants;
@@ -22,6 +24,8 @@ import java.util.List;
 public class ModerationActivity extends Activity {
 
     private static final String TAG = "ModerationActivity";
+    public static final int SUBSTRACT_FOR_ROW_SIZE = 10;
+    public static final int HEIGHT_MARGIN_FOR_SCREEN = 40;
 
     TableLayout tableLayoutOfParticipants;
 
@@ -60,9 +64,27 @@ public class ModerationActivity extends Activity {
      * @return the number of needed rows
      */
     private int calculateNumOfRows(int numColumns, int numParticipants) {
+        //int extraRow = 0;
+        int extraRow = addExtraRow(numColumns, numParticipants);
+
         // By making it an integer, we ensure that it will be the right number
-        int firstRowMiddleParticipants = (numColumns-2)/2;
-        return (numParticipants/2)-firstRowMiddleParticipants;
+        int firstRowMiddleParticipants = numColumns-2;
+        return ((numParticipants - firstRowMiddleParticipants)/2) + extraRow;
+    }
+
+    /**
+     * Checks if the adding of the two parameters produces an odd number, in which case a extra row is needed
+     *
+     * @param numColumns
+     * @param numParticipants
+     * @return 1 if a row must be added, 0 otherwise
+     */
+    private int addExtraRow(int numColumns, int numParticipants){
+        // Check if the adding of the two parameters produces an odd number
+        if (Utils.isOdd(numColumns + numParticipants)){
+            return 1;
+        }
+        return 0;
     }
 
     /**
@@ -78,41 +100,50 @@ public class ModerationActivity extends Activity {
         // Create rows
         for (int i = 1; i <= rows; i++) {
             TableRow row = new TableRow(this);
-            row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT));
-            //row.setBackgroundColor(Color.BLUE);
+            row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT));
+
             // Create columns
             for (int j = 1; j <= cols; j++) {
-                // Add participant if first or last column or first row
-                TextView tv = new TextView(this);
-                tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                        TableRow.LayoutParams.WRAP_CONTENT));
 
-                tv.measure(0, 0);       //must call measure!
-                int textViewHeightSize = tv.getMeasuredHeight();  //get height
-                if(i>1) {
-                    tv.setPadding(Constants.PADDING_TABLE_SIDES, pixelSizeForRow - textViewHeightSize,
-                            Constants.PADDING_TABLE_SIDES, Constants.PADDING_TABLE_BOTTOM);
-                }else{
-                    tv.setPadding(Constants.PADDING_TABLE_SIDES, Constants.PADDING_TABLE_TOP,
-                            Constants.PADDING_TABLE_SIDES, Constants.PADDING_TABLE_BOTTOM);
+                // Create the imageview and set its size
+                final ImageView participantImage = new ImageView(this);
+                participantImage.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                        pixelSizeForRow - SUBSTRACT_FOR_ROW_SIZE));
+
+                // Set the margins
+                if (i > 1) {
+                    setMargins(participantImage, Constants.MARGIN_TABLE_SIDES, Constants.MARGIN_TABLE_BOTTOM,
+                            Constants.MARGIN_TABLE_SIDES, Constants.MARGIN_TABLE_BOTTOM);
+                } else {
+                    setMargins(participantImage, Constants.MARGIN_TABLE_SIDES, Constants.MARGIN_TABLE_BOTTOM,
+                            Constants.MARGIN_TABLE_SIDES, Constants.MARGIN_TABLE_BOTTOM);
                 }
 
-
+                // Add participant if first or last column or first row
                 if ((numAddedParticipants < mNumParticipants) && (i == 1 || j == 1 || j == cols)) {
+                    // Set the image
+                    participantImage.setImageResource(R.drawable.btn_anonymous_participant);
 
-                    tv.setText("R " + i + ", C" + j);
-
-                    row.addView(tv);
+                    // Add the image to the row
+                    row.addView(participantImage);
 
                     numAddedParticipants++;
-                } else{
-                    tv.setText("");
-
-                    row.addView(tv);
+                } else {
+                    // Add an empty image to the row
+                    row.addView(participantImage);
                 }
             }
+            // Add the row to the table
             tableLayoutOfParticipants.addView(row);
+        }
+    }
+
+    public static void setMargins(View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
         }
     }
 
@@ -125,10 +156,13 @@ public class ModerationActivity extends Activity {
      */
     private int calculatePaddingBetweenRows(int numRows) {
         int windowHeight = Utils.getWindowHeight(this);
+        //TODO Control if the navigation bar is at the bottom
+        //TODO Change the 40
         windowHeight = windowHeight
                 -Utils.getActionBarHeight(this)
                 -Utils.getNavigationBarHeight(this)
-                -Utils.getStatusBarHeight(this);
+                -Utils.getStatusBarHeight(this)
+                - HEIGHT_MARGIN_FOR_SCREEN;
         return windowHeight/numRows;
     }
 

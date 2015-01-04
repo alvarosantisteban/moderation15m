@@ -120,4 +120,17 @@ public class Utils {
         }
         return 0;
     }
+
+    /**
+     * Checks if the integer is an odd or an even number
+     *
+     * @param i the integer to be checked
+     * @return true if the integer is odd, false if it is even
+     */
+    public static boolean isOdd(int i){
+        if((i & 1) == 0){
+            return false;
+        }
+        return true;
+    }
 }
