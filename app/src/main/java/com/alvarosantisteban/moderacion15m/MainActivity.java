@@ -3,17 +3,22 @@ package com.alvarosantisteban.moderacion15m;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.alvarosantisteban.moderacion15m.util.Constants;
 
 /**
+ * This activity is where the moderator can configure the moderation; set the number of columns, number of participants.
  * @author Alvaro Santisteban 17.12.14 - alvarosantisteban@gmail.com
  */
 public class MainActivity extends Activity {
+
+    private static final String TAG = "MainActivity";
 
     EditText mEditTextColumns;
     EditText mEditTextTotal;
@@ -26,6 +31,67 @@ public class MainActivity extends Activity {
         mEditTextColumns = (EditText)findViewById(R.id.main_textedit_num_columns);
         mEditTextTotal = (EditText) findViewById(R.id.main_textedit_total_num_participants);
     }
+
+    /**
+     * Gets the parameters from the EditTexts and if they are valid, goes to the ModerationActivity.
+     * @param v the clicked View
+     */
+    public void createCircle(View v) {
+        int numColumns = getIntFromEditText(mEditTextColumns);
+        int numParticipants = getIntFromEditText(mEditTextTotal);
+
+        if (areParamsCorrect(numColumns, numParticipants)){
+            // Create the intent
+            Intent goToModerationIntent = new Intent(this, ModerationActivity.class);
+
+            // Put the extras
+            goToModerationIntent.putExtra(Constants.EXTRA_NUM_COLUMNS, numColumns);
+            goToModerationIntent.putExtra(Constants.EXTRA_NUM_PARTICIPANTS, numParticipants);
+
+            // Go to the moderation activity
+            startActivity(goToModerationIntent);
+        } else{
+            Toast.makeText(this, getString(R.string.main_activity_incorrect_params), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Returns the int from the EditText or -1 if there was a NumberFormatException
+     *
+     * @param theEditText the EditText with the int
+     * @return the int contained in the EditText or -1 if there was a NumberFormatException
+     */
+    private int getIntFromEditText(EditText theEditText) throws NumberFormatException{
+        try {
+            return Integer.parseInt(theEditText.getText().toString());
+        } catch (NumberFormatException exception) {
+            Log.e(TAG, "Problem with the parameter: " + theEditText.getText().toString());
+            exception.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
+     *
+     * Checks the validity of the parameters.
+     * The parameters are considered correct if:
+     *  - There are at least two columns
+     *  - The number of participants is at least equal to the number of columns
+     *
+     * @param numColumns the number of columns
+     * @param numParticipants the number of participants
+     * @return true if the params are correct, false otherwise.
+     */
+    private boolean areParamsCorrect(int numColumns, int numParticipants) {
+        if (numColumns >= 2 && numParticipants >= numColumns){
+            return true;
+        }
+        return false;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // MENU RELATED
+    ////////////////////////////////////////////////////////////////
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -47,41 +113,5 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void createCircle(View v){
-        int numColums = getIntFromEditText(mEditTextColumns);
-        int numParticipants = getIntFromEditText(mEditTextTotal);
-        if (areParamsCorrect(numColums, numParticipants)){
-            // Create the intent
-            Intent goToModerationIntent = new Intent(this, ModerationActivity.class);
-
-            // Put the extras
-            goToModerationIntent.putExtra(Constants.EXTRA_NUM_COLUMNS, numColums);
-            goToModerationIntent.putExtra(Constants.EXTRA_NUM_PARTICIPANTS, numParticipants);
-
-            // Go to the moderation activity
-            startActivity(goToModerationIntent);
-        }
-    }
-
-    /**
-     * Returns the int from the EditText
-     *
-     * @param theEditText
-     * @return
-     */
-    private int getIntFromEditText(EditText theEditText) {
-        return Integer.parseInt(theEditText.getText().toString());
-    }
-
-    /**
-     * The parameters are considered correct if none of them are zero
-     */
-    private boolean areParamsCorrect(int numColums, int numParticipants) {
-        if (numColums != 0 && numParticipants != 0){
-            return true;
-        }
-        return false;
     }
 }
