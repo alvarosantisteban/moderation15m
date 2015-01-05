@@ -1,6 +1,8 @@
 package com.alvarosantisteban.moderacion15m.util;
 
 /**
+ * Constants used all over the program
+ *
  * @author Alvaro Santisteban 13.11.14 - alvarosantisteban@gmail.com
  */
 public final class Constants {

@@ -24,6 +24,7 @@ import java.util.List;
 public class ModerationActivity extends Activity {
 
     private static final String TAG = "ModerationActivity";
+
     public static final int SUBSTRACT_FOR_ROW_SIZE = 10;
     public static final int HEIGHT_MARGIN_FOR_SCREEN = 40;
 
@@ -197,7 +198,7 @@ public class ModerationActivity extends Activity {
     }  */
 
     ///////////////////////////////////////////////////////////
-    // MENU
+    // MENU RELATED
     ///////////////////////////////////////////////////////////
 
     @Override

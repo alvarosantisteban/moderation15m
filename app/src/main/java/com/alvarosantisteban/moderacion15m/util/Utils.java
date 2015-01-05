@@ -12,6 +12,8 @@ import android.view.WindowManager;
 import java.lang.reflect.Method;
 
 /**
+ * Set of static methods used along the program.
+ *
  * @author Alvaro Santisteban Dieguez 30/12/14 - alvarosantisteban@gmail.com
  */
 public class Utils {
