@@ -126,6 +126,9 @@ public class ModerationActivity extends Activity {
                     // Set the image
                     participantImage.setImageResource(R.drawable.btn_anonymous_participant);
 
+                    // Create and add the participant to the list
+                    mParticipants.add(createFakeParticipant(numAddedParticipants));
+
                     // Add the image to the row
                     row.addView(participantImage);
 
@@ -174,7 +177,7 @@ public class ModerationActivity extends Activity {
     }
 
     private Participant createFakeParticipant(int num) {
-        return new Participant(String.valueOf(num), 0, num*2, num*1, true);
+        return new Participant(String.valueOf(num), 0, num * 2, num * 1, true);
     }
 
     /*
