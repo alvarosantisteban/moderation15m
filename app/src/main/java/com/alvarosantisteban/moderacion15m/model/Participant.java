@@ -7,21 +7,17 @@ import android.text.format.Time;
  */
 public class Participant {
 
-    private final String name;
-    private final int currentIntervention;
-    private final int total;
-    private final int totalToday;
     String mName;
     Time mCurrentIntervention;
     Time mTotalInterventions;
     Time mTotalInterventionsToday;
     boolean mIsWoman;
 
-    public Participant(String name, int currentIntervention, int total, int totalToday, boolean isWoman) {
-        this.name = name;
-        this.currentIntervention = currentIntervention;
-        this.total = total;
-        this.totalToday = totalToday;
+    public Participant(String name, Time currentIntervention, Time total, Time totalToday, boolean isWoman) {
+        this.mName = name;
+        this.mCurrentIntervention = currentIntervention;
+        this.mTotalInterventions = total;
+        this.mTotalInterventionsToday = totalToday;
         this.mIsWoman = isWoman;
     }
 
