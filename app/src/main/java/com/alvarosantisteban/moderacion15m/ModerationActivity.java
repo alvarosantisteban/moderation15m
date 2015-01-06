@@ -1,6 +1,7 @@
 package com.alvarosantisteban.moderacion15m;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Toast;
 
 import com.alvarosantisteban.moderacion15m.model.Participant;
 import com.alvarosantisteban.moderacion15m.util.Constants;
@@ -35,16 +37,30 @@ public class ModerationActivity extends Activity {
 
     int mNumColumns;
     int mNumParticipants;
+    private Context context;
+
+    private View.OnClickListener mOnParticipantClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(context, "Tocado", Toast.LENGTH_SHORT).show();
+        }
+    };
+    private View.OnLongClickListener mOnParticipantLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            Toast.makeText(context, "Tocado y hundido!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moderation);
 
-        tableLayoutOfParticipants = (TableLayout) findViewById(R.id.participants_table);
+        context = this;
 
-        // Create participants
-        //createParticipantsList();
+        tableLayoutOfParticipants = (TableLayout) findViewById(R.id.participants_table);
 
         // Get the intent to obtain its extras
         Intent intentFromMain = getIntent();
@@ -125,6 +141,11 @@ public class ModerationActivity extends Activity {
                 if ((numAddedParticipants < mNumParticipants) && (i == 1 || j == 1 || j == cols)) {
                     // Set the image
                     participantImage.setImageResource(R.drawable.btn_anonymous_participant);
+
+                    // Set the click listener
+                    participantImage.setOnClickListener(mOnParticipantClickListener);
+                    // Set the long click listener
+                    participantImage.setOnLongClickListener(mOnParticipantLongClickListener);
 
                     // Create and add the participant to the list
                     mParticipants.add(createFakeParticipant(numAddedParticipants));
