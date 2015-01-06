@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,7 +43,8 @@ public class ModerationActivity extends Activity {
     private View.OnClickListener mOnParticipantClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(context, "Tocado", Toast.LENGTH_SHORT).show();
+            Participant participant = mParticipants.get((int)v.getTag());
+            Toast.makeText(context, "Tocado el participante numero " + participant.getmName(), Toast.LENGTH_SHORT).show();
         }
     };
     private View.OnLongClickListener mOnParticipantLongClickListener = new View.OnLongClickListener() {
@@ -141,6 +143,7 @@ public class ModerationActivity extends Activity {
                 if ((numAddedParticipants < mNumParticipants) && (i == 1 || j == 1 || j == cols)) {
                     // Set the image
                     participantImage.setImageResource(R.drawable.btn_anonymous_participant);
+                    participantImage.setTag(numAddedParticipants);
 
                     // Set the click listener
                     participantImage.setOnClickListener(mOnParticipantClickListener);
@@ -191,14 +194,8 @@ public class ModerationActivity extends Activity {
         return windowHeight/numRows;
     }
 
-    private void createParticipantsList() {
-        for (int i=0; i < Constants.NUM_PARTICIPANTS; i++){
-            mParticipants.add(createFakeParticipant(i));
-        }
-    }
-
     private Participant createFakeParticipant(int num) {
-        return new Participant(String.valueOf(num), 0, num * 2, num * 1, true);
+        return new Participant(String.valueOf(num), new Time(), new Time(), new Time(), true);
     }
 
     /*
