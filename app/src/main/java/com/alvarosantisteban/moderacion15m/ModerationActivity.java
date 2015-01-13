@@ -29,7 +29,8 @@ public class ModerationActivity extends Activity {
     private static final String TAG = "ModerationActivity";
 
     public static final int SUBSTRACT_FOR_ROW_SIZE = 10;
-    public static final int HEIGHT_MARGIN_FOR_SCREEN = 40;
+    // The top margin defined in the layout of the table
+    public static final int TOP_MARGIN_OF_TABLE = 10;
 
     TableLayout tableLayoutOfParticipants;
 
@@ -185,12 +186,12 @@ public class ModerationActivity extends Activity {
     private int calculatePaddingBetweenRows(int numRows) {
         int windowHeight = Utils.getWindowHeight(this);
         //TODO Control if the navigation bar is at the bottom
-        //TODO Change the 40
         windowHeight = windowHeight
                 -Utils.getActionBarHeight(this)
                 -Utils.getNavigationBarHeight(this)
                 -Utils.getStatusBarHeight(this)
-                - HEIGHT_MARGIN_FOR_SCREEN;
+                -TOP_MARGIN_OF_TABLE;
+
         return windowHeight/numRows;
     }
 
