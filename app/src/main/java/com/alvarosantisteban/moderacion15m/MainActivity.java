@@ -13,12 +13,15 @@ import android.widget.Toast;
 import com.alvarosantisteban.moderacion15m.util.Constants;
 
 /**
- * This activity is where the moderator can configure the moderation; set the number of columns, number of participants.
+ * This activity allows the moderator to configure the moderation; set the number of columns, number of participants.
  * @author Alvaro Santisteban 17.12.14 - alvarosantisteban@gmail.com
  */
 public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
+
+    // Minimum number of accepted columns
+    public static final int MIN_NUM_COLUMNS = 2;
 
     EditText mEditTextColumns;
     EditText mEditTextTotal;
@@ -83,7 +86,7 @@ public class MainActivity extends Activity {
      * @return true if the params are correct, false otherwise.
      */
     private boolean areParamsCorrect(int numColumns, int numParticipants) {
-        if (numColumns >= 2 && numParticipants >= numColumns){
+        if (numColumns >= MIN_NUM_COLUMNS && numParticipants >= numColumns){
             return true;
         }
         return false;
