@@ -3,8 +3,9 @@
     android:id="@+id/participants_table"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:paddingTop="@dimen/moderation_paddingTop"
     android:shrinkColumns="*"
     android:stretchColumns="*"
-    tools:context=".ModerationActivity">
+    tools:context=".ModerationActivity"
+    tools:background="@color/material_deep_teal_200">
 </TableLayout>
