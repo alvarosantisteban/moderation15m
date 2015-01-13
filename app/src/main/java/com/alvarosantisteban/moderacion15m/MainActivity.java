@@ -1,12 +1,14 @@
 package com.alvarosantisteban.moderacion15m;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -90,6 +92,23 @@ public class MainActivity extends Activity {
             return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        // Make the softkeyboard appear and focuss it on the columns EditText
+        mEditTextColumns.requestFocus();
+        mEditTextColumns.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                InputMethodManager keyboard = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                keyboard.showSoftInput(mEditTextColumns, 0);
+            }
+        }, 200);
     }
 
     ////////////////////////////////////////////////////////////////
