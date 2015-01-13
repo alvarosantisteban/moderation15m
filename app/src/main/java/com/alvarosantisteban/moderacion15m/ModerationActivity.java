@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This activity allows the moderator to interact with the table of participants created.
  * @author Alvaro Santisteban 13.11.14 - alvarosantisteban@gmail.com
  */
 public class ModerationActivity extends Activity {
@@ -33,15 +34,21 @@ public class ModerationActivity extends Activity {
     // The top margin defined in the layout of the table
     public static final int TOP_MARGIN_OF_TABLE = 10;
 
+    // The table layout with the views of the participants
     TableLayout tableLayoutOfParticipants;
 
+    // The list of participants
     List<Participant> mParticipants = new ArrayList<Participant>();
+    // The participant currently talking
     Participant mCurrentParticipant;
 
     int mNumColumns;
     int mNumParticipants;
     private Context context;
 
+    /**
+     * TODO Adds a Participant in the waiting list or gives the turn to the participant
+     */
     private View.OnClickListener mOnParticipantClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -49,6 +56,9 @@ public class ModerationActivity extends Activity {
             Toast.makeText(context, "Tocado el participante numero " + participant.getmName(), Toast.LENGTH_SHORT).show();
         }
     };
+    /**
+     * TODO Removes a participant of the waiting list or shows its statistics.
+     */
     private View.OnLongClickListener mOnParticipantLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
@@ -71,8 +81,10 @@ public class ModerationActivity extends Activity {
         mNumColumns = intentFromMain.getIntExtra(Constants.EXTRA_NUM_COLUMNS, 0);
         mNumParticipants = intentFromMain.getIntExtra(Constants.EXTRA_NUM_PARTICIPANTS, 0);
 
+        // Calculate the number of needed rows
         int numRows = calculateNumOfRows(mNumColumns, mNumParticipants);
 
+        // Build the table tableLayoutOfParticipants
         buildTable(numRows, mNumColumns);
     }
 
@@ -85,7 +97,6 @@ public class ModerationActivity extends Activity {
      * @return the number of needed rows
      */
     private int calculateNumOfRows(int numColumns, int numParticipants) {
-        //int extraRow = 0;
         int extraRow = addExtraRow(numColumns, numParticipants);
 
         // By making it an integer, we ensure that it will be the right number
@@ -96,13 +107,14 @@ public class ModerationActivity extends Activity {
     /**
      * Checks if the adding of the two parameters produces an odd number, in which case a extra row is needed
      *
-     * @param numColumns
-     * @param numParticipants
+     * @param numColumns the number of columns of the table
+     * @param numParticipants the number of participants in the table
      * @return 1 if a row must be added, 0 otherwise
      */
     private int addExtraRow(int numColumns, int numParticipants){
         // Check if the adding of the two parameters produces an odd number
         if (Utils.isOdd(numColumns + numParticipants)){
+            // If so, needs an extra row
             return 1;
         }
         return 0;
@@ -127,7 +139,7 @@ public class ModerationActivity extends Activity {
             // Create columns
             for (int j = 1; j <= cols; j++) {
 
-                // Create the imageview and set its size
+                // Create the ImageView that represents a Participant and set its size
                 final ImageView participantImage = new ImageView(this);
                 participantImage.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                         pixelSizeForRow - SUBTRACT_TO_ROW_SIZE));
@@ -136,10 +148,12 @@ public class ModerationActivity extends Activity {
                 setMargins(participantImage, Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM,
                         Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM);
 
-                // Add participant if first or last column or first row
+                // Add participant if is the first or last column or is the first row
                 if ((numAddedParticipants < mNumParticipants) && (i == 1 || j == 1 || j == cols)) {
-                    // Set the image
+
+                    // Set the image in the ImageView
                     participantImage.setImageResource(R.drawable.btn_anonymous_participant);
+                    // Set its position in the list as tag, so it can be found afterwards
                     participantImage.setTag(numAddedParticipants);
 
                     // Set the click listener
@@ -147,10 +161,10 @@ public class ModerationActivity extends Activity {
                     // Set the long click listener
                     participantImage.setOnLongClickListener(mOnParticipantLongClickListener);
 
-                    // Create and add the participant to the list
+                    // Create and add the participant to the List
                     mParticipants.add(createFakeParticipant(numAddedParticipants));
 
-                    // Add the image to the row
+                    // Add the ImageView to the Row
                     row.addView(participantImage);
 
                     numAddedParticipants++;
@@ -164,10 +178,19 @@ public class ModerationActivity extends Activity {
         }
     }
 
-    public static void setMargins(View v, int l, int t, int r, int b) {
+    /**
+     * Sets the margins of the View passed as parameter, in pixels.
+     *
+     * @param v the view whose margins are gonna be set
+     * @param left the left margin size
+     * @param top the top margin size
+     * @param right  the right margin size
+     * @param bottom the bottom margin size
+     */
+    public static void setMargins(View v, int left, int top, int right, int bottom) {
         if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            p.setMargins(l, t, r, b);
+            p.setMargins(left, top, right, bottom);
             v.requestLayout();
         }
     }
@@ -180,8 +203,12 @@ public class ModerationActivity extends Activity {
      * @return the padding between the rows so all the space in the screen is taken
      */
     private int calculatePaddingBetweenRows(int numRows) {
+        // Get the height of the window
         int windowHeight = Utils.getWindowHeight(this);
-        //TODO Control if the navigation bar is at the bottom
+
+        //TODO Control if the navigation bar is at the right side, instead of the bottom
+
+        // Subtract to the windows height the different bars
         windowHeight = windowHeight
                 -Utils.getActionBarHeight(this)
                 -Utils.getNavigationBarHeight(this)
@@ -191,6 +218,13 @@ public class ModerationActivity extends Activity {
         return windowHeight/numRows;
     }
 
+    /**
+     * Creates a Participant whose name is its position in the list of participants mParticipants converted to String
+     * and the different time statistics the current time.
+     *
+     * @param num the position of the Participant in the list of participants
+     * @return the created Participant
+     */
     private Participant createFakeParticipant(int num) {
         return new Participant(String.valueOf(num), new Time(), new Time(), new Time(), true);
     }
