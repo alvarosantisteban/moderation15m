@@ -28,7 +28,8 @@ public class ModerationActivity extends Activity {
 
     private static final String TAG = "ModerationActivity";
 
-    public static final int SUBSTRACT_FOR_ROW_SIZE = 10;
+    // The pixels that are subtracted to the size of a row so the image in it looks fine
+    public static final int SUBTRACT_TO_ROW_SIZE = 10;
     // The top margin defined in the layout of the table
     public static final int TOP_MARGIN_OF_TABLE = 10;
 
@@ -129,7 +130,7 @@ public class ModerationActivity extends Activity {
                 // Create the imageview and set its size
                 final ImageView participantImage = new ImageView(this);
                 participantImage.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                        pixelSizeForRow - SUBSTRACT_FOR_ROW_SIZE));
+                        pixelSizeForRow - SUBTRACT_TO_ROW_SIZE));
 
                 // Set the margins
                 if (i > 1) {
