@@ -132,14 +132,9 @@ public class ModerationActivity extends Activity {
                 participantImage.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                         pixelSizeForRow - SUBTRACT_TO_ROW_SIZE));
 
-                // Set the margins
-                if (i > 1) {
-                    setMargins(participantImage, Constants.MARGIN_TABLE_SIDES, Constants.MARGIN_TABLE_BOTTOM,
-                            Constants.MARGIN_TABLE_SIDES, Constants.MARGIN_TABLE_BOTTOM);
-                } else {
-                    setMargins(participantImage, Constants.MARGIN_TABLE_SIDES, Constants.MARGIN_TABLE_BOTTOM,
-                            Constants.MARGIN_TABLE_SIDES, Constants.MARGIN_TABLE_BOTTOM);
-                }
+                // Set the margins of the ImageView
+                setMargins(participantImage, Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM,
+                        Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM);
 
                 // Add participant if first or last column or first row
                 if ((numAddedParticipants < mNumParticipants) && (i == 1 || j == 1 || j == cols)) {
