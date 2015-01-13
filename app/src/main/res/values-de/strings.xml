@@ -5,5 +5,7 @@
   <string name="action_settings">Einstellungen</string>
   <string name="title_activity_main">Einstellungen</string>
   <string name="main_explanation">Wählen Sie der Anzahl der Spalten und die Gesamtzahl der Teilnehmer</string>
+  <string name="main_num_columns">Anzahl der Spalten</string>
+  <string name="main_num_participants">Anzahl der Teilnehmer</string>
   <string name="main_button_create">Kreis Erstellung</string>
 </resources>

@@ -3,7 +3,9 @@
   <string name="app_name">Moderacion15M</string>
   <string name="hello_world">Participante</string>
   <string name="action_settings">Ajustes</string>
-  <string name="title_activity_main">Configuracion</string>
-  <string name="main_explanation">Escoge el numero de columnas y el numero total de participantes</string>
-  <string name="main_button_create">Crear circulo</string>
+  <string name="title_activity_main">Configuración</string>
+  <string name="main_explanation">Escoge el número de columnas y el número total de participantes</string>
+  <string name="main_num_columns">Número de columnas</string>
+  <string name="main_num_participants">Número de participantes</string>
+  <string name="main_button_create">Crear círculo</string>
 </resources>

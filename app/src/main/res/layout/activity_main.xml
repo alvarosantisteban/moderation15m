@@ -15,15 +15,35 @@
     android:layout_height="wrap_content"
     android:id="@+id/textView" />
 
+  <TextView
+    android:text="@string/main_num_columns"
+    android:textStyle="bold"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/main_paddingTop_configuration"
+    android:layout_below="@+id/textView"
+    android:layout_alignLeft="@+id/main_textedit_num_columns"
+    android:id="@+id/main_num_columns" />
+
   <EditText
     android:id="@+id/main_textedit_num_columns"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:inputType="number"
+    android:layout_below="@+id/main_num_columns"
     android:ems="10"
-    android:layout_below="@+id/textView"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true" />
+
+  <TextView
+    android:text="@string/main_num_participants"
+    android:textStyle="bold"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/main_paddingTop_between_elements"
+    android:layout_below="@+id/main_textedit_num_columns"
+    android:layout_alignLeft="@+id/main_textedit_total_num_participants"
+    android:id="@+id/main_num_participants" />
 
   <EditText
     android:id="@+id/main_textedit_total_num_participants"
@@ -31,7 +51,7 @@
     android:layout_height="wrap_content"
     android:inputType="number"
     android:ems="10"
-    android:layout_below="@+id/main_textedit_num_columns"
+    android:layout_below="@+id/main_num_participants"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true" />
 
@@ -39,6 +59,7 @@
     android:id="@+id/main_button_create_circle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:paddingTop="@dimen/main_paddingTop_between_elements"
     android:layout_below="@+id/main_textedit_total_num_participants"
     android:text="@string/main_button_create"
     android:onClick="createCircle"/>

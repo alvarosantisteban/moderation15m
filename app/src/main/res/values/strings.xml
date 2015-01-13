@@ -3,8 +3,12 @@
   <string name="app_name">Moderacion15M</string>
   <string name="hello_world">Participant</string>
   <string name="action_settings">Settings</string>
+
+  <!--> Main Activity <!-->
   <string name="title_activity_main">Configuration</string>
   <string name="main_explanation">Choose the number of columns and the total number of participants</string>
+  <string name="main_num_columns">Number of columns</string>
+  <string name="main_num_participants">Number of participants</string>
   <string name="main_button_create">Create circle</string>
   <string name="main_activity_incorrect_params">The circle could not be created because the parameters are incorrect</string>
 
