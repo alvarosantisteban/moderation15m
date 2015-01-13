@@ -30,8 +30,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:inputType="number"
+    android:ems="@integer/main_editText_number_size"
     android:layout_below="@+id/main_num_columns"
-    android:ems="10"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true" />
 
@@ -50,7 +50,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:inputType="number"
-    android:ems="10"
+    android:ems="@integer/main_editText_number_size"
     android:layout_below="@+id/main_num_participants"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true" />
