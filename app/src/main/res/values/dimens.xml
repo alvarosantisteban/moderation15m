@@ -9,6 +9,6 @@
     <dimen name="main_paddingTop_between_elements">10dp</dimen>
 
   <!-- Moderation activity -->
-  <dimen name="moderation_paddingTop">10dp</dimen>
+  <dimen name="moderation_marginTop">10dp</dimen>
 
 </resources>
