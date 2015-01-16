@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,30 +43,14 @@ public class ModerationActivity extends Activity {
     // The participant currently talking
     Participant mCurrentParticipant;
 
+    // The waiting list of Participants identified by their ids
+    List<Integer> mWaitingList = new ArrayList<Integer>();
+
+    private Handler mHandler = new Handler();
+
     int mNumColumns;
     int mNumParticipants;
     private Context context;
-
-    /**
-     * TODO Adds a Participant in the waiting list or gives the turn to the participant
-     */
-    private View.OnClickListener mOnParticipantClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Participant participant = mParticipants.get((int)v.getTag());
-            Toast.makeText(context, "Tocado el participante numero " + participant.getmName(), Toast.LENGTH_SHORT).show();
-        }
-    };
-    /**
-     * TODO Removes a participant of the waiting list or shows its statistics.
-     */
-    private View.OnLongClickListener mOnParticipantLongClickListener = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            Toast.makeText(context, "Tocado y hundido!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,25 +214,129 @@ public class ModerationActivity extends Activity {
         return new Participant(String.valueOf(num), new Time(), new Time(), new Time(), true);
     }
 
-    /*
-    public void startTimer(View v){
-        String message;
-        switch(v.getId()){
-            case R.id.button_topLeft:
-                message = "Soy el boton de arriba a la izq";
-                break;
-            case R.id.button_topCenter:
-                message = "Soy el boton de arriba en el centro";
-                break;
-            case R.id.button_topRight:
-                message = "Soy el boton de arriba a la derecha";
-                break;
-            default:
-                message = "Otro";
-        }
+    private void startTimer(){
+        // check the documentation of android to see the best way possible, not java
+    }
 
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }  */
+    ///////////////////////////////////////////////////////////
+    // ON CLICK LISTENERS AND RELATED METHODS
+    ///////////////////////////////////////////////////////////
+
+    /**
+     * Give the turn to a participant or puts their in the waiting list
+     */
+    private View.OnClickListener mOnParticipantClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Participant clickedParticipant = mParticipants.get((int) v.getTag());
+            String clickParticipantID = clickedParticipant.getmName();
+
+            // No one is talking
+            if (mCurrentParticipant == null) {
+                if (isTheWaitingListEmpty()) {
+                    assignSpeakingTurn(clickedParticipant);
+                } else {
+                    if (!isTheParticipantIdInTheWaitingList(clickParticipantID)) {
+                        putInWaitingList(clickedParticipant);
+                    }
+                }
+            } else { // Someone talks
+                if (isTheParticipantTalking(clickParticipantID)) { // Clicked on talking person
+                    // TODO Show statistics
+                } else { // clicked on someone else
+                    if (!isTheParticipantIdInTheWaitingList(clickParticipantID)) {
+                        putInWaitingList(clickedParticipant);
+                    }
+                }
+            }
+        }
+    };
+
+    /**
+     * Takes the turn from the speaking Participant or removes it from the waiting list
+     */
+    private View.OnLongClickListener mOnParticipantLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            Participant clickedParticipant = mParticipants.get((int) v.getTag());
+            String clickParticipantID = clickedParticipant.getmName();
+
+            if (isTheParticipantTalking(clickParticipantID)) { // Clicked on talking person
+                participantFinishedHerIntervention();
+            } else {
+                if (isTheParticipantIdInTheWaitingList(clickParticipantID)) {
+                    removeFromWaitingList(clickedParticipant);
+                }
+            }
+            return true;
+        }
+    };
+
+    /**
+     * The runnable that that is called when the time for the speaker is up.
+     */
+    private Runnable mUpdateTimeTask = new Runnable() {
+        public void run() {
+            Toast.makeText(context, "Han pasado los 6 segundos de la intervencion", Toast.LENGTH_SHORT).show();
+            mCurrentParticipant = null;
+        }
+    };
+
+    /**
+     * Gives the turn to the participant passed by parameter and starts the timer
+     *
+     * @param participant the participant that will receive the speaking turn
+     */
+    private void assignSpeakingTurn(Participant participant) {
+        mCurrentParticipant = participant;
+        Toast.makeText(context, "Asignado el turno de palabra a la participante numero " + mCurrentParticipant.getmName(), Toast.LENGTH_SHORT).show();
+        startTimer();
+        mHandler.removeCallbacks(mUpdateTimeTask);
+        mHandler.postDelayed(mUpdateTimeTask, 6000);
+    }
+
+    /**
+     * The current participant finishes her intervention and therefore the timer is removed and the turn given to the
+     * first person in the waiting list
+     */
+    private void participantFinishedHerIntervention() {
+        //stopTimer();
+        mHandler.removeCallbacks(mUpdateTimeTask);
+        Toast.makeText(context, "La participante numero " + mCurrentParticipant.getmName() + " ha terminado su intervencion", Toast.LENGTH_SHORT).show();
+        mCurrentParticipant = null;
+        //giveTurnToNextParticipant();
+    }
+
+    /**
+     * TODO Puts the participant in the waiting list
+     *
+     * @param participant the Participant to be put in the waiting list
+     */
+    private void putInWaitingList(Participant participant) {
+    }
+
+    /**
+     * TODO Removes the participant from the waiting list
+     *
+     * @param participant the Participant to be removed from the waiting list
+     */
+    private void removeFromWaitingList(Participant participant) {
+    }
+
+    private boolean isTheParticipantIdInTheWaitingList(String participantId){
+        return mWaitingList.contains(participantId);
+    }
+
+    private boolean isTheWaitingListEmpty(){
+        return mWaitingList.size() == 0;
+    }
+
+    private boolean isTheParticipantTalking(String participantId){
+        if(mCurrentParticipant != null) {
+            return participantId.equals(mCurrentParticipant.getmName());
+        }
+        return false; // no one is talking
+    }
 
     ///////////////////////////////////////////////////////////
     // MENU RELATED
