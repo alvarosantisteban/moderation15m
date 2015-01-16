@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ public class ModerationActivity extends Activity {
     public static final int SUBTRACT_TO_ROW_SIZE = 10;
     // The top margin defined in the layout of the table
     public static final int TOP_MARGIN_OF_TABLE = 10;
+    public static final int DEFAULT_MAX_NUM_SEC_PARTICIPATION = 5;
 
     // The table layout with the views of the participants
     TableLayout tableLayoutOfParticipants;
@@ -52,6 +54,9 @@ public class ModerationActivity extends Activity {
     int mNumParticipants;
     private Context context;
 
+    // The maximum number of seconds that a participant can talk before the timer runs out
+    private int mTimeLimit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +70,8 @@ public class ModerationActivity extends Activity {
         Intent intentFromMain = getIntent();
         mNumColumns = intentFromMain.getIntExtra(Constants.EXTRA_NUM_COLUMNS, 0);
         mNumParticipants = intentFromMain.getIntExtra(Constants.EXTRA_NUM_PARTICIPANTS, 0);
+        mTimeLimit = intentFromMain.getIntExtra(Constants.EXTRA_MAX_NUM_SEC_PARTICIPATION, DEFAULT_MAX_NUM_SEC_PARTICIPATION);
+        Log.e(TAG, ": " +mTimeLimit);
 
         // Calculate the number of needed rows
         int numRows = calculateNumOfRows(mNumColumns, mNumParticipants);
@@ -276,7 +283,7 @@ public class ModerationActivity extends Activity {
      */
     private Runnable mUpdateTimeTask = new Runnable() {
         public void run() {
-        Toast.makeText(context, "The 6 seconds went through", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "The 5 seconds went through", Toast.LENGTH_SHORT).show();
         mCurrentParticipant = null;
 
         // TODO Change color of the image back to default
@@ -288,7 +295,7 @@ public class ModerationActivity extends Activity {
      */
     private void startTimer() {
         mHandler.removeCallbacks(mUpdateTimeTask);
-        mHandler.postDelayed(mUpdateTimeTask, 6000);
+        mHandler.postDelayed(mUpdateTimeTask, mTimeLimit * 1000);
     }
 
     /**

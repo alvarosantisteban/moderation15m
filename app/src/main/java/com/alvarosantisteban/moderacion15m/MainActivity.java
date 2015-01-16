@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
 
     EditText mEditTextColumns;
     EditText mEditTextTotal;
+    EditText mEditTextNumSec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class MainActivity extends Activity {
 
         mEditTextColumns = (EditText)findViewById(R.id.main_textedit_num_columns);
         mEditTextTotal = (EditText) findViewById(R.id.main_textedit_total_num_participants);
+        mEditTextNumSec = (EditText) findViewById(R.id.main_textEdit_maximum_time_intervention);
     }
 
     /**
@@ -44,6 +46,7 @@ public class MainActivity extends Activity {
     public void createCircle(View v) {
         int numColumns = getIntFromEditText(mEditTextColumns);
         int numParticipants = getIntFromEditText(mEditTextTotal);
+        int numSeconds = getIntFromEditText(mEditTextNumSec) * 60;
 
         if (areParamsCorrect(numColumns, numParticipants)){
             // Create the intent
@@ -52,6 +55,9 @@ public class MainActivity extends Activity {
             // Put the extras
             goToModerationIntent.putExtra(Constants.EXTRA_NUM_COLUMNS, numColumns);
             goToModerationIntent.putExtra(Constants.EXTRA_NUM_PARTICIPANTS, numParticipants);
+            if(numSeconds > 0){
+                goToModerationIntent.putExtra(Constants.EXTRA_MAX_NUM_SEC_PARTICIPATION, numSeconds);
+            }
 
             // Go to the moderation activity
             startActivity(goToModerationIntent);
