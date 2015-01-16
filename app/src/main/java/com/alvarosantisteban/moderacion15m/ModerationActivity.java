@@ -44,7 +44,7 @@ public class ModerationActivity extends Activity {
     Participant mCurrentParticipant;
 
     // The waiting list of Participants identified by their ids
-    List<Integer> mWaitingList = new ArrayList<Integer>();
+    List<String> mWaitingList = new ArrayList<String>();
 
     private Handler mHandler = new Handler();
 
@@ -214,10 +214,6 @@ public class ModerationActivity extends Activity {
         return new Participant(String.valueOf(num), new Time(), new Time(), new Time(), true);
     }
 
-    private void startTimer(){
-        // check the documentation of android to see the best way possible, not java
-    }
-
     ///////////////////////////////////////////////////////////
     // ON CLICK LISTENERS AND RELATED METHODS
     ///////////////////////////////////////////////////////////
@@ -236,13 +232,16 @@ public class ModerationActivity extends Activity {
                 if (isTheWaitingListEmpty()) {
                     assignSpeakingTurn(clickedParticipant);
                 } else {
-                    if (!isTheParticipantIdInTheWaitingList(clickParticipantID)) {
+                    if (isTheParticipantIdInTheWaitingList(clickParticipantID)) {
+                        removeFromWaitingList(clickedParticipant);
+                        assignSpeakingTurn(clickedParticipant);
+                    } else{
                         putInWaitingList(clickedParticipant);
                     }
                 }
             } else { // Someone talks
                 if (isTheParticipantTalking(clickParticipantID)) { // Clicked on talking person
-                    // TODO Show statistics
+                    // TODO Show statistics?
                 } else { // clicked on someone else
                     if (!isTheParticipantIdInTheWaitingList(clickParticipantID)) {
                         putInWaitingList(clickedParticipant);
@@ -262,7 +261,7 @@ public class ModerationActivity extends Activity {
             String clickParticipantID = clickedParticipant.getmName();
 
             if (isTheParticipantTalking(clickParticipantID)) { // Clicked on talking person
-                participantFinishedHerIntervention();
+                participantFinishedTheirIntervention();
             } else {
                 if (isTheParticipantIdInTheWaitingList(clickParticipantID)) {
                     removeFromWaitingList(clickedParticipant);
@@ -277,10 +276,20 @@ public class ModerationActivity extends Activity {
      */
     private Runnable mUpdateTimeTask = new Runnable() {
         public void run() {
-            Toast.makeText(context, "Han pasado los 6 segundos de la intervencion", Toast.LENGTH_SHORT).show();
-            mCurrentParticipant = null;
+        Toast.makeText(context, "The 6 seconds went through", Toast.LENGTH_SHORT).show();
+        mCurrentParticipant = null;
+
+        // TODO Change color of the image back to default
         }
     };
+
+    /**
+     * Starts the timer
+     */
+    private void startTimer() {
+        mHandler.removeCallbacks(mUpdateTimeTask);
+        mHandler.postDelayed(mUpdateTimeTask, 6000);
+    }
 
     /**
      * Gives the turn to the participant passed by parameter and starts the timer
@@ -289,39 +298,54 @@ public class ModerationActivity extends Activity {
      */
     private void assignSpeakingTurn(Participant participant) {
         mCurrentParticipant = participant;
-        Toast.makeText(context, "Asignado el turno de palabra a la participante numero " + mCurrentParticipant.getmName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Assign the speaking turn to participant number " + mCurrentParticipant.getmName(), Toast.LENGTH_SHORT).show();
+
+        // TODO Change color of the image to "talking status"
+
         startTimer();
-        mHandler.removeCallbacks(mUpdateTimeTask);
-        mHandler.postDelayed(mUpdateTimeTask, 6000);
     }
 
     /**
-     * The current participant finishes her intervention and therefore the timer is removed and the turn given to the
+     * The current participant finishes their intervention and therefore the timer is removed and the turn given to the
      * first person in the waiting list
      */
-    private void participantFinishedHerIntervention() {
-        //stopTimer();
+    private void participantFinishedTheirIntervention() {
         mHandler.removeCallbacks(mUpdateTimeTask);
-        Toast.makeText(context, "La participante numero " + mCurrentParticipant.getmName() + " ha terminado su intervencion", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "The participant number " + mCurrentParticipant.getmName() + " finished their intervention", Toast.LENGTH_SHORT).show();
         mCurrentParticipant = null;
-        //giveTurnToNextParticipant();
+
+        // TODO Change color of the image back to default
+
+        // TODO Change color of the first person in the waiting list to "blinking status"
     }
 
     /**
-     * TODO Puts the participant in the waiting list
+     * Puts the participant in the waiting list
      *
      * @param participant the Participant to be put in the waiting list
      */
     private void putInWaitingList(Participant participant) {
+        Toast.makeText(context, "Participant added to the waiting list. Their had " + mWaitingList.size() + " persons ahead", Toast.LENGTH_SHORT).show();
+        mWaitingList.add(participant.getmName());
+
+        // TODO Change color of the image to "waiting status"
     }
 
     /**
-     * TODO Removes the participant from the waiting list
+     * Removes the participant from the waiting list
      *
      * @param participant the Participant to be removed from the waiting list
      */
     private void removeFromWaitingList(Participant participant) {
+        mWaitingList.remove(participant.getmName());
+        Toast.makeText(context, "Participant removed from the waiting list. There are " + mWaitingList.size() + " persons waiting", Toast.LENGTH_SHORT).show();
+
+        // TODO Change color of the image back to default
     }
+
+    ///////////////////////////////////////////////////////////
+    // HELPING METHODS
+    ///////////////////////////////////////////////////////////
 
     private boolean isTheParticipantIdInTheWaitingList(String participantId){
         return mWaitingList.contains(participantId);
