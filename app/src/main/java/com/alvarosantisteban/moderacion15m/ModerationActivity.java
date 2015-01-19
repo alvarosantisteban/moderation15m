@@ -7,16 +7,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.Time;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.Toast;
+import android.view.*;
+import android.widget.*;
 
 import com.alvarosantisteban.moderacion15m.model.Participant;
+import com.alvarosantisteban.moderacion15m.model.ParticipantView;
 import com.alvarosantisteban.moderacion15m.util.Constants;
 import com.alvarosantisteban.moderacion15m.util.Utils;
 
@@ -131,38 +126,34 @@ public class ModerationActivity extends Activity {
             // Create columns
             for (int j = 1; j <= cols; j++) {
 
-                // Create the ImageView that represents a Participant and set its size
-                final ImageView participantImage = new ImageView(this);
-                participantImage.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                        pixelSizeForRow - SUBTRACT_TO_ROW_SIZE));
-
-                // Set the margins of the ImageView
-                setMargins(participantImage, Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM,
-                        Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM);
-
                 // Add participant if is the first or last column or is the first row
                 if ((numAddedParticipants < mNumParticipants) && (i == 1 || j == 1 || j == cols)) {
 
-                    // Set the image in the ImageView
-                    participantImage.setImageResource(R.drawable.btn_anonymous_participant);
+                    // Create the ParticipantView
+                    ParticipantView participantView = new ParticipantView(context, numAddedParticipants);
+                    participantView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                            pixelSizeForRow - SUBTRACT_TO_ROW_SIZE));
+                    // Set the margins of the ParticipantView
+                    setMargins(participantView, Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM,
+                            Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM);
+
                     // Set its position in the list as tag, so it can be found afterwards
-                    participantImage.setTag(numAddedParticipants);
+                    participantView.setTag(numAddedParticipants);
 
                     // Set the click listener
-                    participantImage.setOnClickListener(mOnParticipantClickListener);
+                    participantView.setOnClickListener(mOnParticipantClickListener);
                     // Set the long click listener
-                    participantImage.setOnLongClickListener(mOnParticipantLongClickListener);
+                    participantView.setOnLongClickListener(mOnParticipantLongClickListener);
 
                     // Create and add the participant to the List
                     mParticipants.add(createFakeParticipant(numAddedParticipants));
 
-                    // Add the ImageView to the Row
-                    row.addView(participantImage);
+                    row.addView(participantView);
 
                     numAddedParticipants++;
                 } else {
                     // Add an empty image to the row
-                    row.addView(participantImage);
+                    row.addView(new ImageView(context));
                 }
             }
             // Add the row to the table
