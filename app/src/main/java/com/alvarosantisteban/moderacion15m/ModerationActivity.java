@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +39,7 @@ public class ModerationActivity extends Activity {
     // The top margin defined in the layout of the table
     public static final int TOP_MARGIN_OF_TABLE = 10;
     public static final int DEFAULT_MAX_NUM_SEC_PARTICIPATION = 5;
+    public static final int DEVICE_VIBRATION_IN_MILLISECONDS = 2000;
 
     // The table layout with the views of the participants
     TableLayout tableLayoutOfParticipants;
@@ -285,10 +287,15 @@ public class ModerationActivity extends Activity {
      */
     private Runnable mUpdateTimeTask = new Runnable() {
         public void run() {
-        Toast.makeText(context, "The 5 seconds went through", Toast.LENGTH_SHORT).show();
-        mCurrentParticipant = null;
 
-        // TODO Change color of the image back to default
+            // Make the device vibrate
+            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(DEVICE_VIBRATION_IN_MILLISECONDS);
+
+            Toast.makeText(context, "The 5 seconds went through", Toast.LENGTH_SHORT).show();
+            mCurrentParticipant = null;
+
+            // TODO Change color of the image back to default
         }
     };
 
