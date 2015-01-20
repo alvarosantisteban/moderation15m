@@ -68,11 +68,19 @@ public class ParticipantView extends RelativeLayout {
         mParticipantName.setText(participantName);
     }
 
-    public void setWaitingList(String participantPos) {
+    public void setWaitingListPos(String participantPos) {
         mPosWaitingList.setText(participantPos);
     }
 
     public void setParticipantImage(){
         //TODO
+    }
+
+    public void showWaitingListPos(){
+        mPosWaitingList.setVisibility(VISIBLE);
+    }
+
+    public void hideWaitingListPos() {
+        mPosWaitingList.setVisibility(INVISIBLE);
     }
 }

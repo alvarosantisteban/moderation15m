@@ -6,9 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.Time;
-import android.util.Log;
-import android.view.*;
-import android.widget.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.Toast;
 
 import com.alvarosantisteban.moderacion15m.model.Participant;
 import com.alvarosantisteban.moderacion15m.model.ParticipantView;
@@ -16,7 +21,9 @@ import com.alvarosantisteban.moderacion15m.util.Constants;
 import com.alvarosantisteban.moderacion15m.util.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This activity allows the moderator to interact with the table of participants created.
@@ -41,7 +48,9 @@ public class ModerationActivity extends Activity {
     Participant mCurrentParticipant;
 
     // The waiting list of Participants identified by their ids
-    List<String> mWaitingList = new ArrayList<String>();
+    List<ParticipantView> mWaitingList = new ArrayList<ParticipantView>();
+    // A HasMap that connects the id and the ParticipantView
+    Map<String, ParticipantView> mIdAndViewHashMap = new HashMap<String, ParticipantView>();
 
     private Handler mHandler = new Handler();
 
@@ -66,7 +75,6 @@ public class ModerationActivity extends Activity {
         mNumColumns = intentFromMain.getIntExtra(Constants.EXTRA_NUM_COLUMNS, 0);
         mNumParticipants = intentFromMain.getIntExtra(Constants.EXTRA_NUM_PARTICIPANTS, 0);
         mTimeLimit = intentFromMain.getIntExtra(Constants.EXTRA_MAX_NUM_SEC_PARTICIPATION, DEFAULT_MAX_NUM_SEC_PARTICIPATION);
-        Log.e(TAG, ": " +mTimeLimit);
 
         // Calculate the number of needed rows
         int numRows = calculateNumOfRows(mNumColumns, mNumParticipants);
@@ -147,6 +155,9 @@ public class ModerationActivity extends Activity {
 
                     // Create and add the participant to the List
                     mParticipants.add(createFakeParticipant(numAddedParticipants));
+
+                    // Add it to the Hashmap
+                    mIdAndViewHashMap.put(String.valueOf(numAddedParticipants), participantView);
 
                     row.addView(participantView);
 
@@ -231,10 +242,10 @@ public class ModerationActivity extends Activity {
                     assignSpeakingTurn(clickedParticipant);
                 } else {
                     if (isTheParticipantIdInTheWaitingList(clickParticipantID)) {
-                        removeFromWaitingList(clickedParticipant);
+                        removeFromWaitingList((ParticipantView)v);
                         assignSpeakingTurn(clickedParticipant);
                     } else{
-                        putInWaitingList(clickedParticipant);
+                        putInWaitingList((ParticipantView)v);
                     }
                 }
             } else { // Someone talks
@@ -242,7 +253,7 @@ public class ModerationActivity extends Activity {
                     // TODO Show statistics?
                 } else { // clicked on someone else
                     if (!isTheParticipantIdInTheWaitingList(clickParticipantID)) {
-                        putInWaitingList(clickedParticipant);
+                        putInWaitingList((ParticipantView)v);
                     }
                 }
             }
@@ -262,7 +273,7 @@ public class ModerationActivity extends Activity {
                 participantFinishedTheirIntervention();
             } else {
                 if (isTheParticipantIdInTheWaitingList(clickParticipantID)) {
-                    removeFromWaitingList(clickedParticipant);
+                    removeFromWaitingList((ParticipantView)v);
                 }
             }
             return true;
@@ -320,25 +331,46 @@ public class ModerationActivity extends Activity {
     /**
      * Puts the participant in the waiting list
      *
-     * @param participant the Participant to be put in the waiting list
+     * @param participant the ParticipantView to be put in the waiting list
      */
-    private void putInWaitingList(Participant participant) {
+    private void putInWaitingList(ParticipantView participant) {
         Toast.makeText(context, "Participant added to the waiting list. Their had " + mWaitingList.size() + " persons ahead", Toast.LENGTH_SHORT).show();
-        mWaitingList.add(participant.getmName());
+        mWaitingList.add(participant);
 
         // TODO Change color of the image to "waiting status"
+
+        // Update the waiting list
+        updateWaitingListView();
     }
 
     /**
      * Removes the participant from the waiting list
      *
-     * @param participant the Participant to be removed from the waiting list
+     * @param participant the ParticipantView to be removed from the waiting list
      */
-    private void removeFromWaitingList(Participant participant) {
-        mWaitingList.remove(participant.getmName());
+    private void removeFromWaitingList(ParticipantView participant) {
+        // Update the view of the participant that is about to be removed
+        participant.setWaitingListPos("");
+        participant.hideWaitingListPos();
+
+        mWaitingList.remove(participant);
         Toast.makeText(context, "Participant removed from the waiting list. There are " + mWaitingList.size() + " persons waiting", Toast.LENGTH_SHORT).show();
 
         // TODO Change color of the image back to default
+
+        // Update the waiting list
+        updateWaitingListView();
+    }
+
+    /**
+     *  Updates the index of all the ParticipantView in the waiting list
+     */
+    private void updateWaitingListView(){
+        int i = 1;
+        for (ParticipantView participantView : mWaitingList) {
+            participantView.setWaitingListPos(Integer.toString(i++));
+            participantView.showWaitingListPos();
+        }
     }
 
     ///////////////////////////////////////////////////////////
@@ -346,7 +378,7 @@ public class ModerationActivity extends Activity {
     ///////////////////////////////////////////////////////////
 
     private boolean isTheParticipantIdInTheWaitingList(String participantId){
-        return mWaitingList.contains(participantId);
+        return mWaitingList.contains(mIdAndViewHashMap.get(participantId));
     }
 
     private boolean isTheWaitingListEmpty(){
