@@ -3,6 +3,8 @@ package com.alvarosantisteban.moderacion15m;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -291,6 +293,10 @@ public class ModerationActivity extends Activity {
             // Make the device vibrate
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             v.vibrate(DEVICE_VIBRATION_IN_MILLISECONDS);
+
+            // Make the device beep
+            ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
+            toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 2000);
 
             Toast.makeText(context, "The 5 seconds went through", Toast.LENGTH_SHORT).show();
             mCurrentParticipant = null;
