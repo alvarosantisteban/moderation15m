@@ -8,7 +8,6 @@ import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.alvarosantisteban.moderacion15m.model.Participant;
+import com.alvarosantisteban.moderacion15m.model.ParticipantID;
 import com.alvarosantisteban.moderacion15m.model.ParticipantView;
 import com.alvarosantisteban.moderacion15m.util.Constants;
 import com.alvarosantisteban.moderacion15m.util.Utils;
@@ -54,7 +54,7 @@ public class ModerationActivity extends Activity {
     // The waiting list of Participants identified by their ids
     List<ParticipantView> mWaitingList = new ArrayList<ParticipantView>();
     // A HasMap that connects the id and the ParticipantView
-    Map<String, ParticipantView> mIdAndViewHashMap = new HashMap<String, ParticipantView>();
+    Map<ParticipantID, ParticipantView> mIdAndViewHashMap = new HashMap<ParticipantID, ParticipantView>();
 
     private Handler mHandler = new Handler();
 
@@ -161,7 +161,7 @@ public class ModerationActivity extends Activity {
                     mParticipants.add(createFakeParticipant(numAddedParticipants));
 
                     // Add it to the Hashmap
-                    mIdAndViewHashMap.put(String.valueOf(numAddedParticipants), participantView);
+                    mIdAndViewHashMap.put(new ParticipantID(numAddedParticipants), participantView);
 
                     row.addView(participantView);
 
@@ -224,7 +224,7 @@ public class ModerationActivity extends Activity {
      * @return the created Participant
      */
     private Participant createFakeParticipant(int num) {
-        return new Participant(String.valueOf(num), new Time(), new Time(), new Time(), true);
+        return new Participant.Builder(new ParticipantID(num)).build();
     }
 
     ///////////////////////////////////////////////////////////
@@ -238,7 +238,7 @@ public class ModerationActivity extends Activity {
         @Override
         public void onClick(View v) {
             Participant clickedParticipant = mParticipants.get((int) v.getTag());
-            String clickParticipantID = clickedParticipant.getmName();
+            ParticipantID clickParticipantID = clickedParticipant.getId();
 
             // No one is talking
             if (mCurrentParticipant == null) {
@@ -271,7 +271,7 @@ public class ModerationActivity extends Activity {
         @Override
         public boolean onLongClick(View v) {
             Participant clickedParticipant = mParticipants.get((int) v.getTag());
-            String clickParticipantID = clickedParticipant.getmName();
+            ParticipantID clickParticipantID = clickedParticipant.getId();
 
             if (isTheParticipantTalking(clickParticipantID)) { // Clicked on talking person
                 participantFinishedTheirIntervention();
@@ -320,7 +320,7 @@ public class ModerationActivity extends Activity {
      */
     private void assignSpeakingTurn(Participant participant) {
         mCurrentParticipant = participant;
-        Toast.makeText(context, "Assign the speaking turn to participant number " + mCurrentParticipant.getmName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Assign the speaking turn to participant number " + mCurrentParticipant.getId(), Toast.LENGTH_SHORT).show();
 
         // TODO Change color of the image to "talking status"
 
@@ -333,7 +333,7 @@ public class ModerationActivity extends Activity {
      */
     private void participantFinishedTheirIntervention() {
         mHandler.removeCallbacks(mUpdateTimeTask);
-        Toast.makeText(context, "The participant number " + mCurrentParticipant.getmName() + " finished their intervention", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "The participant number " + mCurrentParticipant.toString() + " finished their intervention", Toast.LENGTH_SHORT).show();
         mCurrentParticipant = null;
 
         // TODO Change color of the image back to default
@@ -390,7 +390,7 @@ public class ModerationActivity extends Activity {
     // HELPING METHODS
     ///////////////////////////////////////////////////////////
 
-    private boolean isTheParticipantIdInTheWaitingList(String participantId){
+    private boolean isTheParticipantIdInTheWaitingList(ParticipantID participantId){
         return mWaitingList.contains(mIdAndViewHashMap.get(participantId));
     }
 
@@ -398,9 +398,9 @@ public class ModerationActivity extends Activity {
         return mWaitingList.size() == 0;
     }
 
-    private boolean isTheParticipantTalking(String participantId){
+    private boolean isTheParticipantTalking(ParticipantID participantId){
         if(mCurrentParticipant != null) {
-            return participantId.equals(mCurrentParticipant.getmName());
+            return participantId.equals(mCurrentParticipant.getId());
         }
         return false; // no one is talking
     }
