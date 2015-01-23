@@ -96,11 +96,19 @@ public class ModerationActivity extends Activity {
      * @return the number of needed rows
      */
     private int calculateNumOfRows(int numColumns, int numParticipants) {
+        /*
         int extraRow = addExtraRow(numColumns, numParticipants);
 
         // By making it an integer, we ensure that it will be the right number
         int firstRowMiddleParticipants = numColumns-2;
         return ((numParticipants - firstRowMiddleParticipants)/2) + extraRow;
+
+
+        */
+
+        // By making it an integer, we ensure that it will be the right number
+        int firstRowMiddleParticipants = numColumns - 2;
+        return ((numParticipants - firstRowMiddleParticipants - firstRowMiddleParticipants) / 2)+1;
     }
 
     /**
@@ -119,6 +127,11 @@ public class ModerationActivity extends Activity {
         return 0;
     }
 
+    private boolean isMiddleColumn(int column){
+        int pos = mNumColumns/2 + 1;
+        return pos == column;
+    }
+
     /**
      * Creates the table layout with the participants
      *
@@ -129,6 +142,8 @@ public class ModerationActivity extends Activity {
         int numAddedParticipants = 0;
         int pixelSizeForRow = calculatePaddingBetweenRows(rows);
 
+        boolean isModeratorAdded = false;
+
         // Create rows
         for (int i = 1; i <= rows; i++) {
             TableRow row = new TableRow(this);
@@ -138,42 +153,97 @@ public class ModerationActivity extends Activity {
             // Create columns
             for (int j = 1; j <= cols; j++) {
 
-                // Add participant if is the first or last column or is the first row
-                if ((numAddedParticipants < mNumParticipants) && (i == 1 || j == 1 || j == cols)) {
+                if (numAddedParticipants < mNumParticipants){
 
-                    // Create the ParticipantView
-                    ParticipantView participantView = new ParticipantView(context, numAddedParticipants);
-                    participantView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                            pixelSizeForRow - SUBTRACT_TO_ROW_SIZE));
-                    // Set the margins of the ParticipantView
-                    setMargins(participantView, Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM,
-                            Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM);
+                    if (i == 1){ // First row
+                        numAddedParticipants = createAndAddParticipantView(numAddedParticipants, pixelSizeForRow, row);
+                    }else if (i == rows){ // Last row
+                        if (isMiddleColumn(j)) {
+                            // Add Moderator
+                            isModeratorAdded = createAndAddModerator(pixelSizeForRow, row);
+                        }  else {
+                            // Add all except moderator
+                            // Create the ParticipantView
+                            numAddedParticipants = createAndAddParticipantView(numAddedParticipants, pixelSizeForRow, row);
+                        }
+                    }else if (j == 1 || j == cols){ // First or last column
+                        // Create the ParticipantView
+                        numAddedParticipants = createAndAddParticipantView(numAddedParticipants, pixelSizeForRow, row);
+                    } else{ // Columns in between
+                        // Add an empty image to the row
+                        row.addView(new ImageView(context));
+                    }
+                } else{
+                    // Last check to see if the moderator was added
+                    if(!isModeratorAdded){
+                        isModeratorAdded = createAndAddModerator(pixelSizeForRow, row);
 
-                    // Set its position in the list as tag, so it can be found afterwards
-                    participantView.setTag(numAddedParticipants);
-
-                    // Set the click listener
-                    participantView.setOnClickListener(mOnParticipantClickListener);
-                    // Set the long click listener
-                    participantView.setOnLongClickListener(mOnParticipantLongClickListener);
-
-                    // Create and add the participant to the List
-                    mParticipants.add(createFakeParticipant(numAddedParticipants));
-
-                    // Add it to the Hashmap
-                    mIdAndViewHashMap.put(new ParticipantID(numAddedParticipants), participantView);
-
-                    row.addView(participantView);
-
-                    numAddedParticipants++;
-                } else {
-                    // Add an empty image to the row
-                    row.addView(new ImageView(context));
+                    }
                 }
             }
+
             // Add the row to the table
             tableLayoutOfParticipants.addView(row);
         }
+    }
+
+    /**
+     * Creates a ImageView that represents a moderator and adds it to the row
+     *
+     * @param pixelSizeForRow the size for the row in pixels
+     * @param row the row where the ImageView is added
+     * @return true if no exception arose
+     */
+    private boolean createAndAddModerator(int pixelSizeForRow, TableRow row) {
+        boolean isModeratorAdded;// Add Moderator
+        final ImageView moderatorImage = new ImageView(this);
+        moderatorImage.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                pixelSizeForRow - SUBTRACT_TO_ROW_SIZE));
+        // Set the margins of the ParticipantView
+        setMargins(moderatorImage, Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM,
+                Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM);
+        moderatorImage.setImageResource(R.drawable.btn_moderator);
+        row.addView(moderatorImage);
+        isModeratorAdded = true;
+        return isModeratorAdded;
+    }
+
+    /**
+     *
+     * Creates a ParticipantView, sets the click listeners on it, adds it to the HashMap and adds it to the row.
+     *
+     * @param numAddedParticipants the number of added participants
+     * @param pixelSizeForRow the size for the row in pixels
+     * @param row the row where the ImageView is added
+     * @return
+     */
+    private int createAndAddParticipantView(int numAddedParticipants, int pixelSizeForRow, TableRow row) {
+        // Create the ParticipantView
+        ParticipantView participantView = new ParticipantView(context, numAddedParticipants);
+        participantView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                pixelSizeForRow - SUBTRACT_TO_ROW_SIZE));
+        // Set the margins of the ParticipantView
+        setMargins(participantView, Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM,
+                Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM);
+
+        // Set its position in the list as tag, so it can be found afterwards
+        participantView.setTag(numAddedParticipants);
+
+        // Set the click listener
+        participantView.setOnClickListener(mOnParticipantClickListener);
+        // Set the long click listener
+        participantView.setOnLongClickListener(mOnParticipantLongClickListener);
+
+        // Create and add the participant to the List
+        mParticipants.add(createFakeParticipant(numAddedParticipants));
+
+        // Add it to the Hashmap
+        mIdAndViewHashMap.put(new ParticipantID(numAddedParticipants), participantView);
+
+        row.addView(participantView);
+
+        numAddedParticipants++;
+        return numAddedParticipants;
     }
 
     /**
@@ -298,6 +368,9 @@ public class ModerationActivity extends Activity {
             ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
             toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 2000);
 
+            ParticipantView pView = mIdAndViewHashMap.get(mCurrentParticipant.getId());
+            pView.setWaitingListPos("");
+            pView.hideWaitingListPos();
             Toast.makeText(context, "The 5 seconds went through", Toast.LENGTH_SHORT).show();
             mCurrentParticipant = null;
 
@@ -323,6 +396,10 @@ public class ModerationActivity extends Activity {
         Toast.makeText(context, "Assign the speaking turn to participant number " + mCurrentParticipant.getId(), Toast.LENGTH_SHORT).show();
 
         // TODO Change color of the image to "talking status"
+
+        ParticipantView pView = mIdAndViewHashMap.get(participant.getId());
+        pView.setWaitingListPos("X");
+        pView.showWaitingListPos();
 
         startTimer();
     }
