@@ -12,6 +12,6 @@
   <dimen name="moderation_marginTop">10dp</dimen>
 
   <!-- Participant View -->
-  <dimen name="participant_waitingPos_padding_right">7dp</dimen>
+  <dimen name="participant_waitingPos_padding_right">0dp</dimen>
 
 </resources>
