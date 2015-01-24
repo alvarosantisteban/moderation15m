@@ -42,6 +42,9 @@ public class ModerationActivity extends Activity {
     public static final int TOP_MARGIN_OF_TABLE = 10;
     public static final int DEFAULT_MAX_NUM_SEC_PARTICIPATION = 5;
     public static final int DEVICE_VIBRATION_IN_MILLISECONDS = 2000;
+    private static final int DEVICE_VIBRATION_IN_MILLISECONDS = 2000;
+    private static final int PARTICIPANT_INTERVENTION_TIMER = 0;
+    private static final int DEBATE_TOTAL_TIME_TIMER = 1;
 
     // The table layout with the views of the participants
     TableLayout tableLayoutOfParticipants;
@@ -381,9 +384,15 @@ public class ModerationActivity extends Activity {
     /**
      * Starts the timer
      */
-    private void startTimer() {
-        mHandler.removeCallbacks(mUpdateTimeTask);
-        mHandler.postDelayed(mUpdateTimeTask, mTimeLimit * 1000);
+    private void startTimer(int timerType) {
+        switch (timerType){
+            case PARTICIPANT_INTERVENTION_TIMER:
+                mHandler.removeCallbacks(mUpdateTimeTask);
+                mHandler.postDelayed(mUpdateTimeTask, mParticipantTimeLimit * 1000);
+                break;
+            case DEBATE_TOTAL_TIME_TIMER:
+                break;
+        }
     }
 
     /**
@@ -401,7 +410,7 @@ public class ModerationActivity extends Activity {
         pView.setWaitingListPos("X");
         pView.showWaitingListPos();
 
-        startTimer();
+        startTimer(PARTICIPANT_INTERVENTION_TIMER);
     }
 
     /**
