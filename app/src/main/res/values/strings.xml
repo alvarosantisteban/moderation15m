@@ -12,5 +12,6 @@
   <string name="main_button_create">Create circle</string>
   <string name="main_activity_incorrect_params">The circle could not be created because the parameters are incorrect</string>
   <string name="main_maximum_time_intervention">Maximum number of minutes of each intervention</string>
+  <string name="main_total_time_debate">Duration of the debate (minutes)</string>
 
 </resources>

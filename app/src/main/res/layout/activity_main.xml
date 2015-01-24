@@ -75,12 +75,32 @@
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true" />
 
+  <TextView
+    android:text="@string/main_total_time_debate"
+    android:textStyle="bold"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/main_paddingTop_between_elements"
+    android:layout_below="@+id/main_textEdit_maximum_time_intervention"
+    android:layout_alignLeft="@+id/main_textedit_total_num_participants"
+    android:id="@+id/main_total_time_debate" />
+
+  <EditText
+    android:id="@+id/main_textEdit_total_time_debate"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:inputType="number"
+    android:ems="@integer/main_editText_number_size"
+    android:layout_below="@+id/main_total_time_debate"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true" />
+
   <Button
     android:id="@+id/main_button_create_circle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/main_paddingTop_between_elements"
-    android:layout_below="@+id/main_textEdit_maximum_time_intervention"
+    android:layout_below="@+id/main_textEdit_total_time_debate"
     android:text="@string/main_button_create"
     android:onClick="createCircle"/>
 

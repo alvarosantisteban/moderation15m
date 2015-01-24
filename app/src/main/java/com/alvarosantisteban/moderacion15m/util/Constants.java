@@ -13,6 +13,7 @@ public final class Constants {
     public static final String EXTRA_NUM_COLUMNS = "ExtraNumColumns";
     public static final String EXTRA_NUM_PARTICIPANTS = "ExtraNumParticipants";
     public static final String EXTRA_MAX_NUM_SEC_PARTICIPATION = "ExtraMaxNumSecParticipation";
+    public static final String EXTRA_TOTAL_TIME_DEBATE_SECS = "ExtraTotalTimeDebateSecs";
 
     // MARGIN
     public static final int MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM = 5;

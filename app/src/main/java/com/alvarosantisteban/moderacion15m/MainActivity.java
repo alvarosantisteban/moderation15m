@@ -28,6 +28,7 @@ public class MainActivity extends Activity {
     EditText mEditTextColumns;
     EditText mEditTextTotal;
     EditText mEditTextMaxNumSecsIntervention;
+    EditText mEditTextTotalTimeDebate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class MainActivity extends Activity {
         mEditTextColumns = (EditText)findViewById(R.id.main_textedit_num_columns);
         mEditTextTotal = (EditText) findViewById(R.id.main_textedit_total_num_participants);
         mEditTextMaxNumSecsIntervention = (EditText) findViewById(R.id.main_textEdit_maximum_time_intervention);
+        mEditTextTotalTimeDebate = (EditText) findViewById(R.id.main_textEdit_total_time_debate);
     }
 
     /**
@@ -47,6 +49,7 @@ public class MainActivity extends Activity {
         int numColumns = getIntFromEditText(mEditTextColumns);
         int numParticipants = getIntFromEditText(mEditTextTotal);
         int maxNumSecondsIntervention = getIntFromEditText(mEditTextMaxNumSecsIntervention) * 60;
+        int totalTimeDebate = getIntFromEditText(mEditTextTotalTimeDebate) * 60;
 
         if (areParamsCorrect(numColumns, numParticipants)){
             // Create the intent
@@ -58,7 +61,9 @@ public class MainActivity extends Activity {
             if(maxNumSecondsIntervention > 0){
                 goToModerationIntent.putExtra(Constants.EXTRA_MAX_NUM_SEC_PARTICIPATION, maxNumSecondsIntervention);
             }
-
+            if (totalTimeDebate > 0) {
+                goToModerationIntent.putExtra(Constants.EXTRA_TOTAL_TIME_DEBATE_SECS, totalTimeDebate);
+            }
 
             // Go to the moderation activity
             startActivity(goToModerationIntent);
