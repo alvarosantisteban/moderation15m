@@ -63,7 +63,7 @@ public class ModerationActivity extends Activity {
     private Context context;
 
     // The maximum number of seconds that a participant can talk before the timer runs out
-    private int mTimeLimit;
+    private int mParticipantTimeLimit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +78,7 @@ public class ModerationActivity extends Activity {
         Intent intentFromMain = getIntent();
         mNumColumns = intentFromMain.getIntExtra(Constants.EXTRA_NUM_COLUMNS, 0);
         mNumParticipants = intentFromMain.getIntExtra(Constants.EXTRA_NUM_PARTICIPANTS, 0);
-        mTimeLimit = intentFromMain.getIntExtra(Constants.EXTRA_MAX_NUM_SEC_PARTICIPATION, DEFAULT_MAX_NUM_SEC_PARTICIPATION);
+        mParticipantTimeLimit = intentFromMain.getIntExtra(Constants.EXTRA_MAX_NUM_SEC_PARTICIPATION, DEFAULT_MAX_NUM_SEC_PARTICIPATION);
 
         // Calculate the number of needed rows
         int numRows = calculateNumOfRows(mNumColumns, mNumParticipants);
