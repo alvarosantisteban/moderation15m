@@ -360,7 +360,7 @@ public class ModerationActivity extends Activity {
     /**
      * The runnable that that is called when the time for the speaker is up.
      */
-    private Runnable mUpdateTimeTask = new Runnable() {
+    private Runnable mInterventionTimeEndedRunnable = new Runnable() {
         public void run() {
 
             // Make the device vibrate
@@ -387,8 +387,8 @@ public class ModerationActivity extends Activity {
     private void startTimer(int timerType) {
         switch (timerType){
             case PARTICIPANT_INTERVENTION_TIMER:
-                mHandler.removeCallbacks(mUpdateTimeTask);
-                mHandler.postDelayed(mUpdateTimeTask, mParticipantTimeLimit * 1000);
+                mHandler.removeCallbacks(mInterventionTimeEndedRunnable);
+                mHandler.postDelayed(mInterventionTimeEndedRunnable, mParticipantTimeLimit * 1000);
                 break;
             case DEBATE_TOTAL_TIME_TIMER:
                 break;
@@ -418,7 +418,7 @@ public class ModerationActivity extends Activity {
      * first person in the waiting list
      */
     private void participantFinishedTheirIntervention() {
-        mHandler.removeCallbacks(mUpdateTimeTask);
+        mHandler.removeCallbacks(mInterventionTimeEndedRunnable);
         Toast.makeText(context, "The participant number " + mCurrentParticipant.toString() + " finished their intervention", Toast.LENGTH_SHORT).show();
         mCurrentParticipant = null;
 
