@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
 
     EditText mEditTextColumns;
     EditText mEditTextTotal;
-    EditText mEditTextNumSec;
+    EditText mEditTextMaxNumSecsIntervention;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
 
         mEditTextColumns = (EditText)findViewById(R.id.main_textedit_num_columns);
         mEditTextTotal = (EditText) findViewById(R.id.main_textedit_total_num_participants);
-        mEditTextNumSec = (EditText) findViewById(R.id.main_textEdit_maximum_time_intervention);
+        mEditTextMaxNumSecsIntervention = (EditText) findViewById(R.id.main_textEdit_maximum_time_intervention);
     }
 
     /**
@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
     public void createCircle(View v) {
         int numColumns = getIntFromEditText(mEditTextColumns);
         int numParticipants = getIntFromEditText(mEditTextTotal);
-        int maxNumSecondsIntervention = getIntFromEditText(mEditTextNumSec) * 60;
+        int maxNumSecondsIntervention = getIntFromEditText(mEditTextMaxNumSecsIntervention) * 60;
 
         if (areParamsCorrect(numColumns, numParticipants)){
             // Create the intent
