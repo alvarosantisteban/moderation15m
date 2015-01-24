@@ -37,11 +37,11 @@ public class ModerationActivity extends Activity {
     private static final String TAG = "ModerationActivity";
 
     // The pixels that are subtracted to the size of a row so the image in it looks fine
-    public static final int SUBTRACT_TO_ROW_SIZE = 10;
+    private static final int SUBTRACT_TO_ROW_SIZE = 10;
     // The top margin defined in the layout of the table
-    public static final int TOP_MARGIN_OF_TABLE = 10;
-    public static final int DEFAULT_MAX_NUM_SEC_PARTICIPATION = 5;
-    public static final int DEVICE_VIBRATION_IN_MILLISECONDS = 2000;
+    private static final int TOP_MARGIN_OF_TABLE = 10;
+    private static final int DEFAULT_MAX_NUM_SEC_PARTICIPATION = 5;
+    private static final int DEFAULT_MAX_NUM_SEC_DEBATE = 30;
     private static final int DEVICE_VIBRATION_IN_MILLISECONDS = 2000;
     private static final int PARTICIPANT_INTERVENTION_TIMER = 0;
     private static final int DEBATE_TOTAL_TIME_TIMER = 1;
