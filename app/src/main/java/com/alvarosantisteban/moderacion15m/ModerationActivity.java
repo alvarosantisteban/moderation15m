@@ -67,6 +67,8 @@ public class ModerationActivity extends Activity {
 
     // The maximum number of seconds that a participant can talk before the timer runs out
     private int mParticipantTimeLimit;
+    // The maximum number of seconds that the debate can last
+    private int mDebateTimeLimit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class ModerationActivity extends Activity {
         mNumColumns = intentFromMain.getIntExtra(Constants.EXTRA_NUM_COLUMNS, 0);
         mNumParticipants = intentFromMain.getIntExtra(Constants.EXTRA_NUM_PARTICIPANTS, 0);
         mParticipantTimeLimit = intentFromMain.getIntExtra(Constants.EXTRA_MAX_NUM_SEC_PARTICIPATION, DEFAULT_MAX_NUM_SEC_PARTICIPATION);
+        mDebateTimeLimit = intentFromMain.getIntExtra(Constants.EXTRA_TOTAL_TIME_DEBATE_SECS, DEFAULT_MAX_NUM_SEC_DEBATE);
 
         // Calculate the number of needed rows
         int numRows = calculateNumOfRows(mNumColumns, mNumParticipants);
@@ -205,6 +208,10 @@ public class ModerationActivity extends Activity {
         // Set the margins of the ParticipantView
         setMargins(moderatorImage, Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM,
                 Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM);
+
+        // Set the click listener
+        moderatorImage.setOnClickListener(mOnModeratorClickListener);
+
         moderatorImage.setImageResource(R.drawable.btn_moderator);
         row.addView(moderatorImage);
         isModeratorAdded = true;
@@ -307,6 +314,19 @@ public class ModerationActivity extends Activity {
     /**
      * Give the turn to a participant or puts their in the waiting list
      */
+    private View.OnClickListener mOnModeratorClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // Re-starts or pauses the timer for the debate
+            Toast.makeText(context,"The timer for the debate starts", Toast.LENGTH_SHORT).show();
+            startTimer(DEBATE_TOTAL_TIME_TIMER);
+        }
+    };
+
+
+    /**
+     * Give the turn to a participant or puts their in the waiting list
+     */
     private View.OnClickListener mOnParticipantClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -358,7 +378,7 @@ public class ModerationActivity extends Activity {
     };
 
     /**
-     * The runnable that that is called when the time for the speaker is up.
+     * The runnable that is called when the time for the speaker is up.
      */
     private Runnable mInterventionTimeEndedRunnable = new Runnable() {
         public void run() {
@@ -382,6 +402,17 @@ public class ModerationActivity extends Activity {
     };
 
     /**
+     * The runnable that is called when the time of the debate is up.
+     */
+    private Runnable mDebateTimeEndedRunnable = new Runnable() {
+        public void run() {
+
+            //
+            Toast.makeText(context, "The time for the debate ended", Toast.LENGTH_LONG).show();
+        }
+    };
+
+    /**
      * Starts the timer
      */
     private void startTimer(int timerType) {
@@ -391,6 +422,8 @@ public class ModerationActivity extends Activity {
                 mHandler.postDelayed(mInterventionTimeEndedRunnable, mParticipantTimeLimit * 1000);
                 break;
             case DEBATE_TOTAL_TIME_TIMER:
+                mHandler.removeCallbacks(mDebateTimeEndedRunnable);
+                mHandler.postDelayed(mDebateTimeEndedRunnable, mDebateTimeLimit * 1000);
                 break;
         }
     }
