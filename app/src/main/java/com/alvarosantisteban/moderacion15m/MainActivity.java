@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
     public void createCircle(View v) {
         int numColumns = getIntFromEditText(mEditTextColumns);
         int numParticipants = getIntFromEditText(mEditTextTotal);
-        int numSeconds = getIntFromEditText(mEditTextNumSec) * 60;
+        int maxNumSecondsIntervention = getIntFromEditText(mEditTextNumSec) * 60;
 
         if (areParamsCorrect(numColumns, numParticipants)){
             // Create the intent
@@ -55,9 +55,10 @@ public class MainActivity extends Activity {
             // Put the extras
             goToModerationIntent.putExtra(Constants.EXTRA_NUM_COLUMNS, numColumns);
             goToModerationIntent.putExtra(Constants.EXTRA_NUM_PARTICIPANTS, numParticipants);
-            if(numSeconds > 0){
-                goToModerationIntent.putExtra(Constants.EXTRA_MAX_NUM_SEC_PARTICIPATION, numSeconds);
+            if(maxNumSecondsIntervention > 0){
+                goToModerationIntent.putExtra(Constants.EXTRA_MAX_NUM_SEC_PARTICIPATION, maxNumSecondsIntervention);
             }
+
 
             // Go to the moderation activity
             startActivity(goToModerationIntent);
