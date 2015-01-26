@@ -1,12 +1,13 @@
 package com.alvarosantisteban.moderacion15m;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.*;
 import android.widget.ImageView;
@@ -33,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  * This activity allows the moderator to interact with the table of participants created.
  * @author Alvaro Santisteban 13.11.14 - alvarosantisteban@gmail.com
  */
-public class ModerationActivity extends Activity {
+public class ModerationActivity extends FragmentActivity implements ParticipantStatisticsDialogFragment.NoticeDialogListener{
 
     private static final String TAG = "ModerationActivity";
 
@@ -548,6 +549,26 @@ public class ModerationActivity extends Activity {
     }
 
     ///////////////////////////////////////////////////////////
+    // POPUP / DIALOG IMPLEMENTATION
+    ///////////////////////////////////////////////////////////
+
+    public void showNoticeDialog() {
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new ParticipantStatisticsDialogFragment();
+        dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+
+    }
+
+    ///////////////////////////////////////////////////////////
     // MY GESTURE DETECTOR CLASS
     ///////////////////////////////////////////////////////////
 
@@ -589,7 +610,7 @@ public class ModerationActivity extends Activity {
             float y = e.getY();
 
             Log.d("Double Tap", "Tapped at: (" + x + "," + y + ")");
-
+            showNoticeDialog();
             return true;
         }
 
