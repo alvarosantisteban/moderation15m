@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:gravity="center">
+
+  <EditText
+    android:id="@+id/participant_popup_name_editText"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
+  <TextView
+    android:id="@+id/participant_popup_numInterventions_tag"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/participant_popup_numInterventions_tag"/>
+
+  <TextView
+    android:id="@+id/participant_popup_numInterventions_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
+  <TextView
+    android:id="@+id/participant_popup_timeInterventions_tag"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/participant_popup_timeInterventions_tag"/>
+
+  <TextView
+    android:id="@+id/participant_popup_timeInterventions_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+</LinearLayout>
