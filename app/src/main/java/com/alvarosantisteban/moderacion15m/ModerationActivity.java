@@ -483,6 +483,10 @@ public class ModerationActivity extends Activity {
      * first person in the waiting list
      */
     private void participantFinishedTheirIntervention() {
+        // Add the time of their intervention to their profile
+        long remainingTimeFromTimer = mScheduleFuture.getDelay(TimeUnit.SECONDS);
+        mCurrentParticipant.addTime(mParticipantTimeLimit - remainingTimeFromTimer);
+
         // Cancel the timer
         mScheduleFuture.cancel(true);
 
