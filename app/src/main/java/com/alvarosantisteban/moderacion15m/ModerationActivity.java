@@ -391,9 +391,8 @@ public class ModerationActivity extends Activity {
             ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
             toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 2000);
 
-            ParticipantView pView = mIdAndViewHashMap.get(mCurrentParticipant.getId());
-            pView.setWaitingListPos("");
-            pView.hideWaitingListPos();
+            // Reset the view
+            resetParticipantView();
             Toast.makeText(context, "The 5 seconds went through", Toast.LENGTH_SHORT).show();
             mCurrentParticipant = null;
 
@@ -453,6 +452,9 @@ public class ModerationActivity extends Activity {
     private void participantFinishedTheirIntervention() {
         mHandler.removeCallbacks(mInterventionTimeEndedRunnable);
         Toast.makeText(context, "The participant number " + mCurrentParticipant.toString() + " finished their intervention", Toast.LENGTH_SHORT).show();
+
+        // Reset the view
+        resetParticipantView();
         mCurrentParticipant = null;
 
         // TODO Change color of the image back to default
@@ -522,6 +524,15 @@ public class ModerationActivity extends Activity {
             return participantId.equals(mCurrentParticipant.getId());
         }
         return false; // no one is talking
+    }
+
+    /**
+     * Resets and hides the position of the waiting list from the ParticipantView of the currentParticipant
+     */
+    private void resetParticipantView() {
+        ParticipantView pView = mIdAndViewHashMap.get(mCurrentParticipant.getId());
+        pView.setWaitingListPos("");
+        pView.hideWaitingListPos();
     }
 
     ///////////////////////////////////////////////////////////
