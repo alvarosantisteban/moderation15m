@@ -8,6 +8,7 @@ import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -377,6 +378,10 @@ public class ModerationActivity extends Activity {
         }
     };
 
+    ///////////////////////////////////////////////////////////
+    // TIMER RELATED
+    ///////////////////////////////////////////////////////////
+
     /**
      * The runnable that is called when the time for the speaker is up.
      */
@@ -432,6 +437,10 @@ public class ModerationActivity extends Activity {
         }
     }
 
+    ///////////////////////////////////////////////////////////
+    // CURRENT PARTICIPANT RELATED
+    ///////////////////////////////////////////////////////////
+
     /**
      * Gives the turn to the participant passed by parameter and starts the timer
      *
@@ -448,6 +457,8 @@ public class ModerationActivity extends Activity {
         pView.showWaitingListPos();
 
         startTimer(PARTICIPANT_INTERVENTION_TIMER);
+
+        Log.d(TAG, "-------------------- INTERVENTIONS: " +mCurrentParticipant.getNumInterventions() +"---- SECS: " +mCurrentParticipant.getTotalInterventionsSecs());
     }
 
     /**
@@ -460,12 +471,20 @@ public class ModerationActivity extends Activity {
 
         // Reset the view
         resetParticipantView();
+
+        // TODO Add the time of their intervention to their profile
+        // mCurrentParticipant.addTime(remainingTimeFromTimer - PARTICIPANT_INTERVENTION_TIMER);
+
         mCurrentParticipant = null;
 
         // TODO Change color of the image back to default
 
         // TODO Change color of the first person in the waiting list to "blinking status"
     }
+
+    ///////////////////////////////////////////////////////////
+    // WAITING LIST
+    ///////////////////////////////////////////////////////////
 
     /**
      * Puts the participant in the waiting list
@@ -501,17 +520,6 @@ public class ModerationActivity extends Activity {
         updateWaitingListView();
     }
 
-    /**
-     *  Updates the index of all the ParticipantView in the waiting list
-     */
-    private void updateWaitingListView(){
-        int i = 1;
-        for (ParticipantView participantView : mWaitingList) {
-            participantView.setWaitingListPos(Integer.toString(i++));
-            participantView.showWaitingListPos();
-        }
-    }
-
     ///////////////////////////////////////////////////////////
     // HELPING METHODS
     ///////////////////////////////////////////////////////////
@@ -538,6 +546,17 @@ public class ModerationActivity extends Activity {
         ParticipantView pView = mIdAndViewHashMap.get(mCurrentParticipant.getId());
         pView.setWaitingListPos("");
         pView.hideWaitingListPos();
+    }
+
+    /**
+     * Updates the index of all the ParticipantView in the waiting list
+     */
+    private void updateWaitingListView() {
+        int i = 1;
+        for (ParticipantView participantView : mWaitingList) {
+            participantView.setWaitingListPos(Integer.toString(i++));
+            participantView.showWaitingListPos();
+        }
     }
 
     ///////////////////////////////////////////////////////////

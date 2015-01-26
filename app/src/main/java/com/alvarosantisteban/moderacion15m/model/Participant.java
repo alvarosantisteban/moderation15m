@@ -70,4 +70,8 @@ public class Participant {
 
     public long getNumInterventions(){return mNumInterventions;}
 
+    public long getTotalInterventionsSecs() {
+        return mTotalInterventionsSecs;
+    }
+
 }
