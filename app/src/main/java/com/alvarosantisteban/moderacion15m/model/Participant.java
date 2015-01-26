@@ -1,9 +1,12 @@
 package com.alvarosantisteban.moderacion15m.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * @author Alvaro Santisteban 13.11.14 - alvarosantisteban@gmail.com
  */
-public class Participant {
+public class Participant implements Parcelable{
 
     private final ParticipantID mId;
     private final String mName;
@@ -78,5 +81,41 @@ public class Participant {
     public String toString() {
         return mId.toString();
     }
+
+    ///////////////////////////////////////////////////////////
+    // PARCELABLE
+    ///////////////////////////////////////////////////////////
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    private Participant(Parcel in) {
+        mId = in.readParcelable(ParticipantID.class.getClassLoader());
+        mName = in.readString();
+        mNumInterventions = in.readLong();
+        mTotalInterventionsSecs = in.readLong();
+        mIsWoman = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeParcelable(mId, flags);
+        out.writeString(mName);
+        out.writeLong(mNumInterventions);
+        out.writeLong(mTotalInterventionsSecs);
+        out.writeByte((byte) (mIsWoman ? 1 : 0));
+    }
+
+    public static final Parcelable.Creator<Participant> CREATOR = new Parcelable.Creator<Participant>() {
+        public Participant createFromParcel(Parcel in) {
+            return new Participant(in);
+        }
+
+        public Participant[] newArray(int size) {
+            return new Participant[size];
+        }
+    };
 
 }

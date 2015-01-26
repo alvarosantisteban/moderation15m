@@ -1,9 +1,12 @@
 package com.alvarosantisteban.moderacion15m.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * @author Alvaro Santisteban Dieguez 20/01/15 - alvarosantisteban@gmail.com
  */
-public class ParticipantID {
+public class ParticipantID implements Parcelable {
 
     String mID;
 
@@ -38,4 +41,32 @@ public class ParticipantID {
     public String toString(){
         return mID;
     }
+
+    ///////////////////////////////////////////////////////////
+    // PARCELABLE
+    ///////////////////////////////////////////////////////////
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    private ParticipantID(Parcel in) {
+        mID = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(mID);
+    }
+
+    public static final Parcelable.Creator<ParticipantID> CREATOR = new Parcelable.Creator<ParticipantID>() {
+        public ParticipantID createFromParcel(Parcel in) {
+            return new ParticipantID(in);
+        }
+
+        public ParticipantID[] newArray(int size) {
+            return new ParticipantID[size];
+        }
+    };
 }
