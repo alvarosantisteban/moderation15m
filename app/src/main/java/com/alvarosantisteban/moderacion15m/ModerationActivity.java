@@ -8,10 +8,7 @@ import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -244,10 +241,14 @@ public class ModerationActivity extends Activity {
         // Set its position in the list as tag, so it can be found afterwards
         participantView.setTag(numAddedParticipants);
 
-        // Set the click listener
-        participantView.setOnClickListener(mOnParticipantClickListener);
-        // Set the long click listener
-        participantView.setOnLongClickListener(mOnParticipantLongClickListener);
+        // Set the gesture detector
+        final GestureDetector gdt = new GestureDetector(new MyGestureDetector(participantView));
+        participantView.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                gdt.onTouchEvent(event);
+                return true;
+            }
+        });
 
         // Create and add the participant to the List
         mParticipants.add(createFakeParticipant(numAddedParticipants));
@@ -322,63 +323,8 @@ public class ModerationActivity extends Activity {
     private View.OnClickListener mOnModeratorClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // Re-starts or pauses the timer for the debate
             Toast.makeText(context,"The timer for the debate starts", Toast.LENGTH_SHORT).show();
             startTimer(DEBATE_TOTAL_TIME_TIMER);
-        }
-    };
-
-
-    /**
-     * Give the turn to a participant or puts their in the waiting list
-     */
-    private View.OnClickListener mOnParticipantClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Participant clickedParticipant = mParticipants.get((int) v.getTag());
-            ParticipantID clickParticipantID = clickedParticipant.getId();
-
-            // No one is talking
-            if (mCurrentParticipant == null) {
-                if (isTheWaitingListEmpty()) {
-                    assignSpeakingTurn(clickedParticipant);
-                } else {
-                    if (isTheParticipantIdInTheWaitingList(clickParticipantID)) {
-                        removeFromWaitingList((ParticipantView)v);
-                        assignSpeakingTurn(clickedParticipant);
-                    } else{
-                        putInWaitingList((ParticipantView)v);
-                    }
-                }
-            } else { // Someone talks
-                if (isTheParticipantTalking(clickParticipantID)) { // Clicked on talking person
-                    // TODO Show statistics?
-                } else { // clicked on someone else
-                    if (!isTheParticipantIdInTheWaitingList(clickParticipantID)) {
-                        putInWaitingList((ParticipantView)v);
-                    }
-                }
-            }
-        }
-    };
-
-    /**
-     * Takes the turn from the speaking Participant or removes it from the waiting list
-     */
-    private View.OnLongClickListener mOnParticipantLongClickListener = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            Participant clickedParticipant = mParticipants.get((int) v.getTag());
-            ParticipantID clickParticipantID = clickedParticipant.getId();
-
-            if (isTheParticipantTalking(clickParticipantID)) { // Clicked on talking person
-                participantFinishedTheirIntervention();
-            } else {
-                if (isTheParticipantIdInTheWaitingList(clickParticipantID)) {
-                    removeFromWaitingList((ParticipantView)v);
-                }
-            }
-            return true;
         }
     };
 
@@ -599,5 +545,85 @@ public class ModerationActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    ///////////////////////////////////////////////////////////
+    // MY GESTURE DETECTOR CLASS
+    ///////////////////////////////////////////////////////////
+
+    private class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
+
+        ParticipantView mTouchedParticipantView;
+
+        public MyGestureDetector(ParticipantView tpv){
+            mTouchedParticipantView = tpv;
+        }
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+
+            return true;
+        }
+
+        /**
+         * Takes the turn from the speaking Participant or removes it from the waiting list
+         */
+        @Override
+        public void onLongPress(MotionEvent event) {
+            Participant clickedParticipant = mParticipants.get((int) mTouchedParticipantView.getTag());
+            ParticipantID clickParticipantID = clickedParticipant.getId();
+
+            if (isTheParticipantTalking(clickParticipantID)) { // Clicked on talking person
+                participantFinishedTheirIntervention();
+            } else {
+                if (isTheParticipantIdInTheWaitingList(clickParticipantID)) {
+                    removeFromWaitingList((ParticipantView) mTouchedParticipantView);
+                }
+            }
+        }
+
+        // event when double tap occurs
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            float x = e.getX();
+            float y = e.getY();
+
+            Log.d("Double Tap", "Tapped at: (" + x + "," + y + ")");
+
+            return true;
+        }
+
+        /**
+         * Give the turn to a participant or puts their in the waiting list
+         */
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent event) {
+            Log.d("", "onSingleTapConfirmed: " + event.toString());
+            Participant clickedParticipant = mParticipants.get((int) mTouchedParticipantView.getTag());
+            ParticipantID clickParticipantID = clickedParticipant.getId();
+
+            // No one is talking
+            if (mCurrentParticipant == null) {
+                if (isTheWaitingListEmpty()) {
+                    assignSpeakingTurn(clickedParticipant);
+                } else {
+                    if (isTheParticipantIdInTheWaitingList(clickParticipantID)) {
+                        removeFromWaitingList((ParticipantView) mTouchedParticipantView);
+                        assignSpeakingTurn(clickedParticipant);
+                    } else {
+                        putInWaitingList((ParticipantView) mTouchedParticipantView);
+                    }
+                }
+            } else { // Someone talks
+                if (isTheParticipantTalking(clickParticipantID)) { // Clicked on talking person
+                    // TODO Show statistics?
+                } else { // clicked on someone else
+                    if (!isTheParticipantIdInTheWaitingList(clickParticipantID)) {
+                        putInWaitingList((ParticipantView) mTouchedParticipantView);
+                    }
+                }
+            }
+            return false;
+        }
     }
 }
