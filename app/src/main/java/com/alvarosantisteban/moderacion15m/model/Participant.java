@@ -74,4 +74,9 @@ public class Participant {
         return mTotalInterventionsSecs;
     }
 
+    @Override
+    public String toString() {
+        return mId.toString();
+    }
+
 }
