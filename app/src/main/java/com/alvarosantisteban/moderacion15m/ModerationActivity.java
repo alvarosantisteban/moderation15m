@@ -408,7 +408,7 @@ public class ModerationActivity extends Activity {
                     public void run() {
 
                         // Reset the view
-                        resetParticipantView();
+                        resetParticipantView(mIdAndViewHashMap.get(mCurrentParticipant.getId()));
                         Toast.makeText(context, "The " + mParticipantTimeLimit + " seconds went through", Toast.LENGTH_SHORT).show();
 
                         mCurrentParticipant = null;
@@ -493,7 +493,7 @@ public class ModerationActivity extends Activity {
         Toast.makeText(context, "The participant number " + mCurrentParticipant.toString() + " finished their intervention", Toast.LENGTH_SHORT).show();
 
         // Reset the view
-        resetParticipantView();
+        resetParticipantView(mIdAndViewHashMap.get(mCurrentParticipant.getId()));
 
         mCurrentParticipant = null;
     }
@@ -520,15 +520,13 @@ public class ModerationActivity extends Activity {
     /**
      * Removes the participant from the waiting list
      *
-     * @param participant the ParticipantView to be removed from the waiting list
+     * @param participantView the ParticipantView to be removed from the waiting list
      */
-    private void removeFromWaitingList(ParticipantView participant) {
+    private void removeFromWaitingList(ParticipantView participantView) {
         // Update the view of the participant that is about to be removed
-        participant.setWaitingListPos("");
-        participant.hideWaitingListPos();
-        // TODO Change color of the image back to default
+        resetParticipantView(participantView);
 
-        mWaitingList.remove(participant);
+        mWaitingList.remove(participantView);
         Toast.makeText(context, "Participant removed from the waiting list. There are " + mWaitingList.size() + " persons waiting", Toast.LENGTH_SHORT).show();
 
         // Update the waiting list
@@ -557,8 +555,7 @@ public class ModerationActivity extends Activity {
     /**
      * Resets and hides the position of the waiting list from the ParticipantView of the currentParticipant
      */
-    private void resetParticipantView() {
-        ParticipantView pView = mIdAndViewHashMap.get(mCurrentParticipant.getId());
+    private void resetParticipantView(ParticipantView pView) {
         pView.setWaitingListPos("");
         pView.hideWaitingListPos();
 
