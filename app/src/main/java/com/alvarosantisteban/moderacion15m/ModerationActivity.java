@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +27,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This activity allows the moderator to interact with the table of participants created.
@@ -60,7 +63,8 @@ public class ModerationActivity extends Activity {
     // A HasMap that connects the id and the ParticipantView
     Map<ParticipantID, ParticipantView> mIdAndViewHashMap = new HashMap<ParticipantID, ParticipantView>();
 
-    private Handler mHandler = new Handler();
+    // The scheduler used as a timer for the interventions and the debate
+    ScheduledFuture mScheduleFuture;
 
     int mNumColumns;
     int mNumParticipants;
@@ -387,26 +391,33 @@ public class ModerationActivity extends Activity {
      */
     private Runnable mInterventionTimeEndedRunnable = new Runnable() {
         public void run() {
+            try {
+                // Make the device vibrate
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(DEVICE_VIBRATION_IN_MILLISECONDS);
 
-            // Make the device vibrate
-            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            v.vibrate(DEVICE_VIBRATION_IN_MILLISECONDS);
+                // Make the device beep
+                ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
+                toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 2000);
 
-            // Make the device beep
-            ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
-            toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 2000);
+                // Add the time of their intervention to their profile
+                mCurrentParticipant.addTime(mParticipantTimeLimit);
 
-            // Reset the view
-            resetParticipantView();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
-            Toast.makeText(context, "The " + mParticipantTimeLimit +" seconds went through", Toast.LENGTH_SHORT).show();
+                        // Reset the view
+                        resetParticipantView();
+                        Toast.makeText(context, "The " + mParticipantTimeLimit + " seconds went through", Toast.LENGTH_SHORT).show();
 
-            // Add the time of their intervention to their profile
-            mCurrentParticipant.addTime(mParticipantTimeLimit);
-
-            mCurrentParticipant = null;
-
-            // TODO Change color of the image back to default
+                        mCurrentParticipant = null;
+                    }
+                });
+            }catch (Exception e){
+                Log.e(TAG, "Error. Most likely due to the use of ScheduledExecutorService." );
+                e.printStackTrace();
+            }
         }
     };
 
@@ -415,9 +426,17 @@ public class ModerationActivity extends Activity {
      */
     private Runnable mDebateTimeEndedRunnable = new Runnable() {
         public void run() {
-
-            //
-            Toast.makeText(context, "The time for the debate ended", Toast.LENGTH_LONG).show();
+            try{
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "The time for the debate ended", Toast.LENGTH_LONG).show();
+                    }
+                });
+            } catch (Exception e) {
+                Log.e(TAG, "Error. Most likely due to the use of ScheduledExecutorService.");
+                e.printStackTrace();
+            }
         }
     };
 
@@ -425,14 +444,13 @@ public class ModerationActivity extends Activity {
      * Starts the timer
      */
     private void startTimer(int timerType) {
+        final ScheduledExecutorService mScheduledTaskExecutor = Executors.newScheduledThreadPool(1);
         switch (timerType){
             case PARTICIPANT_INTERVENTION_TIMER:
-                mHandler.removeCallbacks(mInterventionTimeEndedRunnable);
-                mHandler.postDelayed(mInterventionTimeEndedRunnable, mParticipantTimeLimit * 1000);
+                mScheduleFuture = mScheduledTaskExecutor.schedule(mInterventionTimeEndedRunnable, mParticipantTimeLimit, TimeUnit.SECONDS);
                 break;
             case DEBATE_TOTAL_TIME_TIMER:
-                mHandler.removeCallbacks(mDebateTimeEndedRunnable);
-                mHandler.postDelayed(mDebateTimeEndedRunnable, mDebateTimeLimit * 1000);
+                mScheduleFuture = mScheduledTaskExecutor.schedule(mDebateTimeEndedRunnable, mDebateTimeLimit, TimeUnit.SECONDS);
                 break;
         }
     }
@@ -450,11 +468,10 @@ public class ModerationActivity extends Activity {
         mCurrentParticipant = participant;
         Toast.makeText(context, "Assign the speaking turn to participant number " + mCurrentParticipant.getId(), Toast.LENGTH_SHORT).show();
 
-        // TODO Change color of the image to "talking status"
-
         ParticipantView pView = mIdAndViewHashMap.get(participant.getId());
         pView.setWaitingListPos("X");
         pView.showWaitingListPos();
+        // TODO Change color of the image to "talking status"
 
         startTimer(PARTICIPANT_INTERVENTION_TIMER);
 
@@ -466,20 +483,15 @@ public class ModerationActivity extends Activity {
      * first person in the waiting list
      */
     private void participantFinishedTheirIntervention() {
-        mHandler.removeCallbacks(mInterventionTimeEndedRunnable);
+        // Cancel the timer
+        mScheduleFuture.cancel(true);
+
         Toast.makeText(context, "The participant number " + mCurrentParticipant.toString() + " finished their intervention", Toast.LENGTH_SHORT).show();
 
         // Reset the view
         resetParticipantView();
 
-        // TODO Add the time of their intervention to their profile
-        // mCurrentParticipant.addTime(remainingTimeFromTimer - PARTICIPANT_INTERVENTION_TIMER);
-
         mCurrentParticipant = null;
-
-        // TODO Change color of the image back to default
-
-        // TODO Change color of the first person in the waiting list to "blinking status"
     }
 
     ///////////////////////////////////////////////////////////
@@ -510,11 +522,10 @@ public class ModerationActivity extends Activity {
         // Update the view of the participant that is about to be removed
         participant.setWaitingListPos("");
         participant.hideWaitingListPos();
+        // TODO Change color of the image back to default
 
         mWaitingList.remove(participant);
         Toast.makeText(context, "Participant removed from the waiting list. There are " + mWaitingList.size() + " persons waiting", Toast.LENGTH_SHORT).show();
-
-        // TODO Change color of the image back to default
 
         // Update the waiting list
         updateWaitingListView();
@@ -546,6 +557,10 @@ public class ModerationActivity extends Activity {
         ParticipantView pView = mIdAndViewHashMap.get(mCurrentParticipant.getId());
         pView.setWaitingListPos("");
         pView.hideWaitingListPos();
+
+        // TODO Change color of the image back to default
+
+        // TODO Change color of the first person in the waiting list to "blinking status"
     }
 
     /**
