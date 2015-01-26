@@ -393,7 +393,12 @@ public class ModerationActivity extends Activity {
 
             // Reset the view
             resetParticipantView();
-            Toast.makeText(context, "The 5 seconds went through", Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(context, "The " + mParticipantTimeLimit +" seconds went through", Toast.LENGTH_SHORT).show();
+
+            // Add the time of their intervention to their profile
+            mCurrentParticipant.addTime(mParticipantTimeLimit);
+
             mCurrentParticipant = null;
 
             // TODO Change color of the image back to default
