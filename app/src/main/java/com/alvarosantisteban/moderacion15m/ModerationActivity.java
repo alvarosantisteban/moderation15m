@@ -423,8 +423,6 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         // TODO Change color of the image to "talking status"
 
         startTimer(PARTICIPANT_INTERVENTION_TIMER);
-
-        Log.d(TAG, "-------------------- INTERVENTIONS: " +mCurrentParticipant.getNumInterventions() +"---- SECS: " +mCurrentParticipant.getTotalInterventionsSecs());
     }
 
     /**
@@ -554,10 +552,16 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
     // POPUP / DIALOG IMPLEMENTATION
     ///////////////////////////////////////////////////////////
 
-    public void showNoticeDialog(Participant participant) {
+    /**
+     * Creates and shows a ParticipantStatisticsDialogFragment with the statistics of the participant and allowing to
+     * change the name of their.
+     * @param participant the participant whose name can be changed and statistics seen.
+     */
+    public void showParticipantStatisticsDialog(Participant participant) {
         // Create an instance of the dialog fragment and show it
         ParticipantStatisticsDialogFragment dialog = new ParticipantStatisticsDialogFragment();
 
+        // Give the dialog the reference to the Participant
         Bundle args = new Bundle();
         args.putParcelable(Constants.KEY_ARG_PARTICIPANT, participant);
         dialog.setArguments(args);
@@ -565,6 +569,10 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         dialog.show(getSupportFragmentManager(), "ParticipantStatisticsDialogFragment");
     }
 
+    /**
+     * Changes the name of the double clicked participant mEditedParticipant to the one set by the user in the dialog
+     * @param dialogFragment the fragment containing the EditText with the new name for the participant
+     */
     @Override
     public void onDialogPositiveClick(DialogFragment dialogFragment) {
         Dialog dialog = dialogFragment.getDialog();
@@ -578,8 +586,12 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
     // MY GESTURE DETECTOR CLASS
     ///////////////////////////////////////////////////////////
 
+    /**
+     * Small class to handle the click, long click and double click of the participantViews
+     */
     private class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
 
+        // The ParticipantView that was touched
         ParticipantView mTouchedParticipantView;
 
         public MyGestureDetector(ParticipantView tpv){
@@ -588,7 +600,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
 
         @Override
         public boolean onDown(MotionEvent e) {
-
+            // Needs to return true for the other methods to work
             return true;
         }
 
@@ -609,19 +621,16 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
             }
         }
 
-        // event when double tap occurs
+        /**
+         *  Opens a ParticipantStatisticsDialog
+          */
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            float x = e.getX();
-            float y = e.getY();
-
-            Log.d("Double Tap", "Tapped at: (" + x + "," + y + ")");
-
             // Mark the participant as the edited one
             mEditedParticipantView = mTouchedParticipantView;
             mEditedParticipant = mParticipants.get((int) mTouchedParticipantView.getTag());
 
-            showNoticeDialog(mEditedParticipant);
+            showParticipantStatisticsDialog(mEditedParticipant);
             return true;
         }
 
@@ -630,7 +639,6 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
          */
         @Override
         public boolean onSingleTapConfirmed(MotionEvent event) {
-            Log.d("", "onSingleTapConfirmed: " + event.toString());
             Participant clickedParticipant = mParticipants.get((int) mTouchedParticipantView.getTag());
             ParticipantID clickParticipantID = clickedParticipant.getId();
 
