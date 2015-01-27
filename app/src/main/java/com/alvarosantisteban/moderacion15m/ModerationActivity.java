@@ -455,7 +455,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
      * @param participant the ParticipantView to be put in the waiting list
      */
     private void putInWaitingList(ParticipantView participant) {
-        Toast.makeText(context, "Participant added to the waiting list. Their had " + mWaitingList.size() + " persons ahead", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, participant.getParticipantName() +" added to the waiting list. Their had " + mWaitingList.size() + " persons ahead", Toast.LENGTH_SHORT).show();
         mWaitingList.add(participant);
 
         // TODO Change color of the image to "waiting status"
@@ -474,7 +474,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         resetParticipantView(participantView);
 
         mWaitingList.remove(participantView);
-        Toast.makeText(context, "Participant removed from the waiting list. There are " + mWaitingList.size() + " persons waiting", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, participantView.getParticipantName() +" removed from the waiting list. There are " + mWaitingList.size() + " persons waiting", Toast.LENGTH_SHORT).show();
 
         // Update the waiting list
         updateWaitingListView();

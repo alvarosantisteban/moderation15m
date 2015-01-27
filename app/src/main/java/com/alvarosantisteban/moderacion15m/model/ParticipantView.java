@@ -64,6 +64,10 @@ public class ParticipantView extends RelativeLayout {
         mParticipantImage = (ImageView) v.findViewById(R.id.participant_image);
     }
 
+    public String getParticipantName() {
+        return mParticipantName.getText().toString();
+    }
+
     public void setParticipantName(String participantName){
         mParticipantName.setText(participantName);
     }
