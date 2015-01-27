@@ -22,9 +22,6 @@ def buildTime() {
     return new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
 }
 
-dependencies {
-    compile 'com.android.support:support-v4:21.+'
-}
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
@@ -59,5 +56,6 @@ android {
     dependencies {
         compile fileTree(dir: 'libs', include: ['*.jar'])
         compile 'com.android.support:appcompat-v7:21.0.0'
+        compile 'com.android.support:support-v4:21.+'
     }
 }
