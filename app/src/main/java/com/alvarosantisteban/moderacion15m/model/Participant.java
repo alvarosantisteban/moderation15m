@@ -9,7 +9,7 @@ import android.os.Parcelable;
 public class Participant implements Parcelable{
 
     private final ParticipantID mId;
-    private final String mName;
+    private String mName;
     private long mNumInterventions;
     private long mTotalInterventionsSecs;
     private final boolean mIsWoman;
@@ -78,6 +78,10 @@ public class Participant implements Parcelable{
     }
 
     public String getName(){ return mName; }
+
+    public void setName(String newName) {
+        mName = newName;
+    }
 
     @Override
     public String toString() {
