@@ -1,5 +1,6 @@
 package com.alvarosantisteban.moderacion15m;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -10,10 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.*;
-import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.alvarosantisteban.moderacion15m.model.Participant;
 import com.alvarosantisteban.moderacion15m.model.ParticipantID;
@@ -55,6 +53,10 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
     List<Participant> mParticipants = new ArrayList<Participant>();
     // The participant currently talking
     Participant mCurrentParticipant;
+    // The participant currently being edited
+    Participant mEditedParticipant;
+    // The ParticipantView currently being edited
+    ParticipantView mEditedParticipantView;
 
     // The waiting list of Participants identified by their ids
     List<ParticipantView> mWaitingList = new ArrayList<ParticipantView>();
@@ -565,6 +567,11 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialogFragment) {
+        Dialog dialog = dialogFragment.getDialog();
+        EditText inputTemp = (EditText) dialog.findViewById(R.id.participant_popup_name_editText);
+        String newName = inputTemp.getText().toString();
+        mEditedParticipant.setName(newName);
+        mEditedParticipantView.setParticipantName(newName);
     }
 
     ///////////////////////////////////////////////////////////
@@ -609,7 +616,12 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
             float y = e.getY();
 
             Log.d("Double Tap", "Tapped at: (" + x + "," + y + ")");
-            showNoticeDialog(mParticipants.get((int) mTouchedParticipantView.getTag()));
+
+            // Mark the participant as the edited one
+            mEditedParticipantView = mTouchedParticipantView;
+            mEditedParticipant = mParticipants.get((int) mTouchedParticipantView.getTag());
+
+            showNoticeDialog(mEditedParticipant);
             return true;
         }
 
