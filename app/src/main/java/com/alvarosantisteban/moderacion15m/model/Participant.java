@@ -77,6 +77,8 @@ public class Participant implements Parcelable{
         return mTotalInterventionsSecs;
     }
 
+    public String getName(){ return mName; }
+
     @Override
     public String toString() {
         return mId.toString();

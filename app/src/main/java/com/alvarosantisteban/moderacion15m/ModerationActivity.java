@@ -552,9 +552,14 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
     // POPUP / DIALOG IMPLEMENTATION
     ///////////////////////////////////////////////////////////
 
-    public void showNoticeDialog() {
+    public void showNoticeDialog(Participant participant) {
         // Create an instance of the dialog fragment and show it
-        DialogFragment dialog = new ParticipantStatisticsDialogFragment();
+        ParticipantStatisticsDialogFragment dialog = new ParticipantStatisticsDialogFragment();
+
+        Bundle args = new Bundle();
+        args.putParcelable(Constants.KEY_ARG_PARTICIPANT, participant);
+        dialog.setArguments(args);
+
         dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
     }
 
@@ -610,7 +615,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
             float y = e.getY();
 
             Log.d("Double Tap", "Tapped at: (" + x + "," + y + ")");
-            showNoticeDialog();
+            showNoticeDialog(mParticipants.get((int) mTouchedParticipantView.getTag()));
             return true;
         }
 

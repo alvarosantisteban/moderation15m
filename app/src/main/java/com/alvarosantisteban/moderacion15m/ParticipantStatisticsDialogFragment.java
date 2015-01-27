@@ -3,26 +3,40 @@ package com.alvarosantisteban.moderacion15m;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.alvarosantisteban.moderacion15m.model.Participant;
+import com.alvarosantisteban.moderacion15m.util.Constants;
 
 /**
  *
  */
 public class ParticipantStatisticsDialogFragment extends android.support.v4.app.DialogFragment {
 
+    private static final String TAG = "ParticipantStatisticsDialogFragment";
+
     /* The activity that creates an instance of this dialog fragment must
-     * implement this interface in order to receive event callbacks.
-     * Each method passes the DialogFragment in case the host needs to query it. */
+             * implement this interface in order to receive event callbacks.
+             * Each method passes the DialogFragment in case the host needs to query it. */
     public interface NoticeDialogListener {
         public void onDialogPositiveClick(DialogFragment dialog);
 
         public void onDialogNegativeClick(DialogFragment dialog);
     }
 
+    private Participant mParticipant;
+
     // Use this instance of the interface to deliver action events
     NoticeDialogListener mListener;
+
+    EditText mNameEditText;
+    TextView mNumInterventions;
+    TextView mTotalTimeInterventions;
 
     // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
     @Override
@@ -43,7 +57,26 @@ public class ParticipantStatisticsDialogFragment extends android.support.v4.app.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout to use as dialog or embedded fragment
-        return inflater.inflate(R.layout.participant_popup, container, false);
+        View view = inflater.inflate(R.layout.participant_popup, container, false);
+
+        mNameEditText = (EditText) view.findViewById(R.id.participant_popup_name_editText);
+        mNumInterventions = (TextView) view.findViewById(R.id.participant_popup_numInterventions_text);
+        mTotalTimeInterventions = (TextView) view.findViewById(R.id.participant_popup_timeInterventions_text);
+
+        return view;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            mParticipant = getArguments() != null ? (Participant) getArguments().getParcelable(Constants.KEY_ARG_PARTICIPANT) : null;
+            if (mParticipant != null) {
+                mNameEditText.setText(mParticipant.getName());
+                mNumInterventions.setText(String.valueOf(mParticipant.getNumInterventions()));
+                mTotalTimeInterventions.setText(String.valueOf(mParticipant.getTotalInterventionsSecs()));
+            }
+        }
+    }
 }
