@@ -1,12 +1,14 @@
 package com.alvarosantisteban.moderacion15m;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -38,16 +40,46 @@ public class ParticipantStatisticsDialogFragment extends android.support.v4.app.
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout to use as dialog or embedded fragment
-        View view = inflater.inflate(R.layout.participant_popup, container, false);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        // Get the layout inflater
+        LayoutInflater inflater = getActivity().getLayoutInflater();
 
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        View view = inflater.inflate(R.layout.participant_popup, null);
         mNameEditText = (EditText) view.findViewById(R.id.participant_popup_name_editText);
         mNumInterventions = (TextView) view.findViewById(R.id.participant_popup_numInterventions_text);
         mTotalTimeInterventions = (TextView) view.findViewById(R.id.participant_popup_timeInterventions_text);
 
-        return view;
+        mParticipant = getArguments() != null ? (Participant) getArguments().getParcelable(Constants.KEY_ARG_PARTICIPANT) : null;
+        if (mParticipant != null) {
+            mNameEditText.setText(mParticipant.getName());
+            mNumInterventions.setText(String.valueOf(mParticipant.getNumInterventions()));
+            mTotalTimeInterventions.setText(String.valueOf(mParticipant.getTotalInterventionsSecs()));
+        }
+
+        builder.setTitle("Participant statistics")
+                .setView(view)
+
+                // Add action buttons
+                .setPositiveButton(R.string.participant_popup_change_name, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int id) {
+                        // Change the name
+                        Log.d(TAG, "onClick positive");
+                        mListener.onDialogPositiveClick(ParticipantStatisticsDialogFragment.this);
+                    }
+                })
+                .setNegativeButton(R.string.participant_popup_cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.d(TAG, "onClick negative");
+                        ParticipantStatisticsDialogFragment.this.getDialog().cancel();
+                    }
+                });
+
+        Log.d(TAG, "onCreateDialog");
+        return builder.create();
     }
 
 
@@ -63,16 +95,6 @@ public class ParticipantStatisticsDialogFragment extends android.support.v4.app.
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()
                     + " must implement ParticipantStatisticsDialogListener");
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        FragmentActivity activity = getActivity();
-        if (activity != null) {
-            mParticipant = getArguments() != null ? (Participant) getArguments().getParcelable(Constants.KEY_ARG_PARTICIPANT) : null;
-            if (mParticipant != null) {
-                mNameEditText.setText(mParticipant.getName());
-                mNumInterventions.setText(String.valueOf(mParticipant.getNumInterventions()));
-                mTotalTimeInterventions.setText(String.valueOf(mParticipant.getTotalInterventionsSecs()));
-            }
         }
         Log.d(TAG, "onAttach");
     }
