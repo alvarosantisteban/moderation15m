@@ -293,8 +293,6 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         // Get the height of the window
         int windowHeight = Utils.getWindowHeight(this);
 
-        //TODO Control if the navigation bar is at the right side, instead of the bottom
-
         // Subtract to the windows height the different bars
         windowHeight = windowHeight
                 -Utils.getActionBarHeight(this)
