@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  * This activity allows the moderator to interact with the table of participants created.
  * @author Alvaro Santisteban 13.11.14 - alvarosantisteban@gmail.com
  */
-public class ModerationActivity extends FragmentActivity implements ParticipantStatisticsDialogFragment.NoticeDialogListener{
+public class ModerationActivity extends FragmentActivity implements ParticipantStatisticsDialogFragment.ParticipantStatisticsDialogListener{
 
     private static final String TAG = "ModerationActivity";
 
@@ -560,17 +560,11 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         args.putParcelable(Constants.KEY_ARG_PARTICIPANT, participant);
         dialog.setArguments(args);
 
-        dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
+        dialog.show(getSupportFragmentManager(), "ParticipantStatisticsDialogFragment");
     }
 
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-
+    public void onDialogPositiveClick(DialogFragment dialogFragment) {
     }
 
     ///////////////////////////////////////////////////////////
