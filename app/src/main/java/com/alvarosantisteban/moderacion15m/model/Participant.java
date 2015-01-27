@@ -85,7 +85,7 @@ public class Participant implements Parcelable{
 
     @Override
     public String toString() {
-        return mId.toString();
+        return mName;
     }
 
     ///////////////////////////////////////////////////////////

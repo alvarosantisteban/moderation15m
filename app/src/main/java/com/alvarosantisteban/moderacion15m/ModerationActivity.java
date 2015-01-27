@@ -415,7 +415,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
      */
     private void assignSpeakingTurn(Participant participant) {
         mCurrentParticipant = participant;
-        Toast.makeText(context, "Assign the speaking turn to participant number " + mCurrentParticipant.getId(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Assign the speaking turn to " + mCurrentParticipant.toString(), Toast.LENGTH_SHORT).show();
 
         ParticipantView pView = mIdAndViewHashMap.get(participant.getId());
         pView.setWaitingListPos("X");
@@ -437,7 +437,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         // Cancel the timer
         mScheduleFuture.cancel(true);
 
-        Toast.makeText(context, "The participant number " + mCurrentParticipant.toString() + " finished their intervention", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, mCurrentParticipant.toString() + " finished their intervention", Toast.LENGTH_SHORT).show();
 
         // Reset the view
         resetParticipantView(mIdAndViewHashMap.get(mCurrentParticipant.getId()));
