@@ -12,8 +12,12 @@ import com.alvarosantisteban.moderacion15m.model.ResultsListAdapter;
 import com.alvarosantisteban.moderacion15m.util.Constants;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ResultsActivity extends Activity {
+
+    ArrayList<Participant> mParticipants;
 
     ListView mParticipantsListView;
     ArrayAdapter<Participant> mListAdapter;
@@ -25,10 +29,49 @@ public class ResultsActivity extends Activity {
 
         mParticipantsListView = (ListView) findViewById(R.id.results_list);
 
-        ArrayList<Participant> participants = getIntent().getParcelableArrayListExtra(Constants.EXTRA_LIST_PARTICIPANTS);
+        mParticipants = getIntent().getParcelableArrayListExtra(Constants.EXTRA_LIST_PARTICIPANTS);
+        orderListByNumInterventions();
+        //orderListAlphabetically();
+        //orderListByTimeOfInterventions();
 
-        mListAdapter = new ResultsListAdapter(this, R.layout.list_item_results, participants);
+        mListAdapter = new ResultsListAdapter(this, R.layout.list_item_results, mParticipants);
         mParticipantsListView.setAdapter(mListAdapter);
+    }
+
+    /**
+     * Order the list mParticipants by the number of interventions of each Participant
+     */
+    public void orderListByNumInterventions(){
+        Collections.sort(mParticipants, new Comparator<Participant>() {
+            @Override
+            public int compare(Participant participant1, Participant participant2) {
+                return ((Long)participant2.getNumInterventions()).compareTo(participant1.getNumInterventions());
+            }
+        });
+    }
+
+    /**
+     * Order the list mParticipants by the total time of interventions of each Participant
+     */
+    public void orderListByTimeOfInterventions() {
+        Collections.sort(mParticipants, new Comparator<Participant>() {
+            @Override
+            public int compare(Participant participant1, Participant participant2) {
+                return ((Long) participant2.getTotalInterventionsSecs()).compareTo(participant1.getTotalInterventionsSecs());
+            }
+        });
+    }
+
+    /**
+     * Order the list mParticipants alphabetically using the name of each Participant
+     */
+    public void orderListAlphabetically() {
+        Collections.sort(mParticipants, new Comparator<Participant>() {
+            @Override
+            public int compare(Participant participant1, Participant participant2) {
+                return participant1.getName().compareToIgnoreCase(participant2.getName());
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////
