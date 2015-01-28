@@ -254,7 +254,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         });
 
         // Create and add the participant to the List
-        mParticipants.add(createFakeParticipant(numAddedParticipants));
+        mParticipants.add(createParticipant(numAddedParticipants));
 
         // Add it to the Hashmap
         mIdAndViewHashMap.put(new ParticipantID(numAddedParticipants), participantView);
@@ -310,7 +310,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
      * @param num the position of the Participant in the list of participants
      * @return the created Participant
      */
-    private Participant createFakeParticipant(int num) {
+    private Participant createParticipant(int num) {
         return new Participant.Builder(new ParticipantID(num)).name("Num"+num).build();
     }
 
