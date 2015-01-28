@@ -74,6 +74,8 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
     private int mParticipantTimeLimit;
     // The maximum number of seconds that the debate can last
     private int mDebateTimeLimit;
+    private boolean mDebateHasStarted = false;
+    private boolean mDebateHasEnded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -324,8 +326,13 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
     private View.OnClickListener mOnModeratorClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(context,"The timer for the debate starts", Toast.LENGTH_SHORT).show();
-            startTimer(DEBATE_TOTAL_TIME_TIMER);
+            if (mDebateHasEnded) {
+                Intent goToResultsIntent = new Intent(context, ResultsActivity.class);
+                goToResultsIntent.putExtra(Constants.EXTRA_LIST_PARTICIPANTS, (ArrayList) mParticipants);
+                startActivity(goToResultsIntent);
+            } else if (!mDebateHasStarted) {
+                startTimer(DEBATE_TOTAL_TIME_TIMER);
+            }
         }
     };
 
@@ -373,6 +380,8 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
      */
     private Runnable mDebateTimeEndedRunnable = new Runnable() {
         public void run() {
+            mDebateHasEnded = true;
+            mDebateHasStarted = false;
             try{
                 runOnUiThread(new Runnable() {
                     @Override
@@ -380,9 +389,6 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
                         Toast.makeText(context, "The time for the debate ended", Toast.LENGTH_LONG).show();
                     }
                 });
-                Intent goToResultsIntent = new Intent(context, ResultsActivity.class);
-                goToResultsIntent.putExtra(Constants.EXTRA_LIST_PARTICIPANTS, (ArrayList)mParticipants);
-                startActivity(goToResultsIntent);
             } catch (Exception e) {
                 Log.e(TAG, "Error. Most likely due to the use of ScheduledExecutorService.");
                 e.printStackTrace();
@@ -400,7 +406,9 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
                 mScheduleFuture = mScheduledTaskExecutor.schedule(mInterventionTimeEndedRunnable, mParticipantTimeLimit, TimeUnit.SECONDS);
                 break;
             case DEBATE_TOTAL_TIME_TIMER:
+                Toast.makeText(context, "The timer for the debate starts", Toast.LENGTH_SHORT).show();
                 mScheduleFuture = mScheduledTaskExecutor.schedule(mDebateTimeEndedRunnable, mDebateTimeLimit, TimeUnit.SECONDS);
+                mDebateHasStarted = true;
                 break;
         }
     }
