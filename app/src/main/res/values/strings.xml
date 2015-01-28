@@ -15,16 +15,13 @@
     <string name="main_maximum_time_intervention">Maximum number of minutes of each intervention</string>
     <string name="main_total_time_debate">Duration of the debate (minutes)</string>
 
-
-    <!--> Popup Participant <!-->
+    <!-- > Popup Participant <! -->
     <string name="participant_popup_title">Participant statistics</string>
     <string name="participant_popup_change_name">Change name</string>
     <string name="participant_popup_cancel">Cancel</string>
     <string name="participant_popup_numInterventions_tag">Number of interventions</string>
     <string name="participant_popup_timeInterventions_tag">Time of interventions (seconds)</string>
-
-
-
-  <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_results">Results</string>
 
 </resources>

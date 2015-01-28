@@ -380,6 +380,9 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
                         Toast.makeText(context, "The time for the debate ended", Toast.LENGTH_LONG).show();
                     }
                 });
+                Intent goToResultsIntent = new Intent(context, ResultsActivity.class);
+                goToResultsIntent.putExtra(Constants.EXTRA_LIST_PARTICIPANTS, (ArrayList)mParticipants);
+                startActivity(goToResultsIntent);
             } catch (Exception e) {
                 Log.e(TAG, "Error. Most likely due to the use of ScheduledExecutorService.");
                 e.printStackTrace();
@@ -403,7 +406,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
     }
 
     ///////////////////////////////////////////////////////////
-    // CURRENT PARTICIPANT RELATED
+    // CURRENT-PARTICIPANT RELATED
     ///////////////////////////////////////////////////////////
 
     /**
