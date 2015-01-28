@@ -14,4 +14,9 @@
   <!-- Participant View -->
   <dimen name="participant_waitingPos_padding_right">0dp</dimen>
 
+  <!-- List Item -->
+  <dimen name="list_item_padding_bottom">10dp</dimen>
+  <dimen name="list_item_padding_right">10dp</dimen>
+  <dimen name="list_item_text_size">25dp</dimen>
+
 </resources>

@@ -8,22 +8,20 @@
 
    <TextView
      android:id="@+id/list_item_results_name"
-     android:layout_width="wrap_content"
-     android:layout_height="match_parent"
+     style="@style/TextResultStatistic"
+     android:textStyle="bold"
      tools:background="@color/material_deep_teal_500"
      tools:text="Nombre"/>
 
    <TextView
     android:id="@+id/list_item_results_num_interventions"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    style="@style/TextResultStatistic"
     tools:background="@color/material_blue_grey_800"
     tools:text="Num intervenciones"/>
 
    <TextView
     android:id="@+id/list_item_results_time_interventions"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    style="@style/TextResultStatistic"
     tools:background="@color/material_deep_teal_200"
     tools:text="Num minutos"/>
 </LinearLayout>
