@@ -311,7 +311,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
      * @return the created Participant
      */
     private Participant createFakeParticipant(int num) {
-        return new Participant.Builder(new ParticipantID(num)).name("Num "+num).build();
+        return new Participant.Builder(new ParticipantID(num)).name("Num"+num).build();
     }
 
     ///////////////////////////////////////////////////////////
