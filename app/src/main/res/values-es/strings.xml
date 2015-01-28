@@ -20,4 +20,8 @@
   <string name="participant_popup_cancel">Cancelar</string>
   <string name="participant_popup_numInterventions_tag">Número de intervenciones</string>
   <string name="participant_popup_timeInterventions_tag">Tiempo de las intervenciones (segundos)</string>
+
+  <!-- > Results Activity <! -->
+  <string name="title_activity_results">Resultados</string>
+  <string name="results_name">Nombre</string>
 </resources>
