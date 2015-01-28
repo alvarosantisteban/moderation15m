@@ -76,8 +76,8 @@ public class ParticipantView extends RelativeLayout {
         mPosWaitingList.setText(participantPos);
     }
 
-    public void setParticipantImage(){
-        //TODO
+    public void setParticipantImage(int imageResource){
+        mParticipantImage.setImageResource(imageResource);
     }
 
     public void showWaitingListPos(){

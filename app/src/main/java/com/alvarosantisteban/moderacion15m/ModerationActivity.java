@@ -407,7 +407,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
     ///////////////////////////////////////////////////////////
 
     /**
-     * Gives the turn to the participant passed by parameter and starts the timer
+     * Gives the turn to the participant passed by parameter and starts the timer. Changes its image to speaking.
      *
      * @param participant the participant that will receive the speaking turn
      */
@@ -418,7 +418,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         ParticipantView pView = mIdAndViewHashMap.get(participant.getId());
         pView.setWaitingListPos("X");
         pView.showWaitingListPos();
-        // TODO Change color of the image to "talking status"
+        pView.setParticipantImage(R.drawable.btn_participantspeaking_normal);
 
         startTimer(PARTICIPANT_INTERVENTION_TIMER);
     }
@@ -448,7 +448,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
     ///////////////////////////////////////////////////////////
 
     /**
-     * Puts the participant in the waiting list
+     * Puts the participant in the waiting list and changes its image to waiting in list
      *
      * @param participant the ParticipantView to be put in the waiting list
      */
@@ -456,7 +456,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         Toast.makeText(context, participant.getParticipantName() +" added to the waiting list. Their had " + mWaitingList.size() + " persons ahead", Toast.LENGTH_SHORT).show();
         mWaitingList.add(participant);
 
-        // TODO Change color of the image to "waiting status"
+        participant.setParticipantImage(R.drawable.btn_participantwaiting_normal);
 
         // Update the waiting list
         updateWaitingListView();
@@ -498,15 +498,17 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
     }
 
     /**
-     * Resets and hides the position of the waiting list from the ParticipantView of the currentParticipant
+     * Resets and hides the position of the waiting list from the ParticipantView of the currentParticipant and changes
+     * its image to listening.
      */
     private void resetParticipantView(ParticipantView pView) {
         pView.setWaitingListPos("");
         pView.hideWaitingListPos();
 
-        // TODO Change color of the image back to default
+        pView.setParticipantImage(R.drawable.btn_participantlistening_normal);
 
         // TODO Change color of the first person in the waiting list to "blinking status"
+
     }
 
     /**
