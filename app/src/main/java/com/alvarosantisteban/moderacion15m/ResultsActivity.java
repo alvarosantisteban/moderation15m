@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.alvarosantisteban.moderacion15m.model.Participant;
+import com.alvarosantisteban.moderacion15m.model.ResultsListAdapter;
 import com.alvarosantisteban.moderacion15m.util.Constants;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class ResultsActivity extends Activity {
 
         ArrayList<Participant> participants = getIntent().getParcelableArrayListExtra(Constants.EXTRA_LIST_PARTICIPANTS);
 
-        mListAdapter = new ArrayAdapter<Participant>(this, android.R.layout.simple_list_item_1, participants);
+        mListAdapter = new ResultsListAdapter(this, R.layout.list_item_results, participants);
         mParticipantsListView.setAdapter(mListAdapter);
     }
 
