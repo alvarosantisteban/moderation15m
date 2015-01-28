@@ -17,6 +17,7 @@
 
 
     <!--> Popup Participant <!-->
+    <string name="participant_popup_title">Participant statistics</string>
     <string name="participant_popup_change_name">Change name</string>
     <string name="participant_popup_cancel">Cancel</string>
     <string name="participant_popup_numInterventions_tag">Number of interventions</string>

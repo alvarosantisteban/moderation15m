@@ -3,9 +3,21 @@
   <string name="app_name">Moderacion15M</string>
   <string name="hello_world">Participante</string>
   <string name="action_settings">Ajustes</string>
+
+  <!-- > Main Activity <! -->
   <string name="title_activity_main">Configuración</string>
   <string name="main_explanation">Escoge el número de columnas y el número total de participantes</string>
   <string name="main_num_columns">Número de columnas</string>
   <string name="main_num_participants">Número de participantes</string>
   <string name="main_button_create">Crear círculo</string>
+  <string name="main_activity_incorrect_params">El círculo no ha sido creado porque los parámetros son incorrectos</string>
+  <string name="main_maximum_time_intervention">Número máximo de minutos para cada intervención</string>
+  <string name="main_total_time_debate">Duración del debate (minutos)</string>
+
+  <!--> Popup Participant <!-->
+  <string name="participant_popup_title">Estadisticas del participante</string>
+  <string name="participant_popup_change_name">Cambiar nombre</string>
+  <string name="participant_popup_cancel">Cancelar</string>
+  <string name="participant_popup_numInterventions_tag">Número de intervenciones</string>
+  <string name="participant_popup_timeInterventions_tag">Tiempo de las intervenciones (segundos)</string>
 </resources>
