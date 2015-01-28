@@ -15,6 +15,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * This activity allows the moderator to see the statistical results of the Participants and order them alphabetically,
+ * by number of interventions or total time used in the interventions.
+ *
+ * @author Alvaro Santisteban 28.01.15 - alvarosantisteban@gmail.com
+ */
 public class ResultsActivity extends Activity {
 
     ArrayList<Participant> mParticipants;
