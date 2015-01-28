@@ -59,10 +59,10 @@ public class ParticipantStatisticsDialogFragment extends android.support.v4.app.
             mTotalTimeInterventions.setText(String.valueOf(mParticipant.getTotalInterventionsSecs()));
         }
 
-        builder.setTitle("Participant statistics")
+        builder.setTitle(R.string.participant_popup_title)
                 .setView(view)
 
-                // Add action buttons
+                        // Add action buttons
                 .setPositiveButton(R.string.participant_popup_change_name, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id) {
