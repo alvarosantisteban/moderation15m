@@ -3,7 +3,6 @@
 
     <string name="app_name">Moderacion15M</string>
     <string name="hello_world">Participant</string>
-    <string name="action_settings">Settings</string>
 
     <!-- > Main Activity <! -->
     <string name="title_activity_main">Configuration</string>
@@ -26,6 +25,10 @@
     <string name="title_activity_results">Results</string>
     <string name="results_name">Name</string>
 
+    <!-- > Menu <! -->
+    <string name="action_order_by_time">By time</string>
+    <string name="action_order_by_interventions">By Interventions</string>
+  <string name="action_order_alphabetically">Alphabetically</string>
 
   <string name="hello_blank_fragment">Hello blank fragment</string>
 

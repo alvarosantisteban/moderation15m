@@ -30,12 +30,12 @@ public class ResultsActivity extends Activity {
         mParticipantsListView = (ListView) findViewById(R.id.results_list);
 
         mParticipants = getIntent().getParcelableArrayListExtra(Constants.EXTRA_LIST_PARTICIPANTS);
-        orderListByNumInterventions();
-        //orderListAlphabetically();
-        //orderListByTimeOfInterventions();
 
         mListAdapter = new ResultsListAdapter(this, R.layout.list_item_results, mParticipants);
         mParticipantsListView.setAdapter(mListAdapter);
+
+        // Order the list by number of interventions
+        orderListByNumInterventions();
     }
 
     /**
@@ -48,6 +48,7 @@ public class ResultsActivity extends Activity {
                 return ((Long)participant2.getNumInterventions()).compareTo(participant1.getNumInterventions());
             }
         });
+        mListAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -60,6 +61,7 @@ public class ResultsActivity extends Activity {
                 return ((Long) participant2.getTotalInterventionsSecs()).compareTo(participant1.getTotalInterventionsSecs());
             }
         });
+        mListAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -72,6 +74,7 @@ public class ResultsActivity extends Activity {
                 return participant1.getName().compareToIgnoreCase(participant2.getName());
             }
         });
+        mListAdapter.notifyDataSetChanged();
     }
 
     ///////////////////////////////////////////////////////////
@@ -93,7 +96,14 @@ public class ResultsActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_order_by_interventions) {
+            orderListByNumInterventions();
+            return true;
+        } else if ( id == R.id.action_order_by_time) {
+            orderListByTimeOfInterventions();
+            return true;
+        } else if (id == R.id.action_order_alphabetically) {
+            orderListAlphabetically();
             return true;
         }
 

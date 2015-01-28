@@ -1,5 +1,21 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools" tools:context="com.alvarosantisteban.moderacion15m.ResultsActivity">
-  <item android:id="@+id/action_settings" android:title="@string/action_settings" android:orderInCategory="100"
-    app:showAsAction="never" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:context="com.alvarosantisteban.moderacion15m.ResultsActivity">
+
+  <item
+    android:id="@+id/action_order_by_time"
+    android:title="@string/action_order_by_time"
+    android:orderInCategory="100"
+    app:showAsAction="ifRoom" />
+  <item
+    android:id="@+id/action_order_by_interventions"
+    android:title="@string/action_order_by_interventions"
+    android:orderInCategory="100"
+    app:showAsAction="ifRoom" />
+  <item
+    android:id="@+id/action_order_alphabetically"
+    android:title="@string/action_order_alphabetically"
+    android:orderInCategory="100"
+    app:showAsAction="ifRoom" />
 </menu>
