@@ -35,11 +35,18 @@ public class InterventionTime implements Parcelable {
         return result;
     }
 
+    /**
+     * Returns a string with the following format:
+     * mm:ss
+     * where m = minutes and s = seconds
+     *
+     * @return the number of minutes and seconds of the intervention with the explained format.
+     */
     @Override
     public String toString() {
-        return String.format("%d:%d",
-                TimeUnit.MILLISECONDS.toMinutes(mNumSeconds),
-                TimeUnit.MILLISECONDS.toSeconds(mNumSeconds) -
+        return String.format("%02d:%02d",
+                TimeUnit.SECONDS.toMinutes(mNumSeconds),
+                TimeUnit.SECONDS.toSeconds(mNumSeconds) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(mNumSeconds))
         );
     }
