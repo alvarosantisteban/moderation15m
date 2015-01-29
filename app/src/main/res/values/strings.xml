@@ -19,7 +19,7 @@
     <string name="participant_popup_change_name">Change name</string>
     <string name="participant_popup_cancel">Cancel</string>
     <string name="participant_popup_numInterventions_tag">Number of interventions</string>
-    <string name="participant_popup_timeInterventions_tag">Time of interventions (seconds)</string>
+    <string name="participant_popup_timeInterventions_tag">Time of interventions</string>
 
     <!-- > Results Activity <! -->
     <string name="title_activity_results">Results</string>

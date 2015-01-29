@@ -11,7 +11,7 @@ public class Participant implements Parcelable{
     private final ParticipantID mId;
     private String mName;
     private long mNumInterventions;
-    private long mTotalInterventionsSecs;
+    private InterventionTime mInterventionsTime;
     private final boolean mIsWoman;
 
     public static class Builder{
@@ -21,7 +21,7 @@ public class Participant implements Parcelable{
         // Optional parameters - Initialized to default
         private String mName = "Participant";
         private long mNumInterventions = 0;
-        private long mTotalInterventionsSecs = 0;
+        private InterventionTime mInterventionsTime = new InterventionTime(0);
         private boolean mIsWoman = true;
 
         public Builder(ParticipantID theId){
@@ -38,8 +38,8 @@ public class Participant implements Parcelable{
             return this;
         }
 
-        public Builder totalInterventionsSecs(long totalSecs) {
-            mTotalInterventionsSecs = totalSecs;
+        public Builder totalInterventionsSecs(InterventionTime time) {
+            mInterventionsTime = time;
             return this;
         }
 
@@ -57,7 +57,7 @@ public class Participant implements Parcelable{
         this.mId = builder.mId;
         this.mName = builder.mName;
         this.mNumInterventions = builder.mNumInterventions;
-        this.mTotalInterventionsSecs = builder.mTotalInterventionsSecs;
+        this.mInterventionsTime = builder.mInterventionsTime;
         this.mIsWoman = builder.mIsWoman;
     }
 
@@ -65,17 +65,18 @@ public class Participant implements Parcelable{
         return mId;
     }
 
-    public void addTime(long timeToBeAdded) {
-        mTotalInterventionsSecs += timeToBeAdded;
-
+    public void addTime(long secondsToBeAdded) {
+        mInterventionsTime.addSeconds(secondsToBeAdded);
         mNumInterventions++;
     }
 
     public long getNumInterventions(){return mNumInterventions;}
 
     public long getTotalInterventionsSecs() {
-        return mTotalInterventionsSecs;
+        return mInterventionsTime.getNumSeconds();
     }
+
+    public InterventionTime getInterventionsTime(){ return mInterventionsTime; }
 
     public String getName(){ return mName; }
 
@@ -101,7 +102,7 @@ public class Participant implements Parcelable{
         mId = in.readParcelable(ParticipantID.class.getClassLoader());
         mName = in.readString();
         mNumInterventions = in.readLong();
-        mTotalInterventionsSecs = in.readLong();
+        mInterventionsTime = in.readParcelable(InterventionTime.class.getClassLoader());
         mIsWoman = in.readByte() != 0;
     }
 
@@ -110,7 +111,7 @@ public class Participant implements Parcelable{
         out.writeParcelable(mId, flags);
         out.writeString(mName);
         out.writeLong(mNumInterventions);
-        out.writeLong(mTotalInterventionsSecs);
+        out.writeParcelable(mInterventionsTime, flags);
         out.writeByte((byte) (mIsWoman ? 1 : 0));
     }
 

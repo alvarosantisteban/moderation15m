@@ -63,11 +63,11 @@ public class ResultsListAdapter extends ArrayAdapter<Participant> {
 
     protected void setViewContent(final Object abstractViewHolder, int position) {
         ViewHolder viewHolder = (ViewHolder) abstractViewHolder;
-        Participant item = mItems.get(position);
+        Participant participant = mItems.get(position);
 
-        viewHolder.name.setText(item.getName());
-        viewHolder.numInterventions.setText(String.valueOf(item.getNumInterventions()));
-        viewHolder.timeInterventions.setText(toString(item.getTotalInterventionsSecs()));
+        viewHolder.name.setText(participant.getName());
+        viewHolder.numInterventions.setText(String.valueOf(participant.getNumInterventions()));
+        viewHolder.timeInterventions.setText(participant.getInterventionsTime().toString());
     }
 
     protected void setResultsList(List<Participant> participants) {

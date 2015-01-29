@@ -55,7 +55,7 @@ public class ParticipantStatisticsDialogFragment extends android.support.v4.app.
         if (mParticipant != null) {
             mNameEditText.setText(mParticipant.getName());
             mNumInterventions.setText(String.valueOf(mParticipant.getNumInterventions()));
-            mTotalTimeInterventions.setText(String.valueOf(mParticipant.getTotalInterventionsSecs()));
+            mTotalTimeInterventions.setText(mParticipant.getInterventionsTime().toString());
         }
 
         builder.setTitle(R.string.participant_popup_title)

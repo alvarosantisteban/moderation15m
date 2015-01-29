@@ -51,6 +51,10 @@ public class InterventionTime implements Parcelable {
         );
     }
 
+    public void addSeconds(long secondsToBeAdded){
+        mNumSeconds += secondsToBeAdded;
+    }
+
     public long getNumSeconds(){
         return mNumSeconds;
     }
