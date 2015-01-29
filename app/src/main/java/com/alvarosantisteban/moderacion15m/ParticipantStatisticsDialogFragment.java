@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -67,18 +66,14 @@ public class ParticipantStatisticsDialogFragment extends android.support.v4.app.
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id) {
                         // Change the name
-                        Log.d(TAG, "onClick positive");
                         mListener.onDialogPositiveClick(ParticipantStatisticsDialogFragment.this);
                     }
                 })
                 .setNegativeButton(R.string.participant_popup_cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Log.d(TAG, "onClick negative");
                         ParticipantStatisticsDialogFragment.this.getDialog().cancel();
                     }
                 });
-
-        Log.d(TAG, "onCreateDialog");
         return builder.create();
     }
 
@@ -96,6 +91,5 @@ public class ParticipantStatisticsDialogFragment extends android.support.v4.app.
             throw new ClassCastException(activity.toString()
                     + " must implement ParticipantStatisticsDialogListener");
         }
-        Log.d(TAG, "onAttach");
     }
 }
