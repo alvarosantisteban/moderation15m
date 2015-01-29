@@ -63,8 +63,10 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
     // A HasMap that connects the id and the ParticipantView
     Map<ParticipantID, ParticipantView> mIdAndViewHashMap = new HashMap<ParticipantID, ParticipantView>();
 
-    // The scheduler used as a timer for the interventions and the debate
-    ScheduledFuture mScheduleFuture;
+    // The scheduler used as a timer for the interventions
+    ScheduledFuture mScheduleFutureIntervention;
+    // The scheduler used as a timer for the debate
+    ScheduledFuture mScheduleFutureDebate;
 
     int mNumColumns;
     int mNumParticipants;
@@ -327,11 +329,17 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         @Override
         public void onClick(View v) {
             if (mDebateHasEnded) {
+                // Go to Results Activity
                 Intent goToResultsIntent = new Intent(context, ResultsActivity.class);
                 goToResultsIntent.putExtra(Constants.EXTRA_LIST_PARTICIPANTS, (ArrayList) mParticipants);
                 startActivity(goToResultsIntent);
             } else if (!mDebateHasStarted) {
+                // Start the timer of the debate
                 startTimer(DEBATE_TOTAL_TIME_TIMER);
+            } else {
+                // Show remaining time
+                long remainingMinutes = mScheduleFutureDebate.getDelay(TimeUnit.SECONDS);
+                Toast.makeText(context, remainingMinutes +" remaining to the end of the debate", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -403,11 +411,11 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         final ScheduledExecutorService mScheduledTaskExecutor = Executors.newScheduledThreadPool(1);
         switch (timerType){
             case PARTICIPANT_INTERVENTION_TIMER:
-                mScheduleFuture = mScheduledTaskExecutor.schedule(mInterventionTimeEndedRunnable, mParticipantTimeLimit, TimeUnit.SECONDS);
+                mScheduleFutureIntervention = mScheduledTaskExecutor.schedule(mInterventionTimeEndedRunnable, mParticipantTimeLimit, TimeUnit.SECONDS);
                 break;
             case DEBATE_TOTAL_TIME_TIMER:
                 Toast.makeText(context, "The timer for the debate starts", Toast.LENGTH_SHORT).show();
-                mScheduleFuture = mScheduledTaskExecutor.schedule(mDebateTimeEndedRunnable, mDebateTimeLimit, TimeUnit.SECONDS);
+                mScheduleFutureDebate = mScheduledTaskExecutor.schedule(mDebateTimeEndedRunnable, mDebateTimeLimit, TimeUnit.SECONDS);
                 mDebateHasStarted = true;
                 break;
         }
@@ -440,11 +448,11 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
      */
     private void participantFinishedTheirIntervention() {
         // Add the time of their intervention to their profile
-        long remainingTimeFromTimer = mScheduleFuture.getDelay(TimeUnit.SECONDS);
+        long remainingTimeFromTimer = mScheduleFutureIntervention.getDelay(TimeUnit.SECONDS);
         mCurrentParticipant.addTime(mParticipantTimeLimit - remainingTimeFromTimer);
 
         // Cancel the timer
-        mScheduleFuture.cancel(true);
+        mScheduleFutureIntervention.cancel(true);
 
         Toast.makeText(context, mCurrentParticipant.toString() + " finished their intervention", Toast.LENGTH_SHORT).show();
 
