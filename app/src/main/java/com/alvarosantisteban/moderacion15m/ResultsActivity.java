@@ -1,6 +1,7 @@
 package com.alvarosantisteban.moderacion15m;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,8 +11,12 @@ import android.widget.ListView;
 import com.alvarosantisteban.moderacion15m.model.Participant;
 import com.alvarosantisteban.moderacion15m.model.ResultsListAdapter;
 import com.alvarosantisteban.moderacion15m.util.Constants;
+import com.alvarosantisteban.moderacion15m.util.Utils;
 
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -22,6 +27,11 @@ import java.util.Comparator;
  * @author Alvaro Santisteban 28.01.15 - alvarosantisteban@gmail.com
  */
 public class ResultsActivity extends Activity {
+
+    private Intent mShareIntent;
+    private OutputStream os;
+
+
 
     ArrayList<Participant> mParticipants;
 
@@ -83,6 +93,33 @@ public class ResultsActivity extends Activity {
         mListAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Generates a statistics file in the SD card with the following format:
+     *
+     *  ParticipantName1 - ParticipantNumInterventions1 + ParticipantTotalTimeInterventions1
+     *  ParticipantName2 - ParticipantNumInterventions2 + ParticipantTotalTimeInterventions2
+     *  ...
+     */
+    private void generateStatisticsFile() {
+        StringBuilder sb = new StringBuilder();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        sb.append("Debate - " + dateFormat.format(Calendar.getInstance().getTime()));
+        sb.append(System.getProperty("line.separator"));
+        sb.append(System.getProperty("line.separator"));
+        sb.append("Name - Num Interventions - Total time");
+        sb.append(System.getProperty("line.separator"));
+        for (Participant participant : mParticipants) {
+            sb.append(participant.getName()
+                    + " - "
+                    + participant.getNumInterventions()
+                    + " - "
+                    + participant.getTotalInterventionsSecs()
+                    + System.getProperty("line.separator"));
+        }
+        String result = sb.toString();
+        Utils.writeToFile(result, Constants.FILE_NAME_STATISTICS);
+    }
+
     ///////////////////////////////////////////////////////////
     // MENU RELATED
     ///////////////////////////////////////////////////////////
@@ -110,6 +147,9 @@ public class ResultsActivity extends Activity {
             return true;
         } else if (id == R.id.action_order_alphabetically) {
             orderListAlphabetically();
+            return true;
+        } else if (id == R.id.action_generate_file){
+            generateStatisticsFile();
             return true;
         }
 

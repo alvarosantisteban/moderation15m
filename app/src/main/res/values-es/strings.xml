@@ -24,4 +24,11 @@
   <!-- > Results Activity <! -->
   <string name="title_activity_results">Resultados</string>
   <string name="results_name">Nombre</string>
+
+  <!-- > Menu <! -->
+  <string name="action_order_by_time">Tiempo</string>
+  <string name="action_order_by_interventions">Intervenciones</string>
+  <string name="action_order_alphabetically">Alfabeticamente</string>
+  <string name="action_generate_file">Generar archivo</string>
+
 </resources>

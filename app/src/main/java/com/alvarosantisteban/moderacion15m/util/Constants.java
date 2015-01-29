@@ -22,4 +22,6 @@ public final class Constants {
     public static final int MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM = 5;
     public static final int MARGIN_IMAGEVIEW_IN_TABLE_SIDES = 1;
 
+    // FILE NAME FROM THE RESULTS
+    public static final String FILE_NAME_STATISTICS = "StatisticsDebate.txt";
 }

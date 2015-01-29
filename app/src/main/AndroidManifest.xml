@@ -3,6 +3,7 @@
     package="com.alvarosantisteban.moderacion15m" >
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"

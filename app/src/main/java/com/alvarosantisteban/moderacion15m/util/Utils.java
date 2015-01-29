@@ -3,12 +3,17 @@ package com.alvarosantisteban.moderacion15m.util;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
+import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 
 /**
@@ -134,5 +139,17 @@ public class Utils {
             return false;
         }
         return true;
+    }
+
+    public static void writeToFile(String stringToBeWritten, String fileName) {
+        try {
+            File f = new File(Environment.getExternalStorageDirectory().getPath() + "/" + fileName);
+            FileOutputStream fos = new FileOutputStream(f);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
+            outputStreamWriter.write(stringToBeWritten);
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
     }
 }
