@@ -1,35 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   android:orientation="vertical"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:gravity="center">
+  android:paddingLeft="@dimen/activity_horizontal_margin"
+  android:paddingRight="@dimen/activity_horizontal_margin">
+
+  <TextView
+    android:id="@+id/participant_popup_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/participant_popup_padding_top"
+    android:paddingBottom="@dimen/participant_popup_padding_top"
+    android:text="@string/participant_popup_title"
+    android:textStyle="bold"
+    android:textColor="@android:color/black"
+    android:textSize="@dimen/participant_popup_title_text_size"/>
+
+  <View
+    android:id="@+id/view_separator_in_dialog"
+    android:layout_width="fill_parent"
+    android:layout_height="1dip"
+    android:background="@drawable/line_separator_gradient"/>
 
   <EditText
     android:id="@+id/participant_popup_name_editText"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
-
-  <TextView
-    android:id="@+id/participant_popup_numInterventions_tag"
-    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="@string/participant_popup_numInterventions_tag"/>
+    android:paddingTop="@dimen/participant_popup_padding_top"/>
 
-  <TextView
-    android:id="@+id/participant_popup_numInterventions_text"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
-
-  <TextView
-    android:id="@+id/participant_popup_timeInterventions_tag"
-    android:layout_width="wrap_content"
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/participant_popup_timeInterventions_tag"/>
+    android:paddingTop="@dimen/participant_popup_padding_top">
 
-  <TextView
-    android:id="@+id/participant_popup_timeInterventions_text"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    <TextView
+      android:id="@+id/participant_popup_numInterventions_tag"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/participant_popup_numInterventions_tag"/>
+
+    <TextView
+      android:id="@+id/participant_popup_numInterventions_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingLeft="@dimen/participant_popup_padding_left"
+      tools:text="5"/>
+  </LinearLayout>
+
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/participant_popup_padding_top">
+
+    <TextView
+      android:id="@+id/participant_popup_timeInterventions_tag"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/participant_popup_timeInterventions_tag"/>
+
+    <TextView
+      android:id="@+id/participant_popup_timeInterventions_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingLeft="@dimen/participant_popup_padding_left"
+      tools:text="00:24"/>
+  </LinearLayout>
 </LinearLayout>
