@@ -221,7 +221,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         // Set the click listener
         moderatorImage.setOnClickListener(mOnModeratorClickListener);
 
-        moderatorImage.setImageResource(R.drawable.btn_moderator);
+        moderatorImage.setImageResource(R.drawable.btn_moderator_normal);
         row.addView(moderatorImage);
         isModeratorAdded = true;
         return isModeratorAdded;
