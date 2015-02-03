@@ -33,5 +33,15 @@
 
   <string name="hello_blank_fragment">Hello blank fragment</string>
 
+  <!-- > Moderation Activity Toasts <! -->
+  <string name="moderation_toast_remaining_debate_time">" remaining to the end of the debate"</string>
+  <string name="moderation_toast_intervention_time_ended">The time for the intervention of the participant ended</string>
+  <string name="moderation_toast_debate_time_ended">The time for the debate ended</string>
+  <string name="moderation_toast_debate_timer_start">The timer for the debate starts</string>
+  <string name="moderation_toast_assign_turn_to_participant">"Assign the speaking turn to "</string>
+  <string name="moderation_toast_participant_finished_intervention">" finished their intervention"</string>
+  <string name="moderation_toast_participant_added_to_queue">" added to the waiting list. Their had %1$d persons ahead"</string>
+  <string name="moderation_toast_remove_participant_from_queue">" removed from the waiting list. There are %1$d persons waiting"</string>
+
 
 </resources>

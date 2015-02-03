@@ -343,7 +343,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
             } else {
                 // Show remaining time
                 long remainingMinutes = mScheduleFutureDebate.getDelay(TimeUnit.SECONDS);
-                Toast.makeText(context, new InterventionTime(remainingMinutes).toString() + " remaining to the end of the debate", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, new InterventionTime(remainingMinutes).toString() + getString(R.string.moderation_toast_remaining_debate_time), Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -375,7 +375,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
 
                         // Reset the view
                         //resetParticipantView(mIdAndViewHashMap.get(mCurrentParticipant.getId()));
-                        Toast.makeText(context, "The " + mParticipantTimeLimit + " seconds went through", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, getString(R.string.moderation_toast_intervention_time_ended), Toast.LENGTH_SHORT).show();
 
                         //mCurrentParticipant = null;
                     }
@@ -399,7 +399,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(context, "The time for the debate ended", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, getString(R.string.moderation_toast_debate_time_ended), Toast.LENGTH_LONG).show();
                     }
                 });
             } catch (Exception e) {
@@ -419,7 +419,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
                 mScheduleFutureIntervention = mScheduledTaskExecutor.schedule(mInterventionTimeEndedRunnable, mParticipantTimeLimit, TimeUnit.SECONDS);
                 break;
             case DEBATE_TOTAL_TIME_TIMER:
-                Toast.makeText(context, "The timer for the debate starts", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getString(R.string.moderation_toast_debate_timer_start), Toast.LENGTH_SHORT).show();
                 mScheduleFutureDebate = mScheduledTaskExecutor.schedule(mDebateTimeEndedRunnable, mDebateTimeLimit, TimeUnit.SECONDS);
                 mDebateHasStarted = true;
                 break;
@@ -437,7 +437,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
      */
     private void assignSpeakingTurn(Participant participant) {
         mCurrentParticipant = participant;
-        Toast.makeText(context, "Assign the speaking turn to " + mCurrentParticipant.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, getString(R.string.moderation_toast_assign_turn_to_participant) + mCurrentParticipant.toString(), Toast.LENGTH_SHORT).show();
 
         ParticipantView pView = mIdAndViewHashMap.get(participant.getId());
         pView.setWaitingListPos("X");
@@ -459,7 +459,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         // Cancel the timer
         mScheduleFutureIntervention.cancel(true);
 
-        Toast.makeText(context, mCurrentParticipant.toString() + " finished their intervention", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, mCurrentParticipant.toString() + getString(R.string.moderation_toast_participant_finished_intervention), Toast.LENGTH_SHORT).show();
 
         // Reset the view
         resetParticipantView(mIdAndViewHashMap.get(mCurrentParticipant.getId()));
@@ -477,7 +477,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
      * @param participant the ParticipantView to be put in the waiting list
      */
     private void putInWaitingList(ParticipantView participant) {
-        Toast.makeText(context, participant.getParticipantName() +" added to the waiting list. Their had " + mWaitingList.size() + " persons ahead", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, participant.getParticipantName() +getString(R.string.moderation_toast_participant_added_to_queue, mWaitingList.size()), Toast.LENGTH_SHORT).show();
         mWaitingList.add(participant);
 
         participant.setParticipantImage(R.drawable.participant_waiting_selector);
@@ -496,7 +496,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         resetParticipantView(participantView);
 
         mWaitingList.remove(participantView);
-        Toast.makeText(context, participantView.getParticipantName() +" removed from the waiting list. There are " + mWaitingList.size() + " persons waiting", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, participantView.getParticipantName() +getString(R.string.moderation_toast_remove_participant_from_queue, mWaitingList.size()), Toast.LENGTH_SHORT).show();
 
         // Update the waiting list
         updateWaitingListView();
