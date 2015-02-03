@@ -530,9 +530,6 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         pView.hideWaitingListPos();
 
         pView.setParticipantImage(R.drawable.participant_listening_selector);
-
-        // TODO Change color of the first person in the waiting list to "blinking status"
-
     }
 
     /**
@@ -653,9 +650,8 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
                     }
                 }
             } else { // Someone talks
-                if (isTheParticipantTalking(clickParticipantID)) { // Clicked on talking person
-                    // TODO Show statistics?
-                } else { // clicked on someone else
+                if (!isTheParticipantTalking(clickParticipantID)) {
+                    // Clicked on someone not talking
                     if (!isTheParticipantIdInTheWaitingList(clickParticipantID)) {
                         putInWaitingList((ParticipantView) mTouchedParticipantView);
                     }
