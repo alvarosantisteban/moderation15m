@@ -440,7 +440,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         Toast.makeText(context, getString(R.string.moderation_toast_assign_turn_to_participant) + mCurrentParticipant.toString(), Toast.LENGTH_SHORT).show();
 
         ParticipantView pView = mIdAndViewHashMap.get(participant.getId());
-        pView.setWaitingListPos("X");
+        pView.setWaitingListPos("");
         pView.showWaitingListPos();
         pView.setParticipantImage((R.drawable.participant_speaking_selector));
 
