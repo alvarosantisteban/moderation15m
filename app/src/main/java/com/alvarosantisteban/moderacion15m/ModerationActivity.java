@@ -477,7 +477,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
      * @param participant the ParticipantView to be put in the waiting list
      */
     private void putInWaitingList(ParticipantView participant) {
-        Toast.makeText(context, participant.getParticipantName() +getString(R.string.moderation_toast_participant_added_to_queue, mWaitingList.size()), Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, participant.getParticipantName() + getResources().getQuantityString(R.plurals.moderation_toast_participant_added_to_queue, mWaitingList.size(), mWaitingList.size()), Toast.LENGTH_SHORT).show();
         mWaitingList.add(participant);
 
         participant.setParticipantImage(R.drawable.participant_waiting_selector);
@@ -496,7 +496,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         resetParticipantView(participantView);
 
         mWaitingList.remove(participantView);
-        Toast.makeText(context, participantView.getParticipantName() +getString(R.string.moderation_toast_remove_participant_from_queue, mWaitingList.size()), Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, participantView.getParticipantName() + getResources().getQuantityString(R.plurals.moderation_toast_remove_participant_from_queue, mWaitingList.size(), mWaitingList.size()), Toast.LENGTH_SHORT).show();
 
         // Update the waiting list
         updateWaitingListView();
