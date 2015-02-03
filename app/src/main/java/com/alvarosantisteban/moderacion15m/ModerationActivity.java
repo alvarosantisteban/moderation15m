@@ -370,12 +370,13 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
                     public void run() {
 
                         // Reset the view
-                        resetParticipantView(mIdAndViewHashMap.get(mCurrentParticipant.getId()));
+                        //resetParticipantView(mIdAndViewHashMap.get(mCurrentParticipant.getId()));
                         Toast.makeText(context, "The " + mParticipantTimeLimit + " seconds went through", Toast.LENGTH_SHORT).show();
 
-                        mCurrentParticipant = null;
+                        //mCurrentParticipant = null;
                     }
                 });
+                startTimer(PARTICIPANT_INTERVENTION_TIMER);
             }catch (Exception e){
                 Log.e(TAG, "Error. Most likely due to the use of ScheduledExecutorService." );
                 e.printStackTrace();
@@ -449,7 +450,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
     private void participantFinishedTheirIntervention() {
         // Add the time of their intervention to their profile
         long remainingTimeFromTimer = mScheduleFutureIntervention.getDelay(TimeUnit.SECONDS);
-        mCurrentParticipant.addTime(mParticipantTimeLimit - remainingTimeFromTimer);
+        mCurrentParticipant.addTimeAndIntervention(mParticipantTimeLimit - remainingTimeFromTimer);
 
         // Cancel the timer
         mScheduleFutureIntervention.cancel(true);

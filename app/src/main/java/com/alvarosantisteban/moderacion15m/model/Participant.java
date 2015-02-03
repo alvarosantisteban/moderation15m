@@ -67,6 +67,10 @@ public class Participant implements Parcelable{
 
     public void addTime(long secondsToBeAdded) {
         mInterventionsTime.addSeconds(secondsToBeAdded);
+    }
+
+    public void addTimeAndIntervention(long secondsToBeAdded) {
+        mInterventionsTime.addSeconds(secondsToBeAdded);
         mNumInterventions++;
     }
 
