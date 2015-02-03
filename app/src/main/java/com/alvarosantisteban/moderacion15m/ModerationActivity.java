@@ -437,7 +437,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         ParticipantView pView = mIdAndViewHashMap.get(participant.getId());
         pView.setWaitingListPos("X");
         pView.showWaitingListPos();
-        pView.setParticipantImage(R.drawable.btn_participantspeaking_normal);
+        pView.setParticipantImage((R.drawable.participant_speaking_selector));
 
         startTimer(PARTICIPANT_INTERVENTION_TIMER);
     }
@@ -475,7 +475,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         Toast.makeText(context, participant.getParticipantName() +" added to the waiting list. Their had " + mWaitingList.size() + " persons ahead", Toast.LENGTH_SHORT).show();
         mWaitingList.add(participant);
 
-        participant.setParticipantImage(R.drawable.btn_participantwaiting_normal);
+        participant.setParticipantImage(R.drawable.participant_waiting_selector);
 
         // Update the waiting list
         updateWaitingListView();
@@ -524,7 +524,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         pView.setWaitingListPos("");
         pView.hideWaitingListPos();
 
-        pView.setParticipantImage(R.drawable.btn_participantlistening_normal);
+        pView.setParticipantImage(R.drawable.participant_listening_selector);
 
         // TODO Change color of the first person in the waiting list to "blinking status"
 

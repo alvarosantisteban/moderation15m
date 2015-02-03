@@ -10,7 +10,7 @@
     android:id="@+id/participant_image"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:src="@drawable/btn_participantlistening_normal"
+    android:src="@drawable/participant_listening_selector"
     tools:background="@color/material_blue_grey_800"/>
 
   <TextView
