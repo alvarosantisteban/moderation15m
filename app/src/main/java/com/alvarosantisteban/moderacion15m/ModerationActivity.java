@@ -10,9 +10,13 @@ import android.os.Vibrator;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.*;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 
+import com.alvarosantisteban.moderacion15m.model.InterventionTime;
 import com.alvarosantisteban.moderacion15m.model.Participant;
 import com.alvarosantisteban.moderacion15m.model.ParticipantID;
 import com.alvarosantisteban.moderacion15m.model.ParticipantView;
@@ -339,7 +343,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
             } else {
                 // Show remaining time
                 long remainingMinutes = mScheduleFutureDebate.getDelay(TimeUnit.SECONDS);
-                Toast.makeText(context, remainingMinutes +" remaining to the end of the debate", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, new InterventionTime(remainingMinutes).toString() + " remaining to the end of the debate", Toast.LENGTH_SHORT).show();
             }
         }
     };
