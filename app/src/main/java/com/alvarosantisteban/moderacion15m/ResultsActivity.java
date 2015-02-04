@@ -1,6 +1,5 @@
 package com.alvarosantisteban.moderacion15m;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -13,7 +12,6 @@ import com.alvarosantisteban.moderacion15m.model.ResultsListAdapter;
 import com.alvarosantisteban.moderacion15m.util.Constants;
 import com.alvarosantisteban.moderacion15m.util.Utils;
 
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,16 +20,11 @@ import java.util.Comparator;
 
 /**
  * This activity allows the moderator to see the statistical results of the Participants and order them alphabetically,
- * by number of interventions or total time used in the interventions.
+ * by number of interventions or total time used in the interventions. The moderator can also save them in a txt.
  *
  * @author Alvaro Santisteban 28.01.15 - alvarosantisteban@gmail.com
  */
 public class ResultsActivity extends ActionBarActivity {
-
-    private Intent mShareIntent;
-    private OutputStream os;
-
-
 
     ArrayList<Participant> mParticipants;
 
