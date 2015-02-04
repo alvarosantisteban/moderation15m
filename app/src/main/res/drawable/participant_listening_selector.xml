@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
   <!-- Disabled State -->
-  <item android:state_enabled="false" android:state_focused="true" android:state_pressed="true" android:drawable="@drawable/btn_participantlistening_pressed"/>
-  <item android:state_enabled="false" android:state_focused="true" android:drawable="@drawable/btn_participantlistening_pressed"/>
+  <item android:state_enabled="false" android:state_focused="true" android:state_pressed="true" android:drawable="@drawable/btn_participant_listening_pressed"/>
+  <item android:state_enabled="false" android:state_focused="true" android:drawable="@drawable/btn_participant_listening_pressed"/>
 
   <!-- Pressed State -->
-  <item android:state_pressed="true" android:state_focused="true" android:drawable="@drawable/btn_participantlistening_pressed"/>
-  <item android:state_pressed="true" android:state_focused="false" android:drawable="@drawable/btn_participantlistening_pressed"/>
+  <item android:state_pressed="true" android:state_focused="true" android:drawable="@drawable/btn_participant_listening_pressed"/>
+  <item android:state_pressed="true" android:state_focused="false" android:drawable="@drawable/btn_participant_listening_pressed"/>
 
   <!-- finger is gone, button is up, default -->
-  <item android:state_checked="false" android:state_pressed="false" android:drawable="@drawable/btn_participantlistening_normal" />
+  <item android:state_checked="false" android:state_pressed="false" android:drawable="@drawable/btn_participant_listening_normal" />
 </selector>
