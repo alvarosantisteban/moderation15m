@@ -22,9 +22,10 @@ public class MainActivity extends Activity {
 
     // Minimum number of accepted columns
     public static final int MIN_NUM_COLUMNS = 2;
+    private static final int MIN_NUM_PARTICIPANTS = 4;
 
-    EditText mEditTextColumns;
-    EditText mEditTextTotal;
+    //EditText mEditTextColumns;
+    EditText mEditTextNumParticipants;
     EditText mEditTextMaxNumSecsIntervention;
     EditText mEditTextTotalTimeDebate;
 
@@ -33,8 +34,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mEditTextColumns = (EditText)findViewById(R.id.main_textedit_num_columns);
-        mEditTextTotal = (EditText) findViewById(R.id.main_textedit_total_num_participants);
+        //mEditTextColumns = (EditText)findViewById(R.id.main_textedit_num_columns);
+        mEditTextNumParticipants = (EditText) findViewById(R.id.main_textedit_total_num_participants);
         mEditTextMaxNumSecsIntervention = (EditText) findViewById(R.id.main_textEdit_maximum_time_intervention);
         mEditTextTotalTimeDebate = (EditText) findViewById(R.id.main_textEdit_total_time_debate);
     }
@@ -44,17 +45,17 @@ public class MainActivity extends Activity {
      * @param v the clicked View
      */
     public void createCircle(View v) {
-        int numColumns = getIntFromEditText(mEditTextColumns);
-        int numParticipants = getIntFromEditText(mEditTextTotal);
+        //int numColumns = getIntFromEditText(mEditTextColumns);
+        int numParticipants = getIntFromEditText(mEditTextNumParticipants);
         int maxNumSecondsIntervention = getIntFromEditText(mEditTextMaxNumSecsIntervention) * 60;
         int totalTimeDebate = getIntFromEditText(mEditTextTotalTimeDebate) * 60;
 
-        if (areParamsCorrect(numColumns, numParticipants)){
+        if (areParamsCorrect(numParticipants)){
             // Create the intent
             Intent goToModerationIntent = new Intent(this, ModerationActivity.class);
 
             // Put the extras
-            goToModerationIntent.putExtra(Constants.EXTRA_NUM_COLUMNS, numColumns);
+            //goToModerationIntent.putExtra(Constants.EXTRA_NUM_COLUMNS, numColumns);
             goToModerationIntent.putExtra(Constants.EXTRA_NUM_PARTICIPANTS, numParticipants);
             if(maxNumSecondsIntervention > 0){
                 goToModerationIntent.putExtra(Constants.EXTRA_MAX_NUM_SEC_PARTICIPATION, maxNumSecondsIntervention);
@@ -104,19 +105,34 @@ public class MainActivity extends Activity {
         return false;
     }
 
+    /**
+     * Checks the validity of the parameters.
+     * The parameters are considered correct if:
+     * - The number of participants is at least greater than three
+     *
+     * @param numParticipants the number of participants
+     * @return true if the params are correct, false otherwise.
+     */
+    private boolean areParamsCorrect(int numParticipants) {
+        if (numParticipants >= MIN_NUM_PARTICIPANTS) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     protected void onResume(){
         super.onResume();
 
         // Make the softkeyboard appear and focuss it on the columns EditText
-        mEditTextColumns.requestFocus();
-        mEditTextColumns.postDelayed(new Runnable() {
+        mEditTextNumParticipants.requestFocus();
+        mEditTextNumParticipants.postDelayed(new Runnable() {
 
             @Override
             public void run() {
                 InputMethodManager keyboard = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);
-                keyboard.showSoftInput(mEditTextColumns, 0);
+                keyboard.showSoftInput(mEditTextNumParticipants, 0);
             }
         }, 200);
     }

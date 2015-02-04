@@ -16,32 +16,12 @@
     android:id="@+id/textView" />
 
   <TextView
-    android:text="@string/main_num_columns"
-    android:textStyle="bold"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/main_paddingTop_configuration"
-    android:layout_below="@+id/textView"
-    android:layout_alignLeft="@+id/main_textedit_num_columns"
-    android:id="@+id/main_num_columns" />
-
-  <EditText
-    android:id="@+id/main_textedit_num_columns"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:inputType="number"
-    android:ems="@integer/main_editText_number_size"
-    android:layout_below="@+id/main_num_columns"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true" />
-
-  <TextView
     android:text="@string/main_num_participants"
     android:textStyle="bold"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/main_paddingTop_between_elements"
-    android:layout_below="@+id/main_textedit_num_columns"
+    android:layout_below="@+id/textView"
     android:layout_alignLeft="@+id/main_textedit_total_num_participants"
     android:id="@+id/main_num_participants" />
 

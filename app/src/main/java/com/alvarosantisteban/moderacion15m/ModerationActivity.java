@@ -49,6 +49,7 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
     private static final int DEVICE_VIBRATION_IN_MILLISECONDS = 2000;
     private static final int PARTICIPANT_INTERVENTION_TIMER = 0;
     private static final int DEBATE_TOTAL_TIME_TIMER = 1;
+    private static final int MAX_NUM_PARTICIPANTS_TO_ADD_EXTRA_COLUMN = 28;
 
     // The table layout with the views of the participants
     TableLayout tableLayoutOfParticipants;
@@ -94,10 +95,15 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
 
         // Get the intent to obtain its extras
         Intent intentFromMain = getIntent();
-        mNumColumns = intentFromMain.getIntExtra(Constants.EXTRA_NUM_COLUMNS, 0);
+        //mNumColumns = intentFromMain.getIntExtra(Constants.EXTRA_NUM_COLUMNS, 0);
         mNumParticipants = intentFromMain.getIntExtra(Constants.EXTRA_NUM_PARTICIPANTS, 0);
         mParticipantTimeLimit = intentFromMain.getIntExtra(Constants.EXTRA_MAX_NUM_SEC_PARTICIPATION, DEFAULT_MAX_NUM_SEC_PARTICIPATION);
         mDebateTimeLimit = intentFromMain.getIntExtra(Constants.EXTRA_TOTAL_TIME_DEBATE_SECS, DEFAULT_MAX_NUM_SEC_DEBATE);
+
+        // Add or subtract one column to make it look better
+        mNumColumns = mNumParticipants < MAX_NUM_PARTICIPANTS_TO_ADD_EXTRA_COLUMN ?
+                (mNumParticipants / 4) + 1 :
+                (mNumParticipants / 4) - 1;
 
         // Calculate the number of needed rows
         int numRows = calculateNumOfRows(mNumColumns, mNumParticipants);
