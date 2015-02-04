@@ -364,13 +364,8 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
     private Runnable mInterventionTimeEndedRunnable = new Runnable() {
         public void run() {
             try {
-                // Make the device vibrate
-                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(DEVICE_VIBRATION_IN_MILLISECONDS);
-
-                // Make the device beep
-                ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
-                toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 2000);
+                makeDeviceVibrate();
+                makeDeviceBeep();
 
                 // Add the time of their intervention to their profile
                 mCurrentParticipant.addTime(mParticipantTimeLimit);
@@ -401,6 +396,10 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
         public void run() {
             mDebateHasEnded = true;
             mDebateHasStarted = false;
+
+            makeDeviceVibrate();
+            makeDeviceBeep();
+
             try{
                 runOnUiThread(new Runnable() {
                     @Override
@@ -547,6 +546,18 @@ public class ModerationActivity extends FragmentActivity implements ParticipantS
             participantView.setWaitingListPos(Integer.toString(i++));
             participantView.showWaitingListPos();
         }
+    }
+
+    private void makeDeviceBeep() {
+        // Make the device beep
+        ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
+        toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 2000);
+    }
+
+    private void makeDeviceVibrate() {
+        // Make the device vibrate
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(DEVICE_VIBRATION_IN_MILLISECONDS);
     }
 
     ///////////////////////////////////////////////////////////
