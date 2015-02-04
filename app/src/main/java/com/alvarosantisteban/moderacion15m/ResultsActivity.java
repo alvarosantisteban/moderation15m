@@ -1,8 +1,8 @@
 package com.alvarosantisteban.moderacion15m;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -26,7 +26,7 @@ import java.util.Comparator;
  *
  * @author Alvaro Santisteban 28.01.15 - alvarosantisteban@gmail.com
  */
-public class ResultsActivity extends Activity {
+public class ResultsActivity extends ActionBarActivity {
 
     private Intent mShareIntent;
     private OutputStream os;

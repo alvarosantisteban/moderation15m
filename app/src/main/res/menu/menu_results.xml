@@ -12,16 +12,13 @@
   <item
     android:id="@+id/action_order_by_time"
     android:title="@string/action_order_by_time"
-    android:orderInCategory="101"
-    app:showAsAction="ifRoom" />
+    android:orderInCategory="101"/>
   <item
     android:id="@+id/action_order_by_interventions"
     android:title="@string/action_order_by_interventions"
-    android:orderInCategory="102"
-    app:showAsAction="ifRoom" />
+    android:orderInCategory="102"/>
   <item
     android:id="@+id/action_order_alphabetically"
     android:title="@string/action_order_alphabetically"
-    android:orderInCategory="103"
-    app:showAsAction="ifRoom" />
+    android:orderInCategory="103"/>
 </menu>
