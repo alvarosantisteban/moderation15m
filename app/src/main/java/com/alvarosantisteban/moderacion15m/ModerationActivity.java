@@ -8,7 +8,7 @@ import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
  * This activity allows the moderator to interact with the table of participants created.
  * @author Alvaro Santisteban 13.11.14 - alvarosantisteban@gmail.com
  */
-public class ModerationActivity extends FragmentActivity implements ParticipantStatisticsDialogFragment.ParticipantStatisticsDialogListener{
+public class ModerationActivity extends ActionBarActivity implements ParticipantStatisticsDialogFragment.ParticipantStatisticsDialogListener{
 
     private static final String TAG = "ModerationActivity";
 

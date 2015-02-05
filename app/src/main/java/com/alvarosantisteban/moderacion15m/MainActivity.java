@@ -1,9 +1,9 @@
 package com.alvarosantisteban.moderacion15m;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -16,7 +16,7 @@ import com.alvarosantisteban.moderacion15m.util.Constants;
  * This activity allows the moderator to configure the moderation; set the number of columns, number of participants.
  * @author Alvaro Santisteban 17.12.14 - alvarosantisteban@gmail.com
  */
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 
     private static final String TAG = "MainActivity";
 
