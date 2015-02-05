@@ -137,14 +137,13 @@ public class ModerationActivity extends ActionBarActivity implements Participant
                 int height = mModeratorImage.getHeight();
                 int width = mModeratorImage.getWidth();
                 Point moderatorPosPoint = new Point(location[0] + height/2, location[1] + width / 2);
-                Log.d(TAG, "position: " + moderatorPosPoint.toString());
 
                 return moderatorPosPoint;
             }
         };
         mShowCaseView = new ShowcaseView.Builder(this)
-                .setContentTitle("Start the debate")
-                .setContentText("Click on the moderator to start the timer of the debate")
+                .setContentTitle(getString(R.string.moderation_showcase_moderator_title))
+                .setContentText(getString(R.string.moderation_showcase_moderator_text))
                 .setTarget(moderatorTarget)
                 .build();
 

@@ -50,4 +50,9 @@
   </plurals>
 
 
+  <!-- Moderation Showcases -->
+  <string name="moderation_showcase_moderator_text">Click on the moderator to start the timer of the debate.
+    \nClick again to see the remaining time.\nWhen the time for the debate has ended, click to see the results</string>
+  <string name="moderation_showcase_moderator_title">\n\n\n\nStart the debate</string>
+
 </resources>
