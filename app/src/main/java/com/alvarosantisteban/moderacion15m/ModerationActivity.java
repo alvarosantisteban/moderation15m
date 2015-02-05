@@ -3,6 +3,7 @@ package com.alvarosantisteban.moderacion15m;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import com.alvarosantisteban.moderacion15m.model.ParticipantID;
 import com.alvarosantisteban.moderacion15m.model.ParticipantView;
 import com.alvarosantisteban.moderacion15m.util.Constants;
 import com.alvarosantisteban.moderacion15m.util.Utils;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,6 +87,11 @@ public class ModerationActivity extends ActionBarActivity implements Participant
     private boolean mDebateHasStarted = false;
     private boolean mDebateHasEnded = false;
 
+    // The ImageView of the moderator
+    ImageView mModeratorImage;
+    // The ShowCaseView to indicate how does the timer of the moderation works
+    ShowcaseView mShowCaseView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +118,39 @@ public class ModerationActivity extends ActionBarActivity implements Participant
 
         // Build the table tableLayoutOfParticipants
         buildTable(numRows, mNumColumns);
+
+        generateShowCaseViewForModerator();
+    }
+
+    private void generateShowCaseViewForModerator() {
+        Target moderatorTarget = new Target() {
+            @Override
+            public Point getPoint() {
+                // Get approximate position of home icon's center
+                //ParticipantView participantView = mIdAndViewHashMap.get(mParticipants.get(7).getId());
+                //int[] location = new int[2];
+                //participantView.getLocationOnScreen(location);
+
+                // Store the position of the moderator
+                int[] location = new int[2];
+                mModeratorImage.getLocationInWindow(location);
+                int height = mModeratorImage.getHeight();
+                int width = mModeratorImage.getWidth();
+                Point moderatorPosPoint = new Point(location[0] + height/2, location[1] + width / 2);
+                Log.d(TAG, "position: " + moderatorPosPoint.toString());
+
+                return moderatorPosPoint;
+            }
+        };
+        mShowCaseView = new ShowcaseView.Builder(this)
+                .setContentTitle("Start the debate")
+                .setContentText("Click on the moderator to start the timer of the debate")
+                .setTarget(moderatorTarget)
+                .build();
+
+        // Customize the ShowcaseView
+        mShowCaseView.hideButton();
+        mShowCaseView.setShouldCentreText(true);
     }
 
     /**
@@ -221,19 +262,22 @@ public class ModerationActivity extends ActionBarActivity implements Participant
      */
     private boolean createAndAddModerator(int pixelSizeForRow, TableRow row) {
         boolean isModeratorAdded;// Add Moderator
-        final ImageView moderatorImage = new ImageView(this);
-        moderatorImage.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+
+        mModeratorImage = new ImageView(this);
+
+        mModeratorImage.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                 pixelSizeForRow - SUBTRACT_TO_ROW_SIZE));
         // Set the margins of the ParticipantView
-        setMargins(moderatorImage, Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM,
+        setMargins(mModeratorImage, Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM,
                 Constants.MARGIN_IMAGEVIEW_IN_TABLE_SIDES, Constants.MARGIN_IMAGEVIEW_IN_TABLE_BOTTOM);
 
         // Set the click listener
-        moderatorImage.setOnClickListener(mOnModeratorClickListener);
+        mModeratorImage.setOnClickListener(mOnModeratorClickListener);
 
-        moderatorImage.setImageResource(R.drawable.btn_moderator_normal);
-        row.addView(moderatorImage);
+        mModeratorImage.setImageResource(R.drawable.btn_moderator_normal);
+        row.addView(mModeratorImage);
         isModeratorAdded = true;
+
         return isModeratorAdded;
     }
 
@@ -338,6 +382,11 @@ public class ModerationActivity extends ActionBarActivity implements Participant
     private View.OnClickListener mOnModeratorClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            if(mShowCaseView != null){
+                mShowCaseView.hide();
+            }
+
             if (mDebateHasEnded) {
                 // Go to Results Activity
                 Intent goToResultsIntent = new Intent(context, ResultsActivity.class);
