@@ -3,11 +3,13 @@ package com.alvarosantisteban.moderacion15m;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -119,7 +121,18 @@ public class ModerationActivity extends ActionBarActivity implements Participant
         // Build the table tableLayoutOfParticipants
         buildTable(numRows, mNumColumns);
 
-        generateShowCaseViewForModerator();
+        // Get the saved preferences to know if it is the first time
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isFirstTime = sharedPref.getBoolean(Constants.SHARED_PREF_FIRST_TIME, true);
+
+        if(isFirstTime) {
+            generateShowCaseViewForModerator();
+
+            // Mark the app as having been used
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean(Constants.SHARED_PREF_FIRST_TIME, false);
+            editor.commit();
+        }
     }
 
     private void generateShowCaseViewForModerator() {

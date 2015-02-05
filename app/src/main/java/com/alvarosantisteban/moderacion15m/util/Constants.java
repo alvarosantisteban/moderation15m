@@ -24,4 +24,7 @@ public final class Constants {
 
     // FILE NAME FROM THE RESULTS
     public static final String FILE_NAME_STATISTICS = "StatisticsDebate.txt";
+
+    // SHARED PREFERENCES
+    public static final String SHARED_PREF_FIRST_TIME = "SharedPrefFirstTime";
 }
