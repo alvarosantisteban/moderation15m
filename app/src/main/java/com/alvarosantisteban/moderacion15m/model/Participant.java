@@ -12,7 +12,7 @@ public class Participant implements Parcelable{
     private String mName;
     private long mNumInterventions;
     private InterventionTime mInterventionsTime;
-    private final boolean mIsWoman;
+    private boolean mIsWoman;
 
     public static class Builder{
         // Required parameters
@@ -20,9 +20,6 @@ public class Participant implements Parcelable{
 
         // Optional parameters - Initialized to default
         private String mName = "Participant";
-        private long mNumInterventions = 0;
-        private InterventionTime mInterventionsTime = new InterventionTime(0);
-        private boolean mIsWoman = true;
 
         public Builder(ParticipantID theId){
             this.mId = theId;
@@ -30,21 +27,6 @@ public class Participant implements Parcelable{
 
         public Builder name(String name){
             mName = name;
-            return this;
-        }
-
-        public Builder numInterventions(long numInterventions) {
-            mNumInterventions = numInterventions;
-            return this;
-        }
-
-        public Builder totalInterventionsSecs(InterventionTime time) {
-            mInterventionsTime = time;
-            return this;
-        }
-
-        public Builder isWoman(boolean isWoman) {
-            mIsWoman = isWoman;
             return this;
         }
 
@@ -56,9 +38,6 @@ public class Participant implements Parcelable{
     public Participant(Builder builder) {
         this.mId = builder.mId;
         this.mName = builder.mName;
-        this.mNumInterventions = builder.mNumInterventions;
-        this.mInterventionsTime = builder.mInterventionsTime;
-        this.mIsWoman = builder.mIsWoman;
     }
 
     public ParticipantID getId() {
