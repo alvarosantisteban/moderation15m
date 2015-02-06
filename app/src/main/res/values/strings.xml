@@ -51,8 +51,12 @@
 
 
   <!-- Moderation Showcases -->
-  <string name="moderation_showcase_moderator_text">Click on the moderator to start the timer of the debate.
-    \nClick again to see the remaining time.\nWhen the time for the debate has ended, click to see the results</string>
   <string name="moderation_showcase_moderator_title">\n\n\n\nStart the debate</string>
+  <string name="moderation_showcase_moderator_text">Click on the moderator to start the timer of the debate.
+    \nClick again to see the remaining time.\nWhen the time for the debate has ended, click to see the results.</string>
+  <string name="moderation_showcase_participant_title">\n\n\n\nAssign turns</string>
+  <string name="moderation_showcase_participant_text">Click on a participant to assign the turn or put their in the waiting list.
+      \nLong click to remove the participant from the speaking turn or from the waiting list.
+      \nDouble click to change the name and see the statistics.</string>
 
 </resources>

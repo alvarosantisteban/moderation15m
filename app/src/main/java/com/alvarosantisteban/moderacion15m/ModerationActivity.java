@@ -59,8 +59,6 @@ public class ModerationActivity extends ActionBarActivity implements Participant
     // The table layout with the views of the participants
     TableLayout tableLayoutOfParticipants;
 
-    // The list of participants
-    List<Participant> mParticipants = new ArrayList<Participant>();
     // The participant currently talking
     Participant mCurrentParticipant;
     // The participant currently being edited
@@ -70,6 +68,9 @@ public class ModerationActivity extends ActionBarActivity implements Participant
 
     // The waiting list of Participants identified by their ids
     List<ParticipantView> mWaitingList = new ArrayList<ParticipantView>();
+
+    // The list of participants
+    List<Participant> mParticipants = new ArrayList<Participant>();
     // A HasMap that connects the id and the ParticipantView
     Map<ParticipantID, ParticipantView> mIdAndViewHashMap = new HashMap<ParticipantID, ParticipantView>();
 
@@ -93,6 +94,10 @@ public class ModerationActivity extends ActionBarActivity implements Participant
     ImageView mModeratorImage;
     // The ShowCaseView to indicate how does the timer of the moderation works
     ShowcaseView mShowCaseView;
+
+    SharedPreferences mSharedPref;
+    // the position in the list of participants of the participantview that is in the left bottom corner
+    private int mParticipantPosInCorner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,47 +127,13 @@ public class ModerationActivity extends ActionBarActivity implements Participant
         buildTable(numRows, mNumColumns);
 
         // Get the saved preferences to know if it is the first time
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isFirstTime = sharedPref.getBoolean(Constants.SHARED_PREF_FIRST_TIME, true);
+        mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isFirstTime = mSharedPref.getBoolean(Constants.SHARED_PREF_FIRST_TIME, true);
+        isFirstTime = true;
 
         if(isFirstTime) {
             generateShowCaseViewForModerator();
-
-            // Mark the app as having been used
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean(Constants.SHARED_PREF_FIRST_TIME, false);
-            editor.commit();
         }
-    }
-
-    private void generateShowCaseViewForModerator() {
-        Target moderatorTarget = new Target() {
-            @Override
-            public Point getPoint() {
-                // Get approximate position of home icon's center
-                //ParticipantView participantView = mIdAndViewHashMap.get(mParticipants.get(7).getId());
-                //int[] location = new int[2];
-                //participantView.getLocationOnScreen(location);
-
-                // Store the position of the moderator
-                int[] location = new int[2];
-                mModeratorImage.getLocationInWindow(location);
-                int height = mModeratorImage.getHeight();
-                int width = mModeratorImage.getWidth();
-                Point moderatorPosPoint = new Point(location[0] + height/2, location[1] + width / 2);
-
-                return moderatorPosPoint;
-            }
-        };
-        mShowCaseView = new ShowcaseView.Builder(this)
-                .setContentTitle(getString(R.string.moderation_showcase_moderator_title))
-                .setContentText(getString(R.string.moderation_showcase_moderator_text))
-                .setTarget(moderatorTarget)
-                .build();
-
-        // Customize the ShowcaseView
-        mShowCaseView.hideButton();
-        mShowCaseView.setShouldCentreText(true);
     }
 
     /**
@@ -240,8 +211,12 @@ public class ModerationActivity extends ActionBarActivity implements Participant
                             // Add Moderator
                             isModeratorAdded = createAndAddModerator(pixelSizeForRow, row);
                         }  else {
-                            // Add all except moderator
-                            // Create the ParticipantView
+                            // Get the position of the participant in the bottom left corner
+                            if (j == 1) {
+                                mParticipantPosInCorner = numAddedParticipants;
+                            }
+
+                            // Create and add all participantView except moderator
                             numAddedParticipants = createAndAddParticipantView(numAddedParticipants, pixelSizeForRow, row);
                         }
                     }else if (j == 1 || j == cols){ // First or last column
@@ -397,6 +372,7 @@ public class ModerationActivity extends ActionBarActivity implements Participant
 
             if(mShowCaseView != null){
                 mShowCaseView.hide();
+                generateShowCaseViewForParticipant();
             }
 
             if (mDebateHasEnded) {
@@ -712,6 +688,15 @@ public class ModerationActivity extends ActionBarActivity implements Participant
          */
         @Override
         public boolean onSingleTapConfirmed(MotionEvent event) {
+            if(mShowCaseView != null){
+                mShowCaseView.hide();
+
+                // Mark the app as having been used
+                SharedPreferences.Editor editor = mSharedPref.edit();
+                editor.putBoolean(Constants.SHARED_PREF_FIRST_TIME, false);
+                editor.commit();
+            }
+
             Participant clickedParticipant = mParticipants.get((int) mTouchedParticipantView.getTag());
             ParticipantID clickParticipantID = clickedParticipant.getId();
 
@@ -737,5 +722,68 @@ public class ModerationActivity extends ActionBarActivity implements Participant
             }
             return false;
         }
+    }
+
+    ///////////////////////////////////////////////////////////
+    // SHOWCASES FOR THE FIRST TIME THAT THE APP IS USED
+    ///////////////////////////////////////////////////////////
+
+    private void generateShowCaseViewForModerator() {
+        Target moderatorTarget = new Target() {
+            @Override
+            public Point getPoint() {
+
+                // Store the position of the moderator
+                int[] location = new int[2];
+                mModeratorImage.getLocationInWindow(location);
+                int height = mModeratorImage.getHeight();
+                int width = mModeratorImage.getWidth();
+                Point moderatorPosPoint = new Point(location[0] + height / 2, location[1] + width / 2);
+
+                return moderatorPosPoint;
+            }
+        };
+        mShowCaseView = new ShowcaseView.Builder(this)
+                .setContentTitle(getString(R.string.moderation_showcase_moderator_title))
+                .setContentText(getString(R.string.moderation_showcase_moderator_text))
+                .setTarget(moderatorTarget)
+                .build();
+
+        // Customize the ShowcaseView
+        mShowCaseView.hideButton();
+        mShowCaseView.setShouldCentreText(true);
+    }
+
+    private void generateShowCaseViewForParticipant() {
+        Target participantTarget = new Target() {
+            @Override
+            public Point getPoint() {
+                // Get position of participant in bottom left corner
+                ParticipantView participantView = getParticipantFromBottomLeftCorner();
+
+                int[] location = new int[2];
+                participantView.getLocationInWindow(location);
+
+                int height = participantView.getHeight();
+                int width = participantView.getWidth();
+                Point participantPosPoint = new Point(location[0] + height / 2, location[1] + width / 2);
+
+                return participantPosPoint;
+            }
+
+            private ParticipantView getParticipantFromBottomLeftCorner() {
+                return mIdAndViewHashMap.get(mParticipants.get(mParticipantPosInCorner).getId());
+            }
+        };
+        mShowCaseView = new ShowcaseView.Builder(this)
+                .setContentTitle(getString(R.string.moderation_showcase_participant_title))
+                .setContentText(getString(R.string.moderation_showcase_participant_text))
+                .setTarget(participantTarget)
+                .build();
+
+        // Customize the ShowcaseView
+        mShowCaseView.hideButton();
+        mShowCaseView.setShouldCentreText(true);
+        mShowCaseView.setHideOnTouchOutside(true);
     }
 }
