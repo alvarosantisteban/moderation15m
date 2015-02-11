@@ -38,6 +38,8 @@ public class Participant implements Parcelable{
     public Participant(Builder builder) {
         this.mId = builder.mId;
         this.mName = builder.mName;
+        this.mNumInterventions = 0;
+        this.mInterventionsTime = new InterventionTime(0);
     }
 
     public ParticipantID getId() {
