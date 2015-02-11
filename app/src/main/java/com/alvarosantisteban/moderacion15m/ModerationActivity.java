@@ -94,6 +94,8 @@ public class ModerationActivity extends ActionBarActivity implements Participant
     ImageView mModeratorImage;
     // The ShowCaseView to indicate how does the timer of the moderation works
     ShowcaseView mShowCaseView;
+    // To know if the show case of the participants has been already shown
+    private boolean hasParticipantShowCaseBeenShown = false;
 
     SharedPreferences mSharedPref;
     // the position in the list of participants of the participantview that is in the left bottom corner
@@ -372,7 +374,10 @@ public class ModerationActivity extends ActionBarActivity implements Participant
 
             if(mShowCaseView != null){
                 mShowCaseView.hide();
-                generateShowCaseViewForParticipant();
+                if (!hasParticipantShowCaseBeenShown) {
+                    generateShowCaseViewForParticipant();
+                    hasParticipantShowCaseBeenShown = true;
+                }
             }
 
             if (mDebateHasEnded) {
