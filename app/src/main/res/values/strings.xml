@@ -30,6 +30,7 @@
     <string name="action_order_by_interventions">By Interventions</string>
     <string name="action_order_alphabetically">Alphabetically</string>
     <string name="action_generate_file">Generate file</string>
+    <string name="action_add_participant">Add participant</string>
 
   <string name="hello_blank_fragment">Hello blank fragment</string>
 

@@ -13,10 +13,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 
 import com.alvarosantisteban.moderacion15m.model.InterventionTime;
@@ -98,7 +95,7 @@ public class ModerationActivity extends ActionBarActivity implements Participant
     private boolean hasParticipantShowCaseBeenShown = false;
 
     SharedPreferences mSharedPref;
-    // the position in the list of participants of the participantview that is in the left bottom corner
+    // the position in the list of participants of the ParticipantView that is in the left bottom corner
     private int mParticipantPosInCorner;
 
     @Override
@@ -790,5 +787,33 @@ public class ModerationActivity extends ActionBarActivity implements Participant
         mShowCaseView.hideButton();
         mShowCaseView.setShouldCentreText(true);
         mShowCaseView.setHideOnTouchOutside(true);
+    }
+
+    ///////////////////////////////////////////////////////////
+    // MENU RELATED
+    ///////////////////////////////////////////////////////////
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_moderation, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_add_participant) {
+            // TODO Add a participant
+            Toast.makeText(context, "Functionality not available yet",Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
