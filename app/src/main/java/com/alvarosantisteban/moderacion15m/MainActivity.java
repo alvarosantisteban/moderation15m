@@ -99,10 +99,7 @@ public class MainActivity extends ActionBarActivity {
      * @return true if the params are correct, false otherwise.
      */
     private boolean areParamsCorrect(int numColumns, int numParticipants) {
-        if (numColumns >= MIN_NUM_COLUMNS && numParticipants >= numColumns){
-            return true;
-        }
-        return false;
+        return numColumns >= MIN_NUM_COLUMNS && numParticipants >= numColumns;
     }
 
     /**
@@ -114,10 +111,7 @@ public class MainActivity extends ActionBarActivity {
      * @return true if the params are correct, false otherwise.
      */
     private boolean areParamsCorrect(int numParticipants) {
-        if (numParticipants >= MIN_NUM_PARTICIPANTS) {
-            return true;
-        }
-        return false;
+        return numParticipants >= MIN_NUM_PARTICIPANTS;
     }
 
     @Override
