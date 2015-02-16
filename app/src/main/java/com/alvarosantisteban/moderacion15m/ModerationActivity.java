@@ -668,7 +668,7 @@ public class ModerationActivity extends ActionBarActivity implements Participant
                 participantFinishedTheirIntervention();
             } else {
                 if (isTheParticipantIdInTheWaitingList(clickParticipantID)) {
-                    removeFromWaitingList((ParticipantView) mTouchedParticipantView);
+                    removeFromWaitingList(mTouchedParticipantView);
                 }
             }
         }
@@ -709,17 +709,17 @@ public class ModerationActivity extends ActionBarActivity implements Participant
                     assignSpeakingTurn(clickedParticipant);
                 } else {
                     if (isTheParticipantIdInTheWaitingList(clickParticipantID)) {
-                        removeFromWaitingList((ParticipantView) mTouchedParticipantView);
+                        removeFromWaitingList(mTouchedParticipantView);
                         assignSpeakingTurn(clickedParticipant);
                     } else {
-                        putInWaitingList((ParticipantView) mTouchedParticipantView);
+                        putInWaitingList(mTouchedParticipantView);
                     }
                 }
             } else { // Someone talks
                 if (!isTheParticipantTalking(clickParticipantID)) {
                     // Clicked on someone not talking
                     if (!isTheParticipantIdInTheWaitingList(clickParticipantID)) {
-                        putInWaitingList((ParticipantView) mTouchedParticipantView);
+                        putInWaitingList(mTouchedParticipantView);
                     }
                 }
             }
