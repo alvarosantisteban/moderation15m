@@ -697,7 +697,7 @@ public class ModerationActivity extends ActionBarActivity implements Participant
                 // Mark the app as having been used
                 SharedPreferences.Editor editor = mSharedPref.edit();
                 editor.putBoolean(Constants.SHARED_PREF_FIRST_TIME, false);
-                editor.commit();
+                editor.apply();
             }
 
             Participant clickedParticipant = mParticipants.get((int) mTouchedParticipantView.getTag());
