@@ -560,10 +560,11 @@ public class ModerationActivity extends ActionBarActivity implements Participant
     }
 
     private boolean isTheParticipantTalking(ParticipantID participantId){
-        if(mCurrentParticipant != null) {
-            return participantId.equals(mCurrentParticipant.getId());
+        //noinspection SimplifiableIfStatement
+        if(mCurrentParticipant == null) {
+            return false; // no one is talking
         }
-        return false; // no one is talking
+        return participantId.equals(mCurrentParticipant.getId());
     }
 
     /**
