@@ -28,15 +28,12 @@ public class ParticipantStatisticsDialogFragment extends android.support.v4.app.
         public void onDialogPositiveClick(DialogFragment dialogFragment);
     }
 
-    private Participant mParticipant;
-
     // Use this instance of the interface to deliver action events
     ParticipantStatisticsDialogListener mListener;
 
     EditText mNameEditText;
     TextView mNumInterventions;
     TextView mTotalTimeInterventions;
-
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -51,11 +48,11 @@ public class ParticipantStatisticsDialogFragment extends android.support.v4.app.
         mNumInterventions = (TextView) view.findViewById(R.id.participant_popup_numInterventions_text);
         mTotalTimeInterventions = (TextView) view.findViewById(R.id.participant_popup_timeInterventions_text);
 
-        mParticipant = getArguments() != null ? (Participant) getArguments().getParcelable(Constants.KEY_ARG_PARTICIPANT) : null;
-        if (mParticipant != null) {
-            mNameEditText.setText(mParticipant.getName());
-            mNumInterventions.setText(String.valueOf(mParticipant.getNumInterventions()));
-            mTotalTimeInterventions.setText(mParticipant.getInterventionsTime().toString());
+        Participant participant = getArguments() != null ? (Participant) getArguments().getParcelable(Constants.KEY_ARG_PARTICIPANT) : null;
+        if (participant != null) {
+            mNameEditText.setText(participant.getName());
+            mNumInterventions.setText(String.valueOf(participant.getNumInterventions()));
+            mTotalTimeInterventions.setText(participant.getInterventionsTime().toString());
         }
 
         builder.setView(view)
