@@ -64,12 +64,12 @@ public class ModerationActivity extends ActionBarActivity implements Participant
     ParticipantView mEditedParticipantView;
 
     // The waiting list of Participants identified by their ids
-    List<ParticipantView> mWaitingList = new ArrayList<ParticipantView>();
+    List<ParticipantView> mWaitingList = new ArrayList<>();
 
     // The list of participants
-    List<Participant> mParticipants = new ArrayList<Participant>();
+    List<Participant> mParticipants = new ArrayList<>();
     // A HasMap that connects the id and the ParticipantView
-    Map<ParticipantID, ParticipantView> mIdAndViewHashMap = new HashMap<ParticipantID, ParticipantView>();
+    Map<ParticipantID, ParticipantView> mIdAndViewHashMap = new HashMap<>();
 
     // The scheduler used as a timer for the interventions
     ScheduledFuture mScheduleFutureIntervention;
