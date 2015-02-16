@@ -741,9 +741,7 @@ public class ModerationActivity extends ActionBarActivity implements Participant
                 mModeratorImage.getLocationInWindow(location);
                 int height = mModeratorImage.getHeight();
                 int width = mModeratorImage.getWidth();
-                Point moderatorPosPoint = new Point(location[0] + height / 2, location[1] + width / 2);
-
-                return moderatorPosPoint;
+                return new Point(location[0] + height / 2, location[1] + width / 2);
             }
         };
         mShowCaseView = new ShowcaseView.Builder(this)
@@ -769,9 +767,7 @@ public class ModerationActivity extends ActionBarActivity implements Participant
 
                 int height = participantView.getHeight();
                 int width = participantView.getWidth();
-                Point participantPosPoint = new Point(location[0] + height / 2, location[1] + width / 2);
-
-                return participantPosPoint;
+                return new Point(location[0] + height / 2, location[1] + width / 2);
             }
 
             private ParticipantView getParticipantFromBottomLeftCorner() {
