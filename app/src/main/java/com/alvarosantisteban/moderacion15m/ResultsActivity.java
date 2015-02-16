@@ -96,18 +96,18 @@ public class ResultsActivity extends ActionBarActivity {
     private void generateStatisticsFile() {
         StringBuilder sb = new StringBuilder();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        sb.append("Debate - " + dateFormat.format(Calendar.getInstance().getTime()));
+        sb.append("Debate - ").append(dateFormat.format(Calendar.getInstance().getTime()));
         sb.append(System.getProperty("line.separator"));
         sb.append(System.getProperty("line.separator"));
         sb.append("Name - Num Interventions - Total time");
         sb.append(System.getProperty("line.separator"));
         for (Participant participant : mParticipants) {
-            sb.append(participant.getName()
-                    + " - "
-                    + participant.getNumInterventions()
-                    + " - "
-                    + participant.getTotalInterventionsSecs()
-                    + System.getProperty("line.separator"));
+            sb.append(participant.getName())
+                    .append(" - ")
+                    .append(participant.getNumInterventions())
+                    .append(" - ")
+                    .append(participant.getTotalInterventionsSecs())
+                    .append(System.getProperty("line.separator"));
         }
         String result = sb.toString();
         Utils.writeToFile(result, Constants.FILE_NAME_STATISTICS);
