@@ -160,12 +160,16 @@ public class ModerationActivity extends ActionBarActivity implements Participant
     }
 
     /**
+     *
+     * NOT USED ANYMORE.
+     *
      * Checks if the adding of the two parameters produces an odd number, in which case a extra row is needed
      *
      * @param numColumns the number of columns of the table
      * @param numParticipants the number of participants in the table
      * @return 1 if a row must be added, 0 otherwise
      */
+    @SuppressWarnings("unused")
     private int addExtraRow(int numColumns, int numParticipants){
         // Check if the adding of the two parameters produces an odd number
         if (Utils.isOdd(numColumns + numParticipants)){
