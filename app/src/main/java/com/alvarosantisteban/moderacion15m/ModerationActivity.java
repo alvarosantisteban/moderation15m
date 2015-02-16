@@ -251,7 +251,6 @@ public class ModerationActivity extends ActionBarActivity implements Participant
      * @return true if no exception arose
      */
     private boolean createAndAddModerator(int pixelSizeForRow, TableRow row) {
-        boolean isModeratorAdded;// Add Moderator
 
         mModeratorImage = new ImageView(this);
 
@@ -266,9 +265,8 @@ public class ModerationActivity extends ActionBarActivity implements Participant
 
         mModeratorImage.setImageResource(R.drawable.btn_moderator_normal);
         row.addView(mModeratorImage);
-        isModeratorAdded = true;
 
-        return isModeratorAdded;
+        return true;
     }
 
     /**
