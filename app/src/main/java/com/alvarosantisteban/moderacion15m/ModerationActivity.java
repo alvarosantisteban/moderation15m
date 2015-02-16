@@ -291,7 +291,7 @@ public class ModerationActivity extends ActionBarActivity implements Participant
         participantView.setTag(numAddedParticipants);
 
         // Set the gesture detector
-        final GestureDetector gdt = new GestureDetector(new MyGestureDetector(participantView));
+        final GestureDetector gdt = new GestureDetector(context, new MyGestureDetector(participantView));
         participantView.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 gdt.onTouchEvent(event);
