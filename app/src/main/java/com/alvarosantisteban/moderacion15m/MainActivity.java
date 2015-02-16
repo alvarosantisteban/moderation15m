@@ -98,6 +98,7 @@ public class MainActivity extends ActionBarActivity {
      * @param numParticipants the number of participants
      * @return true if the params are correct, false otherwise.
      */
+    @SuppressWarnings("unused")
     private boolean areParamsCorrect(int numColumns, int numParticipants) {
         return numColumns >= MIN_NUM_COLUMNS && numParticipants >= numColumns;
     }
