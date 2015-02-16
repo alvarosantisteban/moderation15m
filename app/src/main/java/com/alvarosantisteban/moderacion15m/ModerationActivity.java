@@ -276,7 +276,7 @@ public class ModerationActivity extends ActionBarActivity implements Participant
      * @param numAddedParticipants the number of added participants
      * @param pixelSizeForRow the size for the row in pixels
      * @param row the row where the ImageView is added
-     * @return
+     * @return the number of added participants so far
      */
     private int createAndAddParticipantView(int numAddedParticipants, int pixelSizeForRow, TableRow row) {
         // Create the ParticipantView
@@ -307,8 +307,7 @@ public class ModerationActivity extends ActionBarActivity implements Participant
 
         row.addView(participantView);
 
-        numAddedParticipants++;
-        return numAddedParticipants;
+        return ++numAddedParticipants;
     }
 
     /**
