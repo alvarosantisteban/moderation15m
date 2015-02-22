@@ -53,6 +53,9 @@ public class ModerationActivity extends ActionBarActivity implements Participant
     private static final int DEBATE_TOTAL_TIME_TIMER = 1;
     private static final int MAX_NUM_PARTICIPANTS_TO_ADD_EXTRA_COLUMN = 28;
 
+    private static final int TIMEOUT_PARTICIPANT = 0;
+    private static final int TIMEOUT_DEBATE = 1;
+
     // The table layout with the views of the participants
     TableLayout tableLayoutOfParticipants;
 
@@ -413,12 +416,10 @@ public class ModerationActivity extends ActionBarActivity implements Participant
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        // Change the image to timeout
+                        changeToTimeOutImage(TIMEOUT_PARTICIPANT, R.drawable.btn_participant_speaking_timeout_normal);
 
-                        // Reset the view
-                        //resetParticipantView(mIdAndViewHashMap.get(mCurrentParticipant.getId()));
                         Toast.makeText(context, getString(R.string.moderation_toast_intervention_time_ended), Toast.LENGTH_SHORT).show();
-
-                        //mCurrentParticipant = null;
                     }
                 });
                 startTimer(PARTICIPANT_INTERVENTION_TIMER);
@@ -444,6 +445,9 @@ public class ModerationActivity extends ActionBarActivity implements Participant
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        // Change the image to timeout
+                        changeToTimeOutImage(TIMEOUT_DEBATE, R.drawable.btn_moderator_timeout_normal);
+
                         Toast.makeText(context, getString(R.string.moderation_toast_debate_time_ended), Toast.LENGTH_LONG).show();
                     }
                 });
@@ -599,6 +603,18 @@ public class ModerationActivity extends ActionBarActivity implements Participant
         // Make the device vibrate
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(DEVICE_VIBRATION_IN_MILLISECONDS);
+    }
+
+    private void changeToTimeOutImage(int typeOfTimeout, int resourceId) {
+        switch (typeOfTimeout) {
+            case TIMEOUT_PARTICIPANT:
+                ParticipantView pView = mIdAndViewHashMap.get(mCurrentParticipant.getId());
+                pView.setParticipantImage(resourceId);
+                break;
+            case TIMEOUT_DEBATE:
+                mModeratorImage.setImageResource(resourceId);
+                break;
+        }
     }
 
     ///////////////////////////////////////////////////////////
